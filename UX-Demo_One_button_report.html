@@ -280,6 +280,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
    tellus:"说说这个动作的具体问题…",add_label:"其他问题或补充说明",field_hint:"不想打字？点麦克风直接说（60 秒内）",mic_denied:"麦克风权限已关闭，可去系统设置开启",rec_cap:"60 秒内",rec_stop:"停止",voice:"语音",cancel:"取消",
    cta_skip:"直接提交",cta_submit:"提交问题",ctx_in:"课中",ctx_out:"课外",
    toast_title:"收到，谢谢你！",toast_sub:"这个动作会更准",
+   toast_v0_title:"收到，谢谢你！",toast_v0_sub:"这个动作会更准",
+   toast_v1_title:"谢谢反馈！",toast_v1_sub:"我们这就去改",
+   toast_v2_title:"已收到～",toast_v2_sub:"你帮了 ATOM 一把",
+   toast_v3_title:"记下了，谢谢！",toast_v3_sub:"下次会更懂你",
+   toast_v4_title:"谢谢提醒！",toast_v4_sub:"这就安排上",
    offline_title:"已离线保存",offline_sub:"联网后会自动提交，不会丢",
    fail_title:"提交失败",fail_sub:"已存到本地，稍后自动重试",
    cool_title:"刚刚已提交",cool_sub:"请稍后再报，避免重复",
@@ -294,6 +299,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
    tellus:"Tell us what happened…",add_label:"Other issue or details",field_hint:"Rather talk? Tap the mic (up to 60s)",mic_denied:"Microphone is off — enable it in Settings",rec_cap:"max 60s",rec_stop:"Stop",voice:"Voice",cancel:"Cancel",
    cta_skip:"Submit anyway",cta_submit:"Submit",ctx_in:"In-class",ctx_out:"Detail page",
    toast_title:"Got it, thanks!",toast_sub:"This'll make it sharper",
+   toast_v0_title:"Got it, thanks!",toast_v0_sub:"This'll make it sharper",
+   toast_v1_title:"Thanks for flagging!",toast_v1_sub:"We're on it",
+   toast_v2_title:"Noted, appreciate it!",toast_v2_sub:"You just helped ATOM out",
+   toast_v3_title:"Got your note!",toast_v3_sub:"We'll get this right",
+   toast_v4_title:"Thanks!",toast_v4_sub:"Already logged for the team",
    offline_title:"Saved offline",offline_sub:"It'll send automatically once you're online",
    fail_title:"Couldn't submit",fail_sub:"Saved on device — we'll retry shortly",
    cool_title:"Just submitted",cool_sub:"Please wait a moment before reporting again",
@@ -344,7 +354,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
  var alertSvg='<svg class="ic" style="color:#f4b86a"><use href="#ic-alert"/></svg>';
  var clockSvg='<svg class="ic" style="color:#f4c96a"><use href="#ic-clock"/></svg>';
  function tryReport(){ if(coolState==="cool"){showToast(clockSvg,"cool_title","cool_sub");} else {open1();} }
- function submitResult(){ if(submitState==="offline"){showToast(cloudSvg,"offline_title","offline_sub");} else if(submitState==="fail"){showToast(alertSvg,"fail_title","fail_sub");} else {showToast(heartSvg,"toast_title","toast_sub");} }
+ var THANKS_VARIANTS=5;
+ function submitResult(){ if(submitState==="offline"){showToast(cloudSvg,"offline_title","offline_sub");} else if(submitState==="fail"){showToast(alertSvg,"fail_title","fail_sub");} else {var i=Math.floor(Math.random()*THANKS_VARIANTS);showToast(heartSvg,"toast_v"+i+"_title","toast_v"+i+"_sub");} }
 
  $("#btnReport").onclick=function(){tryReport();};
  dim.onclick=function(){ if(s1.style.display==="block") closeAll(); };
