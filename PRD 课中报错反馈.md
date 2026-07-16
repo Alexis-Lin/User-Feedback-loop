@@ -123,3 +123,4 @@ flowchart TD
 - **(a) 可交互 HTML**：[`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>)（中英双版 + 课中/课外，可离线打开，底部含状态演示）。
 - **(b) 实现说明（Markdown）**：[`Dev Notes 原型实现说明.md`](<Dev Notes 原型实现说明.md>)。
 - **(附) 录音+离线上传 Flutter 参考代码**：[`Flutter Code 录音上传参考.dart`](<Flutter Code 录音上传参考.dart>)。
+- **(附) 录音与前后端同步工程建议**：[`Eng Notes 录音与前后端同步.md`](<Eng Notes 录音与前后端同步.md>)。
