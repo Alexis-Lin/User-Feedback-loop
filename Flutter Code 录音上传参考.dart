@@ -248,6 +248,247 @@ Future<void> onSubmit({
   );
 
   await uploader.submit(draft);          // 立即返回
-  // showThanksToast();  closeSheet();    // 「谢谢你，已收到！」并回到训练
+  // HapticFeedback.mediumImpact();       // 提交成功触感（见 §6.5）
+  // showThanksToast(...);  Navigator.pop(); // 「谢谢你，已收到！」并回到训练
   // 注意：ASR（自动语种识别 + 转写）在后端做，端上不转写。
 }
+
+// ============================================================
+// 6. 弹窗与微动效（Flutter 官方最佳实践 · Android / iOS 一致）
+// ============================================================
+// 说明：以下为 UI 层参考，仅需 flutter/material + flutter/services，无额外依赖。
+//
+// 原则：
+//  1) 能用框架自带过渡就别手写 —— showModalBottomSheet 免费给你
+//     平台正确的进/出动画、下拉关闭、scrim 遮罩、焦点与无障碍。
+//  2) 简单显隐用「隐式动画」(AnimatedSwitcher / AnimatedSize / AnimatedOpacity)；
+//     需要循环或协调多个值才上 AnimationController，并记得 dispose。
+//  3) 尊重系统「减弱动态效果」：MediaQuery.disableAnimationsOf(context)。
+//  4) 关键时刻加触感 HapticFeedback（两端都有原生实现）。
+//  5) 时长/曲线统一走 token，别各处随手写。
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';   // HapticFeedback
+// import 'dart:ui' show FontFeature;         // 计时数字等宽
+
+/// 统一动效 token（Material 3 motion）
+class Motion {
+  static const micro    = Duration(milliseconds: 200);
+  static const sheetIn  = Duration(milliseconds: 300);
+  static const sheetOut = Duration(milliseconds: 250);
+  static const curveIn  = Curves.easeInOutCubicEmphasized; // M3 强调曲线
+  static const curveOut = Curves.easeInCubic;
+
+  /// 开了「减弱动态效果」就瞬时完成，避免眩晕
+  static Duration d(BuildContext c, Duration x) =>
+      MediaQuery.disableAnimationsOf(c) ? Duration.zero : x;
+}
+
+// ------------------------------------------------------------
+// 6.1 底部 sheet（一级 / 二级）—— 用官方 showModalBottomSheet
+// ------------------------------------------------------------
+// · 进入/退出/下拉关闭/遮罩：全部交给框架，两端物理一致。
+// · 一级→二级：不要再弹一个新 sheet（会闪两次遮罩）；在同一个 sheet 内
+//   用 AnimatedSwitcher 横向切换，遮罩连续。
+// · 防丢输入：二级若已有输入，用 PopScope 拦截「下拉/点遮罩/系统返回」，
+//   只允许「取消/返回」按钮显式关闭（对应原型：点遮罩只关一级）。
+
+Future<void> openReportSheet(BuildContext context) {
+  HapticFeedback.selectionClick();               // 打开时轻触感
+  return showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,                    // 允许超半屏 + 键盘避让
+    useSafeArea: true,                           // 刘海 + 底部安全区
+    showDragHandle: true,                        // 官方抓手 + 下拉关闭
+    backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    sheetAnimationStyle: AnimationStyle(         // 覆盖进/出时长与曲线（Flutter 3.19+）
+      duration: Motion.sheetIn, reverseDuration: Motion.sheetOut,
+      curve: Motion.curveIn, reverseCurve: Motion.curveOut,
+    ),
+    builder: (_) => const _ReportSheet(),
+  );
+}
+
+class _ReportSheet extends StatefulWidget {
+  const _ReportSheet();
+  @override
+  State<_ReportSheet> createState() => _ReportSheetState();
+}
+
+class _ReportSheetState extends State<_ReportSheet> {
+  int _step = 1;                 // 1=一级分类  2=二级细化
+  String _branch = 'ai';
+  bool _hasInput = false;        // 二级是否已勾选/填字/录音
+
+  @override
+  Widget build(BuildContext context) {
+    // 二级有输入时，拦截下拉/遮罩/返回，防止误关丢输入
+    return PopScope(
+      canPop: _step == 1 && !_hasInput,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && _step == 2) setState(() => _step = 1); // 二级“返回”回一级
+      },
+      child: AnimatedPadding(                    // 键盘避让，平滑抬起
+        duration: Motion.d(context, Motion.micro),
+        curve: Curves.easeOut,
+        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+        child: AnimatedSize(                     // 一/二级高度差 → 平滑变化，不跳变
+          duration: Motion.d(context, Motion.micro),
+          curve: Curves.easeOut,
+          alignment: Alignment.topCenter,
+          child: AnimatedSwitcher(               // 一 ↔ 二级 横向切换，遮罩连续
+            duration: Motion.d(context, Motion.micro),
+            transitionBuilder: (child, anim) {
+              final slide = Tween<Offset>(
+                begin: Offset(_step == 2 ? .12 : -.12, 0), end: Offset.zero,
+              ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOut));
+              return FadeTransition(
+                opacity: anim,
+                child: SlideTransition(position: slide, child: child),
+              );
+            },
+            child: _step == 1
+                ? _Level1(
+                    key: const ValueKey('l1'),
+                    onPick: (b) {
+                      HapticFeedback.selectionClick();
+                      setState(() { _branch = b; _step = 2; });
+                    },
+                  )
+                : _Level2(
+                    key: const ValueKey('l2'),
+                    branch: _branch,
+                    onChanged: (has) => setState(() => _hasInput = has),
+                    onBack: () => setState(() => _step = 1),
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+// 若想要更“原生”的左右滑与边缘返回手势，可把 AnimatedSwitcher 换成 sheet 内嵌
+// 一个 Navigator（push/pop 拿到平台转场）；一般 AnimatedSwitcher 已足够。
+
+// ------------------------------------------------------------
+// 6.2 提交成功 Toast（居中卡片，2.2s 自动消失）
+// ------------------------------------------------------------
+// Flutter 无内置居中 toast；用 Overlay + 短生命周期动画组件（fade + 轻微上移）。
+// 若可接受底部条，用 ScaffoldMessenger.showSnackBar(behavior: floating) 更省事、自带动画。
+
+void showThanksToast(BuildContext context,
+    {required String title, required String sub, IconData icon = Icons.favorite}) {
+  final overlay = Overlay.of(context);
+  late OverlayEntry entry;
+  entry = OverlayEntry(
+    builder: (_) => _ToastCard(
+      title: title, sub: sub, icon: icon,
+      reduceMotion: MediaQuery.disableAnimationsOf(context),
+      onGone: () => entry.remove(),
+    ),
+  );
+  overlay.insert(entry);
+}
+
+class _ToastCard extends StatefulWidget {
+  final String title, sub;
+  final IconData icon;
+  final bool reduceMotion;
+  final VoidCallback onGone;
+  const _ToastCard({required this.title, required this.sub, required this.icon,
+      required this.reduceMotion, required this.onGone});
+  @override
+  State<_ToastCard> createState() => _ToastCardState();
+}
+
+class _ToastCardState extends State<_ToastCard> with SingleTickerProviderStateMixin {
+  late final _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 220));
+
+  @override
+  void initState() {
+    super.initState();
+    widget.reduceMotion ? _c.value = 1 : _c.forward();
+    Future.delayed(const Duration(milliseconds: 2200), () async {
+      if (!mounted) return;
+      if (!widget.reduceMotion) await _c.reverse();
+      widget.onGone();
+    });
+  }
+
+  @override
+  void dispose() { _c.dispose(); super.dispose(); }
+
+  @override
+  Widget build(BuildContext context) {
+    final curved = CurvedAnimation(parent: _c, curve: Curves.easeOutCubic);
+    return Positioned.fill(
+      child: IgnorePointer(              // 不挡后面训练画面的操作
+        child: Center(
+          child: FadeTransition(
+            opacity: curved,
+            child: SlideTransition(
+              position: Tween(begin: const Offset(0, .06), end: Offset.zero).animate(curved),
+              child: /* 卡片 UI：icon + title + sub，深色圆角背景 */ const SizedBox(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ------------------------------------------------------------
+// 6.3 录音条 / 语音条三态切换（输入框 ↔ 录音中 ↔ 语音条）
+// ------------------------------------------------------------
+// AnimatedSize 抹平高度跳变，AnimatedSwitcher 做淡入淡出。
+//
+//   AnimatedSize(
+//     duration: Motion.d(context, Motion.micro), curve: Curves.easeOut,
+//     child: AnimatedSwitcher(
+//       duration: Motion.d(context, Motion.micro),
+//       child: switch (recState) {
+//         RecState.idle      => _fieldWithMic(key: const ValueKey('field')),
+//         RecState.recording => _recBar(key: const ValueKey('rec')),
+//         RecState.done      => _clip(key: const ValueKey('clip')),
+//       },
+//     ),
+//   )
+//
+// 录音红点脉冲：AnimationController(repeat reverse) + FadeTransition，记得 dispose。
+//   late final _pulse = AnimationController(
+//       vsync: this, duration: const Duration(milliseconds: 900))..repeat(reverse: true);
+//   FadeTransition(opacity: Tween(begin: 1.0, end: .3).animate(_pulse), child: _dot);
+//
+// 计时数字防抖动：等宽数字，宽度不跳。
+//   Text('0:03', style: TextStyle(fontFeatures: const [FontFeature.tabularFigures()]));
+
+// ------------------------------------------------------------
+// 6.4 主按钮文案切换（直接提交 ↔ 提交问题）
+// ------------------------------------------------------------
+//   AnimatedSwitcher(
+//     duration: Motion.d(context, Motion.micro),
+//     child: Text(selected == 0 ? '直接提交' : '提交问题', key: ValueKey(selected == 0)),
+//   )
+
+// ------------------------------------------------------------
+// 6.5 触感反馈（跨端；Android 走 vibration，iOS 走 Taptic）
+// ------------------------------------------------------------
+//   打开报错 / 选分类      → HapticFeedback.selectionClick();
+//   开始 / 停止录音        → HapticFeedback.lightImpact();
+//   录满 60s 上限          → HapticFeedback.heavyImpact();
+//   提交成功               → HapticFeedback.mediumImpact();
+
+// ------------------------------------------------------------
+// 6.6 跨端一致性 checklist（提测必过）
+// ------------------------------------------------------------
+//  · 时长/曲线统一走 Motion token：micro 200ms、sheet 进 300 / 出 250、M3 强调曲线。
+//  · iOS：确认下拉关闭手势不与系统「边缘滑动返回」冲突（sheet 内 Navigator 时尤其注意）。
+//  · Android：返回键/手势由 PopScope 正确拦截（二级不误关）。
+//  · 打开系统「减弱动态效果」跑一遍：所有过渡应瞬时、无位移。
+//  · 键盘弹起时 sheet 平滑抬起、不遮挡输入框与提交按钮。
+//  · 想要更“原生”的 iOS 观感可选 showCupertinoModalPopup / modal_bottom_sheet 包；
+//    但 showModalBottomSheet 两端已足够好，优先一套代码。
