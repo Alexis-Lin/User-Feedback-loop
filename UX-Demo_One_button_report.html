@@ -6,11 +6,10 @@
 <title>课中报错反馈原型 · Course error report</title>
 <style>
 :root{
-  --ink:#111214; --ink2:#6b6b70; --ink3:#a0a0a6;
+  --ink:#111214; --ink2:#6b6b70; --ink3:#7c7c83;
   --line:#e5e5ea; --sep:#ececf0;
   --bg:#f2f2f7; --card:#ffffff;
   --lime:#c6f24e; --danger:#e5342f; --danger-bg:#fdeceb; --danger-ink:#9a2422;
-  --sel:#f5f5f8;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;}
@@ -32,6 +31,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .seg button{border:0;background:transparent;color:var(--ink2);font-size:13px;padding:5px 14px;border-radius:999px;cursor:pointer;font-family:inherit;}
 .seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08);}
 @media (max-width:760px){.stage{flex-direction:column;align-items:center;}.sidebar{width:100%;max-width:402px;}}
+@media (max-height:930px){.phone{zoom:.86;}}
+@media (max-height:800px){.phone{zoom:.76;}}
+@media (max-height:700px){.phone{zoom:.66;}}
 
 .phone{position:relative;width:402px;height:874px;background:#000;border-radius:56px;padding:11px;flex:none;box-shadow:0 10px 40px rgba(0,0,0,.16);}
 .screen{position:relative;width:100%;height:100%;background:#e9e9ec;border-radius:46px;overflow:hidden;display:flex;flex-direction:column;}
@@ -307,7 +309,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
    ai_over:"计数多了（没做也计）",ai_under:"计数少了（做了没计）",ai_pose:"身体识别不准",ai_coach:"AI 讲解不清楚",
    c_img:"示范图 / 视频不对",c_name:"动作名称不对",c_muscle:"训练部位标注不对",c_desc:"动作讲解不对",
    tellus:"说说这个动作的具体问题…",add_label:"其他问题或补充说明",field_hint:"不想打字？点麦克风直接说（60 秒内）",mic_denied:"麦克风权限已关闭，可去系统设置开启",rec_cap:"60 秒内",rec_stop:"停止",voice:"语音",cancel:"取消",
-   cta_skip:"直接提交",cta_submit:"提交问题",ctx_in:"课中",ctx_out:"课外",
+   cta_skip:"直接提交",cta_submit:"提交问题",ctx_in:"课中",ctx_out:"课外",aname_none:"当前动作",
    toast_title:"收到，谢谢你！",toast_sub:"这个动作会更准",
    toast_v0_title:"收到，谢谢你！",toast_v0_sub:"这个动作会更准",
    toast_v1_title:"谢谢反馈！",toast_v1_sub:"我们这就去改",
@@ -326,7 +328,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
    ai_over:"Counted a rep I didn’t do",ai_under:"Missed a rep I did",ai_pose:"Body tracking is off",ai_coach:"Coaching was unclear",
    c_img:"Demo image or video looks off",c_name:"Exercise name doesn’t match",c_muscle:"Target muscle looks off",c_desc:"Description isn’t accurate",
    tellus:"Tell us what happened…",add_label:"Other issue or details",field_hint:"Rather talk? Tap the mic (up to 60s)",mic_denied:"Microphone is off — enable it in Settings",rec_cap:"max 60s",rec_stop:"Stop",voice:"Voice",cancel:"Cancel",
-   cta_skip:"Submit anyway",cta_submit:"Submit",ctx_in:"In-class",ctx_out:"Detail page",
+   cta_skip:"Submit anyway",cta_submit:"Submit",ctx_in:"In-class",ctx_out:"Detail page",aname_none:"This exercise",
    toast_title:"Got it, thanks!",toast_sub:"This'll make it sharper",
    toast_v0_title:"Got it, thanks!",toast_v0_sub:"This'll make it sharper",
    toast_v1_title:"Thanks for flagging!",toast_v1_sub:"We're on it",
@@ -355,8 +357,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
  }
  function applyName(){
    var lng=lang==="zh"?"杠铃颈后深蹲·宽距慢速离心组间休息60秒的超长动作名称":"Barbell back squat — wide stance, slow eccentric, 60s rest, a very long name";
-   var txt=nameState==="long"?lng:dict[lang].actionName;
-   $$(".js-aname").forEach(function(e){if(nameState==="none"){e.style.display="none";}else{e.style.display="";e.textContent=txt;}});
+   var txt=nameState==="long"?lng:(nameState==="none"?dict[lang].aname_none:dict[lang].actionName);
+   $$(".js-aname").forEach(function(e){e.style.display="";e.textContent=txt;});
  }
  function applyMic(){
    $$(".micbtn").forEach(function(b){b.classList.toggle("disabled",micState==="deny");});
