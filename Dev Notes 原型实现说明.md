@@ -1,6 +1,6 @@
 # 实现说明 · 课中报错反馈原型
 
-说明 [`UX-Demo_One_button_report.html`](UX-Demo_One_button_report.html) 这份交互原型「是怎么实现的」，供工程师照着接真机。原型是**单文件、零依赖、可离线打开**（图标内联 SVG symbol，不请求网络）。
+说明 [`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>) 这份交互原型「是怎么实现的」，供工程师照着接真机。原型是**单文件、零依赖、可离线打开**（图标内联 SVG symbol，不请求网络）。
 
 ## 1. 文件与运行
 
@@ -62,14 +62,14 @@
 | 原型中 | 真机实现 |
 |---|---|
 | `.vid` 的 SVG 占位 | 替换为真实训练视频流；UI 与逻辑不动 |
-| 录音的 `setInterval` 模拟 | 换成真实录音 + 本地存储 + 异步上传，见 [`report_recording_reference.dart`](report_recording_reference.dart) |
+| 录音的 `setInterval` 模拟 | 换成真实录音 + 本地存储 + 异步上传，见 [`Flutter Code 录音上传参考.dart`](<Flutter Code 录音上传参考.dart>) |
 | Toast 占位闭环 | 接真实提交（先本地入队再异步上传）+ 后端「已收到」消息 |
 | 冷却间隔 / 冻结上下文 / 上下文快照 | 原型未含业务态，需按 PRD §3 在客户端实现 |
 | ASR | **后端**做（自动语种+转写），端上只上传音频 |
 
 ## 7. 录音 + 离线上传（要点）
 
-详见 [`report_recording_reference.dart`](report_recording_reference.dart)。核心三步：
+详见 [`Flutter Code 录音上传参考.dart`](<Flutter Code 录音上传参考.dart>)。核心三步：
 
 1. **录音**：`record` 包录 AAC/m4a 单声道低码率；60s 硬上限；<0.8s 判误触丢弃；来电/切后台自动停。
 2. **先存后传**：提交 = 先写本地队列（Hive 持久化，断网也稳）→ 再异步上传，不阻塞 UI。

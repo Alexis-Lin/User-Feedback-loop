@@ -1,6 +1,6 @@
 # 课中报错反馈 · PRD
 
-> 版本：v1（原型阶段）｜负责人：产品｜关联原型：[`UX-Demo_One_button_report.html`](<UX-Demo_One_button_report.html>)｜实现说明：[`课中报错 实现说明.md`](<课中报错 实现说明.md>)
+> 版本：v1（原型阶段）｜负责人：产品｜关联原型：[`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>)｜实现说明：[`Dev Notes 原型实现说明.md`](<Dev Notes 原型实现说明.md>)
 
 ## 1. 背景与目标
 
@@ -47,7 +47,7 @@ flowchart TD
 
 ## 4. 交互设计图（屏）
 
-完整可交互版见 [`UX-Demo_One_button_report.html`](<UX-Demo_One_button_report.html>)（支持 中/英、课中/课外 切换）。核心 4 屏：
+完整可交互版见 [`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>)（支持 中/英、课中/课外 切换）。核心 4 屏：
 
 1. **动作详情页** — 右下「报错」淡灰 pill ＋ 右上 ⋮ 菜单同款入口；底部主 CTA「记录本组」。
 2. **一级分类（半屏 sheet）** — 标题「动作名 / 这个动作哪里不对？」；两个独立描框按钮：AI 识别问题、课程内容报错（课外 +其他问题与建议 ↗）。
@@ -92,7 +92,7 @@ flowchart TD
 
 ## 8. 状态设计（错误 / 空 / 阻断 / 极限）
 
-各状态在 [`UX-Demo_One_button_report.html`](<UX-Demo_One_button_report.html>) 底部「状态演示」面板可切换预览。
+各状态在 [`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>) 底部「状态演示」面板可切换预览。
 
 **错误状态**
 - 提交 / 上传失败 → 保留本地、静默重试，不丢
@@ -120,6 +120,6 @@ flowchart TD
 
 ## 9. 交付物
 
-- **(a) 可交互 HTML**：[`UX-Demo_One_button_report.html`](<UX-Demo_One_button_report.html>)（中英双版 + 课中/课外，可离线打开，底部含状态演示）。
-- **(b) 实现说明（Markdown）**：[`课中报错 实现说明.md`](<课中报错 实现说明.md>)。
-- **(附) 录音+离线上传 Flutter 参考代码**：[`report_recording_reference.dart`](report_recording_reference.dart)。
+- **(a) 可交互 HTML**：[`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>)（中英双版 + 课中/课外，可离线打开，底部含状态演示）。
+- **(b) 实现说明（Markdown）**：[`Dev Notes 原型实现说明.md`](<Dev Notes 原型实现说明.md>)。
+- **(附) 录音+离线上传 Flutter 参考代码**：[`Flutter Code 录音上传参考.dart`](<Flutter Code 录音上传参考.dart>)。
