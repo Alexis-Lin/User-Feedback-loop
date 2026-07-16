@@ -5,10 +5,10 @@
 ## 文件
 
 - [`PRD-课中报错反馈.md`](<PRD-课中报错反馈.md>) — 产品需求文档（交互逻辑、状态设计、后端流转、交付物）。
-- [`交互原型 course-error-report.html`](<交互原型 course-error-report.html>) — 单文件可交互原型，零依赖、可离线打开。支持 中/英、课中/课外 切换，底部含「状态演示」面板（错误 / 空 / 阻断 / 极限）。
+- [`UX-Demo_One_button_report.html`](<UX-Demo_One_button_report.html>) — 单文件可交互原型，零依赖、可离线打开。支持 中/英、课中/课外 切换，底部含「状态演示」面板（错误 / 空 / 阻断 / 极限）。
 - [`课中报错 实现说明.md`](<课中报错 实现说明.md>) — 原型实现说明，供工程师照着接真机。
 - [`report_recording_reference.dart`](report_recording_reference.dart) — 录音 + 本地离线保存 + 异步上传的 Flutter 参考代码。
 
 ## 快速预览
 
-直接用浏览器打开 `交互原型 course-error-report.html` 即可，无需运行环境。
+直接用浏览器打开 `UX-Demo_One_button_report.html` 即可，无需运行环境。

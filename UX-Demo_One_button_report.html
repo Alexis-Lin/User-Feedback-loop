@@ -279,7 +279,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
    c_img:"示范图 / 视频不对",c_name:"动作名称不对",c_muscle:"训练部位标注不对",c_desc:"动作讲解不对",
    tellus:"说说这个动作的具体问题…",add_label:"其他问题或补充说明",field_hint:"不想打字？点麦克风直接说（60 秒内）",mic_denied:"麦克风权限已关闭，可去系统设置开启",rec_cap:"60 秒内",rec_stop:"停止",voice:"语音",cancel:"取消",
    cta_skip:"直接提交",cta_submit:"提交问题",ctx_in:"课中",ctx_out:"课外",
-   toast_title:"谢谢你，已收到！",toast_sub:"你的反馈会帮 ATOM 把这个动作做得更准",
+   toast_title:"收到，谢谢你！",toast_sub:"这个动作会更准",
    offline_title:"已离线保存",offline_sub:"联网后会自动提交，不会丢",
    fail_title:"提交失败",fail_sub:"已存到本地，稍后自动重试",
    cool_title:"刚刚已提交",cool_sub:"请稍后再报，避免重复",
@@ -293,7 +293,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
    c_img:"Demo image or video looks off",c_name:"Exercise name doesn’t match",c_muscle:"Target muscle looks off",c_desc:"Description isn’t accurate",
    tellus:"Tell us what happened…",add_label:"Other issue or details",field_hint:"Rather talk? Tap the mic (up to 60s)",mic_denied:"Microphone is off — enable it in Settings",rec_cap:"max 60s",rec_stop:"Stop",voice:"Voice",cancel:"Cancel",
    cta_skip:"Submit anyway",cta_submit:"Submit",ctx_in:"In-class",ctx_out:"Detail page",
-   toast_title:"Thanks — got it!",toast_sub:"Your note helps ATOM read this exercise better",
+   toast_title:"Got it, thanks!",toast_sub:"This'll make it sharper",
    offline_title:"Saved offline",offline_sub:"It'll send automatically once you're online",
    fail_title:"Couldn't submit",fail_sub:"Saved on device — we'll retry shortly",
    cool_title:"Just submitted",cool_sub:"Please wait a moment before reporting again",
@@ -335,7 +335,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
  function closeAll(){[dim,s1,s2a,s2c,toast].forEach(function(e){e.style.display="none";});reset();}
  function open1(){reset();dim.style.display="block";s1.style.display="block";}
  function showToast(icon,tk,sk){
-   $("#tIcon").innerHTML=icon;$("#tTitle").textContent=dict[lang][tk];$("#tSub").textContent=dict[lang][sk];
+   $("#tIcon").innerHTML=icon;$("#tTitle").setAttribute("data-i18n",tk);$("#tSub").setAttribute("data-i18n",sk);$("#tTitle").textContent=dict[lang][tk];$("#tSub").textContent=dict[lang][sk];
    [s1,s2a,s2c].forEach(function(e){e.style.display="none";});
    dim.style.display="block";toast.style.display="block";setTimeout(closeAll,2200);
  }
@@ -363,10 +363,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
  $$(".stopbtn").forEach(function(btn){btn.onclick=function(e){
     e.stopPropagation();var bar=btn.closest(".recbar");var txt=btn.closest(".addbox");
     clearInterval(bar.dataset.tid);var sec=parseInt(bar.dataset.sec||"0");
-    bar.style.display="none";$(".field",txt).style.display="";$(".fhint",txt).style.display="";
-    if(sec>0){var clip=$(".clip",txt);clip.style.display="inline-flex";$(".cliplen",clip).textContent=fmt(sec);}
+    bar.style.display="none";$(".field",txt).style.display="";
+    if(sec>0){var clip=$(".clip",txt);clip.style.display="inline-flex";$(".cliplen",clip).textContent=fmt(sec);$(".fhint",txt).style.display="none";}
+    else{$(".fhint",txt).style.display="";}
  };});
- $$(".clipx").forEach(function(x){x.onclick=function(e){e.stopPropagation();x.closest(".clip").style.display="none";};});
+ $$(".clipx").forEach(function(x){x.onclick=function(e){e.stopPropagation();var clip=x.closest(".clip");clip.style.display="none";var box=clip.closest(".addbox");if(box)$(".fhint",box).style.display="";};});
  $("#ctaAi").onclick=function(){submitResult();};
  $("#ctaC").onclick=function(){submitResult();};
 
