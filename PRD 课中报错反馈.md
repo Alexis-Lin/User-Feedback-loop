@@ -1,6 +1,6 @@
 # 课中报错反馈 · PRD
 
-> 版本：v1（原型阶段）｜负责人：产品｜关联原型：[`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>)｜实现说明：[`Dev Notes 原型实现说明.md`](<Dev Notes 原型实现说明.md>)
+> 版本：v1（原型阶段）｜负责人：产品｜关联原型：[`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>)｜实现说明：[`Dev Notes 原型实现与录音前后端建议.md`](<Dev Notes 原型实现与录音前后端建议.md>)
 
 ## 1. 背景与目标
 
@@ -121,6 +121,5 @@ flowchart TD
 ## 9. 交付物
 
 - **(a) 可交互 HTML**：[`UX Demo 课中报错反馈.html`](<UX Demo 课中报错反馈.html>)（中英双版 + 课中/课外，可离线打开，底部含状态演示）。
-- **(b) 实现说明（Markdown）**：[`Dev Notes 原型实现说明.md`](<Dev Notes 原型实现说明.md>)。
+- **(b) 实现说明 + 录音前后端建议（Markdown）**：[`Dev Notes 原型实现与录音前后端建议.md`](<Dev Notes 原型实现与录音前后端建议.md>)。
 - **(附) 录音+离线上传 Flutter 参考代码**：[`Flutter Code 录音上传参考.dart`](<Flutter Code 录音上传参考.dart>)。
-- **(附) 录音与前后端同步工程建议**：[`Eng Notes 录音与前后端同步.md`](<Eng Notes 录音与前后端同步.md>)。
