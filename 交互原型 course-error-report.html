@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>课中报错反馈原型 · Course error report</title>
+<style>
+:root{
+  --ink:#111214; --ink2:#6b6b70; --ink3:#a0a0a6;
+  --line:#e5e5ea; --sep:#ececf0;
+  --bg:#f2f2f7; --card:#ffffff;
+  --lime:#c6f24e; --danger:#e5342f; --danger-bg:#fdeceb; --danger-ink:#9a2422;
+  --sel:#f5f5f8;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);color:var(--ink);display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:22px 16px 40px;}
+.ic{width:1em;height:1em;fill:currentColor;vertical-align:-.12em;}
+
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;justify-content:center;}
+.ptitle{font-size:13px;font-weight:500;color:var(--ink2);margin-right:2px;}
+.seg{display:inline-flex;background:#e3e3e8;border-radius:999px;padding:3px;}
+.seg button{border:0;background:transparent;color:var(--ink2);font-size:13px;padding:5px 14px;border-radius:999px;cursor:pointer;font-family:inherit;}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08);}
+
+.phone{position:relative;width:402px;height:874px;background:#000;border-radius:56px;padding:11px;flex:none;box-shadow:0 10px 40px rgba(0,0,0,.16);}
+.screen{position:relative;width:100%;height:100%;background:#e9e9ec;border-radius:46px;overflow:hidden;display:flex;flex-direction:column;}
+.island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:126px;height:34px;background:#000;border-radius:999px;z-index:30;}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:16px 30px 6px;color:#111;font-size:15px;font-weight:600;}
+.batt{display:inline-block;width:26px;height:13px;border:1px solid rgba(0,0,0,.5);border-radius:4px;position:relative;vertical-align:-2px;margin-left:4px;}
+.batt::after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:17px;background:#111;border-radius:2px;}
+.nav{display:flex;align-items:center;gap:12px;padding:6px 20px 10px;color:#111;font-size:15px;}
+#navDots{cursor:pointer;}
+.navcatch{position:absolute;inset:0;display:none;z-index:19;}
+.navmenu{position:absolute;top:56px;right:16px;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:6px;display:none;z-index:20;min-width:152px;}
+.nmitem{display:flex;align-items:center;gap:9px;padding:11px 12px;font-size:15px;color:var(--ink);border-radius:9px;cursor:pointer;}
+.nmitem.muted{color:var(--ink3);}
+.tag{border:1px solid #c4c4c9;border-radius:999px;padding:4px 12px;display:inline-flex;align-items:center;gap:6px;font-size:13px;}
+.gdot{width:8px;height:8px;border-radius:999px;background:#5fc23c;display:inline-block;}
+
+.vid{flex:1;position:relative;overflow:hidden;}
+.scene{position:absolute;inset:0;width:100%;height:100%;}
+.pip{position:absolute;top:14px;right:14px;width:98px;height:74px;background:#c9c9cd;border-radius:10px;overflow:hidden;}
+.side{position:absolute;left:16px;bottom:20px;display:flex;flex-direction:column;gap:12px;}
+.sbtn{width:44px;height:44px;border-radius:999px;background:rgba(255,255,255,.72);display:flex;align-items:center;justify-content:center;color:#333;font-size:18px;}
+.cnt{position:absolute;right:22px;bottom:22px;width:96px;height:96px;border-radius:999px;background:rgba(70,70,72,.5);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;}
+
+.card{background:var(--card);padding:14px 20px 20px;}
+.dots{display:inline-flex;gap:6px;align-items:center;}
+.dots i{width:7px;height:7px;border-radius:9px;background:#cfcfd3;display:inline-block;}
+.dots i.on{background:#141414;}
+.rpill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);color:var(--ink2);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:13px;}
+.aibadge{background:var(--lime);color:#1c2b06;border-radius:6px;padding:1px 6px;font-size:13px;}
+
+.btn{border:0;font-family:inherit;cursor:pointer;height:50px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:16px;}
+.btn-primary{background:#141414;color:#fff;width:100%;}
+.btn-ghost{background:#efeff2;color:var(--ink);padding:0 22px;}
+
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.4);display:none;z-index:10;}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;padding:8px 18px 34px;display:none;z-index:11;}
+.grab{width:40px;height:5px;background:#d8d8de;border-radius:3px;margin:6px auto 12px;}
+.shead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:0 2px 12px;}
+.eyebrow{font-size:13px;color:var(--ink2);margin-bottom:2px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.js-aname.aname{display:inline-block;max-width:176px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom;}
+.q{font-size:17px;font-weight:600;color:var(--ink);line-height:1.3;}
+.qcap{font-size:13px;color:var(--ink3);margin-top:3px;}
+.xbtn{width:30px;height:30px;border-radius:999px;background:#efeff2;color:#8a8a90;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;font-size:15px;}
+.backbtn{color:#141414;cursor:pointer;flex:none;font-size:24px;line-height:1;margin-right:10px;align-self:center;}
+
+.list{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-top:1px solid var(--sep);}
+.row:first-child{border-top:0;}
+.row .body{flex:1;min-width:0;}
+.row .rt{font-size:16px;color:var(--ink);}
+.row .rs{font-size:13px;color:var(--ink3);margin-top:2px;}
+.chev{color:#c4c4c9;font-size:19px;flex:none;}
+.opts{margin-top:4px;}
+.optbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:16px;padding:15px 16px;margin-bottom:10px;cursor:pointer;font-family:inherit;}
+.optbtn:last-child{margin-bottom:0;}
+.optbtn .body{flex:1;min-width:0;}
+.optbtn .rt{font-size:16px;color:var(--ink);}
+.optbtn .rs{font-size:13px;color:var(--ink3);margin-top:2px;}
+.checks{margin-top:2px;}
+.row.chk{padding:13px 4px;border-top:0;}
+.cb{width:22px;height:22px;border:2px solid #c9c9ce;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:13px;font-weight:700;}
+.row.on .cb{background:#141414;border-color:#141414;color:#fff;}
+
+.addbox{margin-top:20px;}
+.addhead{display:flex;justify-content:space-between;align-items:baseline;margin:0 4px 9px;}
+.addlabel{font-size:13px;color:var(--ink2);}
+.counter{font-size:12px;color:var(--ink3);}
+.field{display:flex;align-items:flex-end;gap:10px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 12px 10px 16px;}
+.tin{flex:1;border:0;outline:0;background:transparent;font-family:inherit;font-size:16px;line-height:1.45;color:var(--ink);resize:none;max-height:112px;overflow-y:auto;padding:3px 0;margin:0;}
+.tin::placeholder{color:var(--ink3);}
+.micbtn{width:38px;height:38px;border-radius:999px;background:#eef3d6;color:#556417;border:0;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;font-size:18px;}
+.micbtn.disabled{background:#efeff2;color:#b8b8be;pointer-events:none;}
+.fhint{font-size:13px;color:var(--ink3);margin:8px 4px 0;}
+.recbar{display:none;align-items:center;gap:10px;border:1px solid var(--danger);background:var(--danger-bg);border-radius:14px;padding:12px 14px;}
+.rdot{width:11px;height:11px;border-radius:999px;background:var(--danger);flex:none;animation:pulse 1s infinite;}
+@keyframes pulse{50%{opacity:.35;}}
+.rtime{font-size:16px;color:var(--danger-ink);font-variant-numeric:tabular-nums;}
+.rcap{font-size:13px;color:var(--danger-ink);opacity:.8;flex:1;}
+.stopbtn{border:0;background:var(--danger);color:#fff;font-family:inherit;font-size:14px;border-radius:999px;padding:7px 16px;cursor:pointer;}
+.clip{display:none;align-items:center;gap:8px;margin-top:10px;background:#f2f4e6;border:1px solid #e0e7bf;color:#54631a;border-radius:999px;padding:8px 12px 8px 14px;font-size:14px;width:max-content;white-space:nowrap;}
+.clipx{cursor:pointer;color:#8a985a;padding:0 2px;}
+
+.foot{display:flex;align-items:center;gap:12px;margin-top:18px;}
+.foot .btn-primary{flex:1;}
+
+.toast{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);width:78%;background:rgba(18,18,18,.94);color:#fff;padding:16px 18px;border-radius:16px;text-align:center;display:none;z-index:12;}
+.toast .tt{display:flex;align-items:center;justify-content:center;gap:7px;font-size:17px;}
+.tsub{opacity:.82;margin-top:6px;font-size:13px;}
+
+.hint{font-size:13px;color:var(--ink2);margin-top:16px;text-align:center;max-width:402px;line-height:1.5;}
+.demobar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:14px;}
+.demolab{font-size:12px;color:var(--ink3);}
+.seg.small button{font-size:12px;padding:4px 11px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="ptitle" data-i18n="protoTitle">课中报错反馈原型</span>
+  <span class="seg"><button id="zhBtn" class="on">中文</button><button id="enBtn">EN</button></span>
+  <span class="seg"><button id="ctxIn" class="on" data-i18n="ctx_in">课中</button><button id="ctxOut" data-i18n="ctx_out">课外</button></span>
+</div>
+
+<div class="phone">
+ <div class="island"></div>
+ <div class="screen">
+  <div class="sb"><span>14:38</span><span>·ıll 5G <span class="batt"></span></span></div>
+  <div class="nav">
+    <span>‹</span><span>►</span><span style="font-size:14px">01:05</span>
+    <span class="tag"><span data-i18n="aimode">AI 模式</span> <span class="gdot"></span></span>
+    <span style="flex:1"></span><span>🔈</span><span id="navDots">⋮</span>
+  </div>
+
+  <div class="vid">
+   <svg class="scene" viewBox="0 0 402 560" preserveAspectRatio="xMidYMid slice">
+    <rect width="402" height="560" fill="#ececee"/>
+    <rect x="0" y="450" width="402" height="110" fill="#e0e0e3"/>
+    <rect x="60" y="86" width="11" height="420" fill="#2f2f32"/>
+    <rect x="331" y="86" width="11" height="420" fill="#2f2f32"/>
+    <rect x="60" y="96" width="282" height="9" fill="#2f2f32"/>
+    <rect x="96" y="196" width="210" height="9" rx="4" fill="#3a3a3d"/>
+    <circle cx="106" cy="200" r="26" fill="#2f2f32"/>
+    <circle cx="296" cy="200" r="26" fill="#2f2f32"/>
+    <circle cx="201" cy="160" r="23" fill="#9a9a9f"/>
+    <rect x="176" y="184" width="50" height="98" rx="16" fill="#9a9a9f"/>
+    <rect x="184" y="278" width="15" height="120" rx="7" fill="#9a9a9f"/>
+    <rect x="204" y="278" width="15" height="120" rx="7" fill="#9a9a9f"/>
+   </svg>
+   <div class="pip">
+    <svg viewBox="0 0 98 74" width="98" height="74"><rect width="98" height="74" fill="#c4c4c8"/><g stroke="#5fc23c" stroke-width="2.4" fill="#5fc23c"><circle cx="49" cy="20" r="4"/><line x1="49" y1="24" x2="49" y2="46"/><line x1="49" y1="29" x2="35" y2="40"/><line x1="49" y1="29" x2="63" y2="40"/><line x1="49" y1="46" x2="39" y2="63"/><line x1="49" y1="46" x2="59" y2="63"/></g></svg>
+   </div>
+   <div class="side"><div class="sbtn">⊹</div><div class="sbtn">◱</div><div class="sbtn">✦</div></div>
+   <div class="cnt"><span style="font-size:26px;font-weight:600;">x0</span><span style="font-size:13px;opacity:.85;">/12</span></div>
+  </div>
+
+  <div class="card">
+   <div style="display:flex;align-items:center;justify-content:space-between;">
+    <span class="dots"><i class="on"></i><i></i><i></i></span>
+    <span class="rpill" id="btnReport"><svg class="ic"><use href="#ic-flag"/></svg> <span data-i18n="report">报错</span></span>
+   </div>
+   <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;">
+    <span style="font-size:16px;"><span class="aibadge">AI</span> <span class="js-aname aname">杠铃颈后深蹲</span></span>
+    <span style="font-size:13px;color:var(--ink3);">12 reps · 40 kg</span>
+   </div>
+   <button class="btn btn-primary" style="margin-top:14px;"><span>✓</span> <span data-i18n="logset">记录本组</span></button>
+  </div>
+
+  <div class="navcatch" id="navCatch"></div>
+  <div class="navmenu" id="navMenu">
+    <div class="nmitem" id="nmReport"><svg class="ic"><use href="#ic-flag"/></svg> <span data-i18n="report">报错</span></div>
+    <div class="nmitem muted">分享</div>
+    <div class="nmitem muted">设置</div>
+  </div>
+
+  <div class="dim" id="dim"></div>
+
+  <div class="sheet" id="s1">
+   <div class="grab"></div>
+   <div class="shead">
+     <div><div class="eyebrow js-aname">杠铃颈后深蹲</div><div class="q" data-i18n="q1">这个动作哪里不对？</div></div>
+     <span class="xbtn xclose">✕</span>
+   </div>
+   <div class="opts">
+     <button class="optbtn" data-t="ai"><div class="body"><div class="rt" data-i18n="opt_ai">AI 识别问题</div><div class="rs" data-i18n="opt_ai_sub">计数 / 身体识别 / 讲解</div></div><span class="chev">›</span></button>
+     <button class="optbtn" data-t="content"><div class="body"><div class="rt" data-i18n="opt_content">课程内容报错</div><div class="rs" data-i18n="opt_content_sub">示范图文 / 名称 / 训练部位</div></div><span class="chev">›</span></button>
+     <button class="optbtn ctx-out" data-t="jump" style="display:none;"><div class="body"><div class="rt" data-i18n="opt_other">其他问题与建议</div><div class="rs" data-i18n="opt_other_sub">跳转独立反馈页</div></div><span class="chev">↗</span></button>
+   </div>
+  </div>
+
+  <div class="sheet" id="s2a">
+   <div class="grab"></div>
+   <div class="shead"><div style="display:flex;align-items:flex-start;"><span class="backbtn">‹</span><div><div class="eyebrow js-aname">杠铃颈后深蹲</div><div class="q" data-i18n="q_ai">AI 哪里不准？</div><div class="qcap" data-i18n="multi">可多选</div></div></div><span class="xbtn xclose">✕</span></div>
+   <div class="checks">
+     <div class="row chk"><span class="cb">✓</span><span class="rt" data-i18n="ai_over">计数多了（没做也计）</span></div>
+     <div class="row chk"><span class="cb">✓</span><span class="rt" data-i18n="ai_under">计数少了（做了没计）</span></div>
+     <div class="row chk"><span class="cb">✓</span><span class="rt" data-i18n="ai_pose">身体识别位置不准</span></div>
+     <div class="row chk"><span class="cb">✓</span><span class="rt" data-i18n="ai_coach">AI 教练讲解不清楚</span></div>
+   </div>
+   <div class="addbox" id="txAi">
+     <div class="addhead"><span class="addlabel" data-i18n="add_label">其他问题或补充说明</span><span class="counter">0/200</span></div>
+     <div class="field"><textarea class="tin" rows="1" maxlength="200" placeholder="说说这个动作的具体问题…"></textarea><button class="micbtn" aria-label="record"><svg class="ic"><use href="#ic-mic"/></svg></button></div>
+     <div class="recbar"><span class="rdot"></span><span class="rtime">0:00</span><span class="rcap" data-i18n="rec_cap">60 秒以内</span><button class="stopbtn" data-i18n="rec_stop">停止</button></div>
+     <div class="fhint" data-i18n="field_hint">不想打字？点麦克风直接说（60 秒内）</div>
+     <div class="clip"><span>▷</span> <span data-i18n="voice">语音</span> <span class="cliplen">0:00</span> <span class="clipx">✕</span></div>
+   </div>
+   <div class="foot">
+     <button class="btn btn-ghost cancel" data-i18n="cancel">取消</button>
+     <button class="btn btn-primary" id="ctaAi" data-i18n="cta_skip">直接提交</button>
+   </div>
+  </div>
+
+  <div class="sheet" id="s2c">
+   <div class="grab"></div>
+   <div class="shead"><div style="display:flex;align-items:flex-start;"><span class="backbtn">‹</span><div><div class="eyebrow js-aname">杠铃颈后深蹲</div><div class="q" data-i18n="q_content">内容哪里有问题？</div><div class="qcap" data-i18n="multi">可多选</div></div></div><span class="xbtn xclose">✕</span></div>
+   <div class="checks">
+     <div class="row chk"><span class="cb">✓</span><span class="rt" data-i18n="c_img">示范图 / 视频不对</span></div>
+     <div class="row chk"><span class="cb">✓</span><span class="rt" data-i18n="c_name">动作名称不准确</span></div>
+     <div class="row chk"><span class="cb">✓</span><span class="rt" data-i18n="c_muscle">训练部位标注有误</span></div>
+     <div class="row chk"><span class="cb">✓</span><span class="rt" data-i18n="c_desc">动作讲解有出入</span></div>
+   </div>
+   <div class="addbox" id="txC">
+     <div class="addhead"><span class="addlabel" data-i18n="add_label">其他问题或补充说明</span><span class="counter">0/200</span></div>
+     <div class="field"><textarea class="tin" rows="1" maxlength="200" placeholder="说说这个动作的具体问题…"></textarea><button class="micbtn" aria-label="record"><svg class="ic"><use href="#ic-mic"/></svg></button></div>
+     <div class="recbar"><span class="rdot"></span><span class="rtime">0:00</span><span class="rcap" data-i18n="rec_cap">60 秒以内</span><button class="stopbtn" data-i18n="rec_stop">停止</button></div>
+     <div class="fhint" data-i18n="field_hint">不想打字？点麦克风直接说（60 秒内）</div>
+     <div class="clip"><span>▷</span> <span data-i18n="voice">语音</span> <span class="cliplen">0:00</span> <span class="clipx">✕</span></div>
+   </div>
+   <div class="foot">
+     <button class="btn btn-ghost cancel" data-i18n="cancel">取消</button>
+     <button class="btn btn-primary" id="ctaC" data-i18n="cta_skip">直接提交</button>
+   </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <div class="tt"><span id="tIcon"><svg class="ic"><use href="#ic-heart"/></svg></span> <span id="tTitle">谢谢你，已收到！</span></div>
+    <div class="tsub" id="tSub">你对这个动作的反馈会帮 ATOM 更准</div>
+  </div>
+
+ </div>
+</div>
+
+<div class="hint" data-i18n="hint">点「报错」体验完整流程 · 上方可切 中/英、课中/课外</div>
+<div class="demobar">
+  <span class="demolab" style="font-weight:500;color:var(--ink2)">状态演示</span>
+  <span class="demolab">动作名</span>
+  <span class="seg small"><button id="nNormal" class="on">正常</button><button id="nLong">超长</button><button id="nNone">缺失</button></span>
+  <span class="demolab">麦克风</span>
+  <span class="seg small"><button id="mAllow" class="on">允许</button><button id="mDeny">拒绝</button></span>
+  <span class="demolab">提交结果</span>
+  <span class="seg small"><button id="sOk" class="on">成功</button><button id="sOff">离线</button><button id="sFail">失败</button></span>
+  <span class="demolab">报错入口</span>
+  <span class="seg small"><button id="cNormal" class="on">正常</button><button id="cCool">冷却中</button></span>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="ic-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3" fill="currentColor"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="ic-flag" viewBox="0 0 24 24"><path d="M6 21V4h11l-2 4 2 4H6" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+<symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 3.5C19 15.5 12 20 12 20z" fill="currentColor"/></symbol>
+<symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="ic-cloud" viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 9a4.5 4.5 0 0 0 1 8.9z" fill="currentColor"/></symbol>
+<symbol id="ic-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1" fill="currentColor"/></symbol>
+</defs></svg>
+
+<script>
+(function(){
+ var dict={
+  zh:{protoTitle:"课中报错反馈原型",report:"报错",logset:"记录本组",actionName:"杠铃颈后深蹲",aimode:"AI 模式",
+   q1:"这个动作哪里不对？",q_ai:"AI 哪里识别不准？",q_content:"课程内容哪里有问题？",multi:"可多选；不选也能直接提交",
+   opt_ai:"AI 识别问题",opt_ai_sub:"计数 / 身体识别 / 讲解",
+   opt_content:"课程内容报错",opt_content_sub:"示范图文 / 名称 / 训练部位",
+   opt_other:"其他问题与建议",opt_other_sub:"跳转独立反馈页",
+   ai_over:"计数多了（没做也计）",ai_under:"计数少了（做了没计）",ai_pose:"身体识别不准",ai_coach:"AI 讲解不清楚",
+   c_img:"示范图 / 视频不对",c_name:"动作名称不对",c_muscle:"训练部位标注不对",c_desc:"动作讲解不对",
+   tellus:"说说这个动作的具体问题…",add_label:"其他问题或补充说明",field_hint:"不想打字？点麦克风直接说（60 秒内）",mic_denied:"麦克风权限已关闭，可去系统设置开启",rec_cap:"60 秒内",rec_stop:"停止",voice:"语音",cancel:"取消",
+   cta_skip:"直接提交",cta_submit:"提交问题",ctx_in:"课中",ctx_out:"课外",
+   toast_title:"谢谢你，已收到！",toast_sub:"你的反馈会帮 ATOM 把这个动作做得更准",
+   offline_title:"已离线保存",offline_sub:"联网后会自动提交，不会丢",
+   fail_title:"提交失败",fail_sub:"已存到本地，稍后自动重试",
+   cool_title:"刚刚已提交",cool_sub:"请稍后再报，避免重复",
+   jump_title:"已跳转独立反馈页",jump_sub:"正在打开独立反馈页…",hint:"点「报错」体验完整流程 · 上方可切 中/英、课中/课外"},
+  en:{protoTitle:"Course error report prototype",report:"Report",logset:"Log set",actionName:"Barbell back squat",aimode:"AI mode",
+   q1:"What’s off with this exercise?",q_ai:"Where’s the AI off?",q_content:"What’s off in this content?",multi:"Pick any — or just submit",
+   opt_ai:"AI detection issue",opt_ai_sub:"Count / pose / coaching",
+   opt_content:"Course content issue",opt_content_sub:"Image / name / target muscle",
+   opt_other:"Other & suggestions",opt_other_sub:"Opens a separate page",
+   ai_over:"Counted a rep I didn’t do",ai_under:"Missed a rep I did",ai_pose:"Body tracking is off",ai_coach:"Coaching was unclear",
+   c_img:"Demo image or video looks off",c_name:"Exercise name doesn’t match",c_muscle:"Target muscle looks off",c_desc:"Description isn’t accurate",
+   tellus:"Tell us what happened…",add_label:"Other issue or details",field_hint:"Rather talk? Tap the mic (up to 60s)",mic_denied:"Microphone is off — enable it in Settings",rec_cap:"max 60s",rec_stop:"Stop",voice:"Voice",cancel:"Cancel",
+   cta_skip:"Submit anyway",cta_submit:"Submit",ctx_in:"In-class",ctx_out:"Detail page",
+   toast_title:"Thanks — got it!",toast_sub:"Your note helps ATOM read this exercise better",
+   offline_title:"Saved offline",offline_sub:"It'll send automatically once you're online",
+   fail_title:"Couldn't submit",fail_sub:"Saved on device — we'll retry shortly",
+   cool_title:"Just submitted",cool_sub:"Please wait a moment before reporting again",
+   jump_title:"Opening separate page",jump_sub:"Taking you to the full feedback page…",hint:"Tap “Report” to try the flow · switch language / context above"}
+ };
+ var lang="zh",ctx="in",nameState="normal",micState="allow",submitState="ok",coolState="normal";
+ var $=function(s,r){return (r||document).querySelector(s);};
+ var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+ var dim=$("#dim"),s1=$("#s1"),s2a=$("#s2a"),s2c=$("#s2c"),toast=$("#toast");
+ function fmt(s){var m=Math.floor(s/60),ss=s%60;return m+":"+(ss<10?"0":"")+ss;}
+
+ function upd(sheet,cta){var n=$$(".row.on",sheet).length;cta.setAttribute("data-i18n",n>0?"cta_submit":"cta_skip");cta.textContent=dict[lang][n>0?"cta_submit":"cta_skip"];}
+ function ctxApply(){$$(".ctx-out").forEach(function(e){e.style.display=(ctx==="out")?"flex":"none";});}
+ function applyLang(){
+   document.documentElement.lang=lang;
+   $$("[data-i18n]").forEach(function(el){var k=el.getAttribute("data-i18n");if(dict[lang][k]!=null)el.textContent=dict[lang][k];});
+   $$(".tin").forEach(function(i){i.placeholder=dict[lang].tellus;});
+   upd(s2a,$("#ctaAi"));upd(s2c,$("#ctaC"));
+   applyName();applyMic();
+ }
+ function applyName(){
+   var lng=lang==="zh"?"杠铃颈后深蹲·宽距慢速离心组间休息60秒的超长动作名称":"Barbell back squat — wide stance, slow eccentric, 60s rest, a very long name";
+   var txt=nameState==="long"?lng:dict[lang].actionName;
+   $$(".js-aname").forEach(function(e){if(nameState==="none"){e.style.display="none";}else{e.style.display="";e.textContent=txt;}});
+ }
+ function applyMic(){
+   $$(".micbtn").forEach(function(b){b.classList.toggle("disabled",micState==="deny");});
+   $$(".fhint").forEach(function(h){h.textContent=micState==="deny"?dict[lang].mic_denied:dict[lang].field_hint;});
+ }
+ function reset(){
+   $$(".row.on").forEach(function(b){b.classList.remove("on");});
+   $$(".tin").forEach(function(i){i.value="";i.style.height="";});
+   $$(".counter").forEach(function(c){c.textContent="0/200";});
+   $$(".recbar").forEach(function(b){if(b.dataset.tid)clearInterval(b.dataset.tid);b.style.display="none";});
+   $$(".field,.fhint").forEach(function(e){e.style.display="";});
+   $$(".clip").forEach(function(c){c.style.display="none";});
+   ctxApply();applyLang();
+ }
+ function closeAll(){[dim,s1,s2a,s2c,toast].forEach(function(e){e.style.display="none";});reset();}
+ function open1(){reset();dim.style.display="block";s1.style.display="block";}
+ function showToast(icon,tk,sk){
+   $("#tIcon").innerHTML=icon;$("#tTitle").textContent=dict[lang][tk];$("#tSub").textContent=dict[lang][sk];
+   [s1,s2a,s2c].forEach(function(e){e.style.display="none";});
+   dim.style.display="block";toast.style.display="block";setTimeout(closeAll,2200);
+ }
+ var heartSvg='<svg class="ic" style="color:#c6f24e"><use href="#ic-heart"/></svg>';
+ var cloudSvg='<svg class="ic" style="color:#8fb8ff"><use href="#ic-cloud"/></svg>';
+ var alertSvg='<svg class="ic" style="color:#f4b86a"><use href="#ic-alert"/></svg>';
+ var clockSvg='<svg class="ic" style="color:#f4c96a"><use href="#ic-clock"/></svg>';
+ function tryReport(){ if(coolState==="cool"){showToast(clockSvg,"cool_title","cool_sub");} else {open1();} }
+ function submitResult(){ if(submitState==="offline"){showToast(cloudSvg,"offline_title","offline_sub");} else if(submitState==="fail"){showToast(alertSvg,"fail_title","fail_sub");} else {showToast(heartSvg,"toast_title","toast_sub");} }
+
+ $("#btnReport").onclick=function(){tryReport();};
+ dim.onclick=function(){ if(s1.style.display==="block") closeAll(); };
+ $$(".xclose").forEach(function(x){x.onclick=closeAll;});
+ $$(".cancel").forEach(function(b){b.onclick=closeAll;});
+ $$(".backbtn").forEach(function(b){b.onclick=function(){s2a.style.display="none";s2c.style.display="none";s1.style.display="block";};});
+ $$("#s1 .optbtn").forEach(function(o){o.onclick=function(){var t=o.getAttribute("data-t");if(t==="jump"){showToast("↗","jump_title","jump_sub");return;}s1.style.display="none";(t==="ai"?s2a:s2c).style.display="block";};});
+ $$(".row.chk").forEach(function(c){c.onclick=function(){c.classList.toggle("on");var sheet=c.closest(".sheet");upd(sheet,$(sheet.id==="s2a"?"#ctaAi":"#ctaC"));};});
+ $$(".tin").forEach(function(i){i.onclick=function(e){e.stopPropagation();};i.addEventListener("input",function(){i.style.height="auto";i.style.height=Math.min(i.scrollHeight,112)+"px";var box=i.closest(".addbox");var c=box&&box.querySelector(".counter");if(c)c.textContent=i.value.length+"/200";});});
+ $$(".micbtn").forEach(function(btn){btn.onclick=function(e){
+    e.stopPropagation();var txt=btn.closest(".addbox");var bar=$(".recbar",txt);var time=$(".rtime",bar);
+    $(".field",txt).style.display="none";$(".fhint",txt).style.display="none";$(".clip",txt).style.display="none";
+    bar.style.display="flex";bar.dataset.sec="0";time.textContent="0:00";
+    bar.dataset.tid=setInterval(function(){var s=parseInt(bar.dataset.sec)+1;bar.dataset.sec=s;time.textContent=fmt(s);if(s>=60)$(".stopbtn",bar).click();},1000);
+ };});
+ $$(".stopbtn").forEach(function(btn){btn.onclick=function(e){
+    e.stopPropagation();var bar=btn.closest(".recbar");var txt=btn.closest(".addbox");
+    clearInterval(bar.dataset.tid);var sec=parseInt(bar.dataset.sec||"0");
+    bar.style.display="none";$(".field",txt).style.display="";$(".fhint",txt).style.display="";
+    if(sec>0){var clip=$(".clip",txt);clip.style.display="inline-flex";$(".cliplen",clip).textContent=fmt(sec);}
+ };});
+ $$(".clipx").forEach(function(x){x.onclick=function(e){e.stopPropagation();x.closest(".clip").style.display="none";};});
+ $("#ctaAi").onclick=function(){submitResult();};
+ $("#ctaC").onclick=function(){submitResult();};
+
+ $("#zhBtn").onclick=function(){lang="zh";this.classList.add("on");$("#enBtn").classList.remove("on");applyLang();};
+ $("#enBtn").onclick=function(){lang="en";this.classList.add("on");$("#zhBtn").classList.remove("on");applyLang();};
+ $("#ctxIn").onclick=function(){ctx="in";this.classList.add("on");$("#ctxOut").classList.remove("on");ctxApply();};
+ $("#ctxOut").onclick=function(){ctx="out";this.classList.add("on");$("#ctxIn").classList.remove("on");ctxApply();};
+
+ var navDots=$("#navDots"),navMenu=$("#navMenu"),navCatch=$("#navCatch");
+ function closeNav(){navCatch.style.display="none";navMenu.style.display="none";}
+ navDots.onclick=function(){navCatch.style.display="block";navMenu.style.display="block";};
+ navCatch.onclick=closeNav;
+ $("#nmReport").onclick=function(){closeNav();tryReport();};
+ function seg(id,ids){ids.forEach(function(x){$("#"+x).classList.toggle("on",x===id);});}
+ $("#nNormal").onclick=function(){nameState="normal";seg("nNormal",["nNormal","nLong","nNone"]);applyName();};
+ $("#nLong").onclick=function(){nameState="long";seg("nLong",["nNormal","nLong","nNone"]);applyName();};
+ $("#nNone").onclick=function(){nameState="none";seg("nNone",["nNormal","nLong","nNone"]);applyName();};
+ $("#mAllow").onclick=function(){micState="allow";seg("mAllow",["mAllow","mDeny"]);applyMic();};
+ $("#mDeny").onclick=function(){micState="deny";seg("mDeny",["mAllow","mDeny"]);applyMic();};
+ $("#sOk").onclick=function(){submitState="ok";seg("sOk",["sOk","sOff","sFail"]);};
+ $("#sOff").onclick=function(){submitState="offline";seg("sOff",["sOk","sOff","sFail"]);};
+ $("#sFail").onclick=function(){submitState="fail";seg("sFail",["sOk","sOff","sFail"]);};
+ $("#cNormal").onclick=function(){coolState="normal";seg("cNormal",["cNormal","cCool"]);};
+ $("#cCool").onclick=function(){coolState="cool";seg("cCool",["cNormal","cCool"]);};
+
+ ctxApply();applyLang();
+})();
+</script>
+</body>
+</html>
