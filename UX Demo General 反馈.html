@@ -232,15 +232,18 @@ const CATS={
   ai:{name:'AI 识别准确性',sub:'计数 / 身体识别 / 讲解',subs:['计数不准','身体识别不准','AI 讲解不清']},
   content:{name:'课程内容',sub:'示范图文 / 名称 / 训练部位',subs:['示范图文有误','动作名称有误','训练部位有误','动作讲解有误']},
   device:{name:'设备与数据',sub:'连接 / 同步 / 记录',subs:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步']},
-  exp:{name:'体验与建议',sub:'卡顿 / 交互 / 建议',subs:['卡顿闪退','交互不顺','功能建议','其他']},
-  other:{name:'其他',sub:'不确定选哪个 / 想说的比较多',subs:[]},
+  exp:{name:'体验与建议',sub:'卡顿 / 交互',subs:['卡顿闪退','交互不顺','其他']},
+  feature:{name:'功能建议',sub:'希望我们增加或改进的功能',subs:[],label:'说说你的建议',placeholder:'说说你希望 ATOM 增加或改进什么…'},
+  other:{name:'其他',sub:'不确定选哪个 / 想说的比较多',subs:[],label:'说说你的问题',placeholder:'说说你遇到的问题，或想跟我们说的…'},
 };
 let cur='v1', cat='', region='cn';
 
-// 一级菜单渲染
-$('#menu').innerHTML =
-  Object.keys(CATS).map(k=>`<div class="mrow" data-k="${k}"><div><div class="t">${CATS[k].name}</div><div class="s">${CATS[k].sub}</div></div><span class="arw">›</span></div>`).join('')
-  + `<div class="mrow na" data-k="newaction"><div><div class="t">新增动作申请</div><div class="s">找不到想要的动作？教练团队会审核</div></div><span class="arw">›</span></div>`;
+// 一级菜单渲染（显式排序：新增动作申请第三，其他垫底）
+const ORDER=['ai','content','newaction','device','exp','feature','other'];
+$('#menu').innerHTML = ORDER.map(k=>{
+  if(k==='newaction') return `<div class="mrow" data-k="newaction"><div><div class="t">新增动作申请</div><div class="s">找不到想要的动作？教练团队会审核</div></div><span class="arw">›</span></div>`;
+  return `<div class="mrow" data-k="${k}"><div><div class="t">${CATS[k].name}</div><div class="s">${CATS[k].sub}</div></div><span class="arw">›</span></div>`;
+}).join('');
 document.querySelectorAll('#menu .mrow').forEach(r=>r.onclick=()=>openCat(r.dataset.k));
 
 function openCat(k){
@@ -250,8 +253,8 @@ function openCat(k){
   $('#subsSect').style.display = isOther ? 'none' : '';
   $('#subs').innerHTML = CATS[k].subs.map(s=>`<div class="chk"><span class="cb">✓</span><span class="rt">${s}</span></div>`).join('');
   document.querySelectorAll('#subs .chk').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
-  $('#addLab').innerHTML = isOther ? '说说你的问题 <span class="o">选填</span>' : '补充说明 <span class="o">选填</span>';
-  $('#pText').placeholder = isOther ? '说说你遇到的问题，或想跟我们说的…' : '还想补充点什么…';
+  $('#addLab').innerHTML = (isOther ? (CATS[k].label||'说说你的问题') : '补充说明') + ' <span class="o">选填</span>';
+  $('#pText').placeholder = isOther ? (CATS[k].placeholder||'说说你遇到的问题…') : '还想补充点什么…';
   // 重置补充区
   $('#pText').value='';grow($('#pText'));cnt();rec.del();$('#pRec').style.display='none';
   showView('v2');
