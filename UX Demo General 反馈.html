@@ -14,9 +14,9 @@
 html,body{margin:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;
   background:var(--bg);color:var(--ink);}
-.stage{display:flex;gap:28px;align-items:flex-start;justify-content:center;min-height:100vh;padding:28px 20px;flex-wrap:wrap;}
-.side{width:250px;flex:none;padding-top:8px;}
-.side h1{font-size:16px;margin:0 0 6px;}
+.stage{display:flex;gap:26px;align-items:flex-start;justify-content:center;min-height:100vh;padding:28px 20px;flex-wrap:wrap;}
+.side{width:210px;flex:none;padding-top:8px;}
+.side h1{font-size:15px;margin:0 0 6px;}
 .side p{font-size:13px;color:var(--ink2);line-height:1.6;margin:0 0 14px;}
 .side .btn{font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;}
 @media(max-height:930px){.phone{zoom:.86;}}
@@ -33,43 +33,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .nav .ttl{flex:1;text-align:center;font-size:17px;font-weight:600;}
 .nav .rt{width:30px;}
 
-.body{flex:1;overflow-y:auto;}
-.views{position:relative;}
-.view{padding:6px 22px 28px;display:none;}
-.view.on{display:block;animation:in .26s ease;}
-@keyframes in{from{opacity:0;transform:translateX(10px);}to{opacity:1;transform:none;}}
+.body{flex:1;overflow-y:auto;padding:6px 22px 24px;}
+.intro{font-size:15px;color:var(--ink2);line-height:1.5;margin:4px 2px 22px;}
 
-.hero{display:flex;gap:14px;align-items:flex-start;margin:6px 0 22px;}
-.heroic{width:56px;height:52px;flex:none;background:var(--lime);border-radius:14px 14px 14px 3px;display:flex;align-items:center;justify-content:center;color:#1c2b06;font-size:26px;}
-.hero h2{font-size:20px;margin:0 0 4px;}
-.hero p{font-size:14px;color:var(--ink2);margin:0;line-height:1.5;}
-
-.sect{font-size:15px;font-weight:600;margin:20px 0 10px;}
-.sect .opt{font-size:13px;font-weight:400;color:var(--ink3);}
-
+.sect{font-size:15px;font-weight:600;margin:0 0 12px;}
+.sect .o{font-size:13px;font-weight:400;color:var(--ink3);}
 .chips{display:flex;flex-wrap:wrap;gap:10px;}
-.chip{border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;font-size:16px;cursor:pointer;background:#fff;color:var(--ink);}
+.chip{border:1.5px solid var(--line);border-radius:12px;padding:11px 15px;font-size:16px;cursor:pointer;background:#fff;}
 .chip.on{background:var(--sel);border-color:var(--selbd);}
-.chip.na{width:100%;display:flex;justify-content:space-between;align-items:center;color:var(--ink);}
-.chip.na .s{font-size:13px;color:var(--ink3);margin-top:2px;}
-.chip.na .arw{font-size:18px;color:#c4c4c9;}
 
-.grp{margin-top:18px;}
-.grplab{font-size:13px;color:var(--ink3);margin:0 2px 8px;}
-.row{display:flex;align-items:center;gap:11px;padding:9px 2px;cursor:pointer;}
-.cb{width:22px;height:22px;border:2px solid #c9c9ce;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;}
-.row.on .cb{background:var(--ink);border-color:var(--ink);}
-.rt{font-size:16px;}
-
-.fld{border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px 14px;}
-.fld input,.fld textarea{width:100%;border:0;outline:0;font-family:inherit;font-size:16px;color:var(--ink);background:transparent;resize:none;}
-.fld textarea{min-height:96px;line-height:1.5;}
-.fld input::placeholder,.fld textarea::placeholder{color:var(--ink3);}
-.lab{font-size:15px;font-weight:600;margin:20px 0 9px;}
+.lab{font-size:15px;font-weight:600;margin:22px 0 9px;}
 .lab .o{font-size:13px;font-weight:400;color:var(--ink3);}
 .help{font-size:13px;color:var(--ink3);margin:8px 2px 0;line-height:1.5;}
 .cnt{font-size:12px;color:var(--ink3);text-align:right;margin-top:6px;}
 
+.fld{border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px 14px;}
+.fld input,.fld textarea{width:100%;border:0;outline:0;font-family:inherit;font-size:16px;color:var(--ink);background:transparent;resize:none;}
+.fld textarea{min-height:92px;line-height:1.5;}
+.fld input::placeholder,.fld textarea::placeholder{color:var(--ink3);}
 .fieldmic{display:flex;align-items:flex-end;gap:10px;}
 .micbtn{width:38px;height:38px;border-radius:999px;background:#eef3d6;color:#556417;border:0;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;font-size:18px;}
 .recbar{display:none;align-items:center;gap:10px;border:1px solid #e5342f;background:#fdeceb;border-radius:14px;padding:12px 14px;margin-top:10px;}
@@ -81,238 +62,172 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .clip{display:none;align-items:center;gap:8px;margin-top:10px;background:#f2f4e6;border:1px solid #e0e7bf;color:#54631a;border-radius:999px;padding:8px 12px 8px 14px;font-size:14px;width:max-content;}
 .clipx{cursor:pointer;color:#8a985a;padding:0 2px;}
 
-.shots{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;}
-.shot,.addshot{width:82px;height:82px;border-radius:12px;flex:none;}
-.addshot{border:1.5px dashed #cfcfd4;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:24px;cursor:pointer;background:#fafafb;}
+.shots{display:flex;gap:10px;flex-wrap:wrap;}
+.shot,.addshot{width:78px;height:78px;border-radius:12px;flex:none;}
+.addshot{border:1.5px dashed #cfcfd4;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:23px;cursor:pointer;background:#fafafb;}
 .shot{background:#dcdce0;position:relative;}
 .shot span{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:999px;background:#141414;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 
-.devnote{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--ink3);margin-top:18px;background:#f6f6f8;border-radius:10px;padding:10px 12px;}
+.devnote{display:flex;gap:8px;font-size:12px;color:var(--ink3);margin-top:20px;background:#f6f6f8;border-radius:10px;padding:10px 12px;line-height:1.5;}
 
 .foot{flex:none;padding:12px 22px calc(12px + env(safe-area-inset-bottom,20px));border-top:1px solid var(--sep);background:#fff;}
 .cta{height:52px;width:100%;border:0;border-radius:999px;background:var(--ink);color:#fff;font-family:inherit;font-size:16px;font-weight:500;cursor:pointer;}
 .cta:disabled{background:#dcdce0;color:#9a9aa0;cursor:not-allowed;}
 
-/* 感谢页 */
-.thanks{padding:60px 30px;text-align:center;}
-.tkic{width:76px;height:76px;border-radius:999px;background:var(--lime);color:#1c2b06;display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 20px;}
+.thanks{padding:70px 30px;text-align:center;}
+.tkic{width:76px;height:76px;border-radius:999px;background:var(--lime);color:#1c2b06;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 20px;}
 .thanks h2{font-size:22px;margin:0 0 8px;}
 .thanks p{font-size:14px;color:var(--ink2);margin:0 0 34px;line-height:1.5;}
 .satlab{font-size:15px;font-weight:600;margin-bottom:16px;}
 .faces{display:flex;justify-content:center;gap:16px;margin-bottom:10px;}
-.face{width:64px;height:64px;border-radius:16px;border:1.5px solid var(--line);background:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.face{width:64px;height:64px;border-radius:16px;border:1.5px solid var(--line);background:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s;}
 .face.on{background:var(--sel);border-color:var(--selbd);transform:scale(1.06);}
-.facecap{font-size:12px;color:var(--ink3);margin-bottom:30px;}
+.facecap{font-size:12px;color:var(--ink3);}
+.hidden{display:none;}
 </style>
 </head>
 <body>
 <div class="stage">
 <div class="side">
   <h1>General 问题反馈</h1>
-  <p>整页多步流程：选大类 → 子类/描述/录音/截图/邮箱 → 提交后满意度。<br>「新增动作申请」走专属表单。与课中报错共用后端字段。</p>
-  <button class="btn" onclick="location.reload()">重置流程</button>
+  <p>简化版：单页一屏。选类型（可多选）→ 补充说明/录音/截图/邮箱 → 提交后满意度。选「新增动作申请」会切到专属字段。与课中报错共用后端。</p>
+  <button class="btn" onclick="reset_()">重置</button>
 </div>
 
 <div class="phone"><div class="island"></div><div class="screen">
   <div class="sb"><span>10:59</span><span>LTE <span class="batt"></span></span></div>
-  <div class="nav"><span class="bk" id="navBack">‹</span><span class="ttl" id="navTitle">问题反馈</span><span class="rt"></span></div>
+  <div class="nav"><span class="bk" id="bk">‹</span><span class="ttl">问题反馈</span><span class="rt"></span></div>
 
-  <div class="body"><div class="views">
+  <div class="body" id="body">
+    <!-- 表单 -->
+    <div id="form">
+      <div class="intro">遇到问题或有建议？告诉我们，我们会尽快改进。</div>
 
-    <!-- Step 1：选大类 -->
-    <div class="view on" id="v1">
-      <div class="hero">
-        <div class="heroic">✦</div>
-        <div><h2>想反馈什么？</h2><p>告诉我们发生了什么，我们会尽快改进。</p></div>
-      </div>
-      <div class="sect">选择类型 <span class="opt">可多选</span></div>
+      <div class="sect">你想反馈什么？ <span class="o">可多选</span></div>
       <div class="chips" id="cats">
         <div class="chip" data-k="ai">AI 识别准确性</div>
         <div class="chip" data-k="content">课程内容</div>
         <div class="chip" data-k="device">设备与数据</div>
         <div class="chip" data-k="exp">体验与建议</div>
-        <div class="chip na" data-k="newaction">
-          <div><div>新增动作申请</div><div class="s">找不到想要的动作？教练团队会审核</div></div>
-          <span class="arw">›</span>
-        </div>
+        <div class="chip" data-k="newaction">新增动作申请</div>
       </div>
-    </div>
 
-    <!-- Step 2A：问题细化 -->
-    <div class="view" id="v2p">
-      <div class="sect" style="margin-top:8px;">具体是哪些？ <span class="opt">可多选，也可直接提交</span></div>
-      <div id="subgroups"></div>
-
-      <div class="lab">补充说明 <span class="o">选填</span></div>
-      <div class="fld">
-        <div class="fieldmic">
-          <textarea id="pText" maxlength="200" rows="3" placeholder="说说你遇到的问题…" oninput="cnt('pText','pCnt')"></textarea>
-          <button class="micbtn" onclick="rec.start('p')">🎙</button>
+      <!-- 问题类字段 -->
+      <div id="pf">
+        <div class="lab">补充说明 <span class="o">选填</span></div>
+        <div class="fld">
+          <div class="fieldmic">
+            <textarea id="pText" maxlength="200" rows="3" placeholder="说说你遇到的问题…" oninput="cnt()"></textarea>
+            <button class="micbtn" onclick="rec.start()">🎙</button>
+          </div>
+          <div class="cnt" id="pCnt">0/200</div>
         </div>
-        <div class="cnt" id="pCnt">0/200</div>
-      </div>
-      <div class="recbar" id="pRec"><span class="rdot"></span><span class="rtime" id="pTime">0:00</span><span class="rcap">60 秒以内</span><button class="stopbtn" onclick="rec.stop('p')">停止</button></div>
-      <div class="clip" id="pClip">▷ 语音 <span id="pClipT">0:00</span> <span class="clipx" onclick="rec.del('p')">✕</span></div>
+        <div class="recbar" id="pRec"><span class="rdot"></span><span class="rtime" id="pTime">0:00</span><span class="rcap">60 秒以内</span><button class="stopbtn" onclick="rec.stop()">停止</button></div>
+        <div class="clip" id="pClip">▷ 语音 <span id="pClipT">0:00</span> <span class="clipx" onclick="rec.del()">✕</span></div>
 
-      <div class="lab">截图 <span class="o">选填</span></div>
-      <div class="shots" id="pShots"><div class="addshot" onclick="addShot('pShots')">⊕</div></div>
-      <div class="help">截图有助于我们更快理解和解决问题。</div>
+        <div class="lab">截图 <span class="o">选填</span></div>
+        <div class="shots" id="shots"><div class="addshot" onclick="addShot()">⊕</div></div>
+        <div class="help">截图有助于我们更快理解和解决问题。</div>
+      </div>
+
+      <!-- 新增动作字段 -->
+      <div id="af" class="hidden">
+        <div class="lab">动作名称</div>
+        <div class="fld"><input id="naName" placeholder="例如：保加利亚分腿蹲" oninput="gate()"></div>
+        <div class="lab">为什么需要这个动作？ <span class="o">选填</span></div>
+        <div class="fld"><textarea id="naWhy" maxlength="200" placeholder="简单描述一下…"></textarea></div>
+        <div class="help">带理由的申请，教练团队会优先审核。</div>
+        <div class="lab">参考视频 / 链接 <span class="o">选填</span></div>
+        <div class="fld"><input id="naRef" placeholder="粘贴一个参考视频链接"></div>
+      </div>
 
       <div class="lab">联系邮箱 <span class="o">选填</span></div>
-      <div class="fld"><input id="pMail" type="email" placeholder="邮箱地址（可能联系你了解更多）"></div>
-
+      <div class="fld"><input id="mail" type="email" placeholder="邮箱地址（可能联系你了解更多）"></div>
       <div class="devnote">ⓘ 提交时会自动附带设备与版本信息，帮助我们更快定位。</div>
     </div>
 
-    <!-- Step 2B：新增动作申请 -->
-    <div class="view" id="v2n">
-      <div class="hero" style="margin-top:8px;">
-        <div class="heroic">🏋</div>
-        <div><h2>找不到想要的动作？</h2><p>告诉我们，教练团队会审核每一条申请。</p></div>
+    <!-- 感谢 + 满意度 -->
+    <div id="thanks" class="thanks hidden">
+      <div class="tkic">♥</div>
+      <h2>谢谢你的反馈！</h2>
+      <p id="tkSub">我们已收到，会尽快跟进。</p>
+      <div class="satlab">顺便——你整体还喜欢 ATOM 吗？</div>
+      <div class="faces">
+        <div class="face" onclick="pickFace(this)">😍</div>
+        <div class="face" onclick="pickFace(this)">🙂</div>
+        <div class="face" onclick="pickFace(this)">😕</div>
       </div>
-      <div class="lab">动作名称</div>
-      <div class="fld"><input id="naName" placeholder="例如：保加利亚分腿蹲" oninput="naCheck()"></div>
-
-      <div class="lab">为什么需要这个动作？ <span class="o">选填</span></div>
-      <div class="fld"><textarea id="naWhy" maxlength="200" placeholder="简单描述一下…"></textarea></div>
-      <div class="help">带理由的申请，教练团队会优先审核。</div>
-
-      <div class="lab">参考视频 / 链接 <span class="o">选填</span></div>
-      <div class="fld"><input id="naRef" placeholder="粘贴一个参考视频链接"></div>
+      <div class="facecap">选填，一点即走</div>
     </div>
-
-    <!-- Step 3：感谢 + 满意度 -->
-    <div class="view" id="v3">
-      <div class="thanks">
-        <div class="tkic">♥</div>
-        <h2>谢谢你的反馈！</h2>
-        <p id="tkSub">我们已收到，会尽快跟进。</p>
-        <div class="satlab">顺便——你整体还喜欢 ATOM 吗？</div>
-        <div class="faces">
-          <div class="face" data-v="3" onclick="pickFace(this)">😍</div>
-          <div class="face" data-v="2" onclick="pickFace(this)">🙂</div>
-          <div class="face" data-v="1" onclick="pickFace(this)">😕</div>
-        </div>
-        <div class="facecap">选填，一点即走</div>
-      </div>
-    </div>
-
-  </div></div>
+  </div>
 
   <div class="foot" id="foot">
-    <button class="cta" id="cta" disabled onclick="next()">下一步</button>
+    <button class="cta" id="cta" disabled onclick="submit_()">提交</button>
   </div>
 </div></div>
 </div>
 
 <script>
 const $=s=>document.querySelector(s);
-const CATS={
-  ai:{label:'AI 识别准确性',subs:['计数不准','身体识别不准','AI 讲解不清']},
-  content:{label:'课程内容',subs:['示范图文有误','动作名称有误','训练部位有误','动作讲解有误']},
-  device:{label:'设备与数据',subs:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步']},
-  exp:{label:'体验与建议',subs:['卡顿闪退','交互不顺','功能建议','其他']},
-};
-let view='v1';
-const sel=new Set();      // 选中的大类
-let newaction=false;      // 是否走新增动作
-const subsel=new Set();   // 选中的子类 "cat/label"
+const sel=new Set();
+let action=false;
 
-function show(id){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  $('#'+id).classList.add('on');
-  view=id; $('#body')&&($('#body').scrollTop=0);
-  const b=document.querySelector('.body'); if(b)b.scrollTop=0;
-  // 导航标题 + 返回
-  const t={v1:'问题反馈',v2p:'问题反馈',v2n:'新动作申请',v3:'问题反馈'};
-  $('#navTitle').textContent=t[id];
-  $('#navBack').style.visibility=(id==='v1'||id==='v3')?'hidden':'visible';
-  // 底部按钮
-  const cta=$('#cta');
-  if(id==='v1'){cta.textContent='下一步';cta.disabled=(sel.size===0&&!newaction);$('#foot').style.display='';}
-  if(id==='v2p'){cta.textContent='提交';cta.disabled=false;$('#foot').style.display='';}
-  if(id==='v2n'){cta.textContent='提交申请';naCheck();$('#foot').style.display='';}
-  if(id==='v3'){$('#foot').style.display='none';}
-}
-
-// Step1 选择
 document.querySelectorAll('#cats .chip').forEach(c=>{
   c.onclick=()=>{
     const k=c.dataset.k;
     if(k==='newaction'){
-      newaction=!c.classList.contains('on');
+      action=!c.classList.contains('on');
       document.querySelectorAll('#cats .chip').forEach(x=>x.classList.remove('on'));
       sel.clear();
-      if(newaction)c.classList.add('on');
+      if(action)c.classList.add('on');
     }else{
-      // 选问题类 → 取消新增动作
-      newaction=false;$('[data-k=newaction]').classList.remove('on');
+      action=false;$('[data-k=newaction]').classList.remove('on');
       c.classList.toggle('on');
       c.classList.contains('on')?sel.add(k):sel.delete(k);
     }
-    $('#cta').disabled=(sel.size===0&&!newaction);
+    $('#pf').classList.toggle('hidden',action);
+    $('#af').classList.toggle('hidden',!action);
+    $('#cta').textContent=action?'提交申请':'提交';
+    gate();
   };
 });
 
-function next(){
-  if(view==='v1'){
-    if(newaction){show('v2n');return;}
-    buildSubs();show('v2p');return;
-  }
-  if(view==='v2p'){ submit('problem'); return; }
-  if(view==='v2n'){ submit('newaction'); return; }
-}
-
-function buildSubs(){
-  const box=$('#subgroups');box.innerHTML='';
-  subsel.clear();
-  [...sel].forEach(k=>{
-    const g=document.createElement('div');g.className='grp';
-    g.innerHTML=`<div class="grplab">${CATS[k].label}</div>`+
-      CATS[k].subs.map(s=>`<div class="row" data-id="${k}/${s}"><span class="cb">✓</span><span class="rt">${s}</span></div>`).join('');
-    box.appendChild(g);
-  });
-  box.querySelectorAll('.row').forEach(r=>{
-    r.onclick=()=>{r.classList.toggle('on');
-      const id=r.dataset.id;r.classList.contains('on')?subsel.add(id):subsel.delete(id);};
-  });
+function gate(){
+  const ok = action ? $('#naName').value.trim()!=='' : sel.size>0;
+  $('#cta').disabled=!ok;
 }
 
 // 录音（模拟）
 const rec={t:null,sec:0,
-  start(p){ $('#'+p+'Rec').style.display='flex';this.sec=0;$('#'+p+'Time').textContent='0:00';
-    this.t=setInterval(()=>{this.sec++;$('#'+p+'Time').textContent=fmt(this.sec);if(this.sec>=60)rec.stop(p);},1000);},
-  stop(p){ clearInterval(this.t);$('#'+p+'Rec').style.display='none';
-    if(this.sec>0){$('#'+p+'Clip').style.display='inline-flex';$('#'+p+'ClipT').textContent=fmt(this.sec);}},
-  del(p){ $('#'+p+'Clip').style.display='none';}
+  start(){$('#pRec').style.display='flex';this.sec=0;$('#pTime').textContent='0:00';
+    this.t=setInterval(()=>{this.sec++;$('#pTime').textContent=fmt(this.sec);if(this.sec>=60)rec.stop();},1000);},
+  stop(){clearInterval(this.t);$('#pRec').style.display='none';
+    if(this.sec>0){$('#pClip').style.display='inline-flex';$('#pClipT').textContent=fmt(this.sec);}},
+  del(){$('#pClip').style.display='none';}
 };
 function fmt(s){return (s/60|0)+':'+(s%60).toString().padStart(2,'0');}
-function cnt(id,c){$('#'+c).textContent=$('#'+id).value.length+'/200';}
+function cnt(){$('#pCnt').textContent=$('#pText').value.length+'/200';}
 
-function addShot(box){
-  const b=$('#'+box);if(b.querySelectorAll('.shot').length>=3)return;
-  const d=document.createElement('div');d.className='shot';
-  d.innerHTML='<span>✕</span>';d.querySelector('span').onclick=()=>d.remove();
+function addShot(){
+  const b=$('#shots');if(b.querySelectorAll('.shot').length>=3)return;
+  const d=document.createElement('div');d.className='shot';d.innerHTML='<span>✕</span>';
+  d.querySelector('span').onclick=()=>d.remove();
   b.insertBefore(d,b.querySelector('.addshot'));
 }
 
-function naCheck(){$('#cta').disabled=($('#naName').value.trim()==='');}
-
-function submit(kind){
-  $('#tkSub').textContent = kind==='newaction'
-    ? '申请已提交，教练团队会审核每一条。' : '我们已收到，会尽快跟进。';
-  show('v3');
-  // 真机：此处构造 report（source=general / category=[...] / subs / text / audio / shots / email / 静默设备信息）→ uploader.submit
+function submit_(){
+  $('#tkSub').textContent = action ? '申请已提交，教练团队会审核每一条。' : '我们已收到，会尽快跟进。';
+  $('#form').classList.add('hidden');
+  $('#thanks').classList.remove('hidden');
+  $('#foot').style.display='none';
+  $('#bk').style.visibility='hidden';
+  // 真机：构造 report（source=general / category / text / audio / shots / email / 静默设备信息）→ uploader.submit
 }
 function pickFace(el){
   document.querySelectorAll('.face').forEach(f=>f.classList.remove('on'));
   el.classList.add('on');
-  setTimeout(()=>{ /* 真机：上报满意度分值后关闭 */ }, 300);
 }
-
-// 返回
-$('#navBack').onclick=()=>{ if(view==='v2p'||view==='v2n')show('v1'); };
-show('v1');
+function reset_(){location.reload();}
 </script>
 </body>
 </html>
