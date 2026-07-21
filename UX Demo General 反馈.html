@@ -18,6 +18,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .side h1{font-size:15px;margin:0 0 6px;}
 .side p{font-size:13px;color:var(--ink2);line-height:1.6;margin:0 0 12px;}
 .side .btn{font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;display:block;width:100%;margin-bottom:8px;text-align:left;}
+.side .btn.on{background:var(--sel);border-color:var(--selbd);}
 @media(max-height:930px){.phone{zoom:.86;}}
 @media(max-height:800px){.phone{zoom:.76;}}
 
@@ -73,6 +74,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .shot{background:#dcdce0;position:relative;}
 .shot span{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:999px;background:#141414;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .devnote{display:flex;gap:8px;font-size:12px;color:var(--ink3);margin-top:20px;background:#f6f6f8;border-radius:10px;padding:10px 12px;line-height:1.5;}
+.ctype{display:flex;gap:8px;margin-bottom:10px;}
+.tchip{border:1.5px solid var(--line);border-radius:999px;padding:6px 15px;font-size:14px;cursor:pointer;background:#fff;color:var(--ink2);}
+.tchip.on{background:var(--sel);border-color:var(--selbd);color:var(--ink);}
+.wecom{display:flex;align-items:center;gap:12px;margin-top:14px;background:#eef6e6;border:1px solid #d5e8c4;border-radius:14px;padding:12px 14px;cursor:pointer;}
+.wecom-ic{width:40px;height:40px;border-radius:10px;background:#2aae67;color:#fff;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none;}
+.wecom-tx{flex:1;}
+.wecom-tx .t{font-size:15px;color:#1f5c38;font-weight:600;}
+.wecom-tx .s{font-size:12px;color:#3c7a52;margin-top:2px;line-height:1.4;}
+.wecom-qr{width:40px;height:40px;flex:none;border:1px solid #d5e8c4;border-radius:6px;overflow:hidden;background:#fff;}
+.wecom-big{display:none;flex-direction:column;align-items:center;gap:10px;margin-top:12px;background:#f6f9f2;border:1px solid #e0ecd3;border-radius:14px;padding:18px;}
+.wecom-big.on{display:flex;}
+.wecom-big .qr{border:1px solid #e0ecd3;border-radius:8px;overflow:hidden;}
+.qh{font-size:13px;color:#3c7a52;}
 
 .hero{display:flex;gap:14px;align-items:flex-start;margin:8px 0 4px;}
 .heroic{width:56px;height:52px;flex:none;background:var(--lime);border-radius:14px 14px 14px 3px;display:flex;align-items:center;justify-content:center;font-size:26px;}
@@ -98,7 +112,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 <div class="stage">
 <div class="side">
   <h1>General 问题反馈</h1>
-  <p>一级：问题反馈单页（问题类多选）。二级：新动作申请独立页，可复用（动作库等入口也能直接进）。</p>
+  <p>一级：问题反馈单页（问题类多选）。二级：新动作申请独立页，可复用。大陆版走手机号/微信 + 企业微信客服；国际版走邮箱。</p>
+  <div style="display:flex;gap:6px;margin-bottom:8px;">
+    <button class="btn" id="rCn" style="flex:1;margin-bottom:0;text-align:center;" onclick="applyRegion('cn')">大陆版</button>
+    <button class="btn" id="rIntl" style="flex:1;margin-bottom:0;text-align:center;" onclick="applyRegion('intl')">国际版</button>
+  </div>
   <button class="btn" onclick="reset_()">重置</button>
   <button class="btn" onclick="showView('v2')">↗ 直接进「新动作申请」页（复用演示）</button>
 </div>
@@ -140,8 +158,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       <div class="shots" id="shots"><div class="addshot" onclick="addShot()">⊕</div></div>
       <div class="help">截图有助于我们更快理解和解决问题。</div>
 
-      <div class="lab">联系邮箱 <span class="o">选填</span></div>
-      <div class="fld"><input id="mail" type="email" placeholder="邮箱地址（可能联系你了解更多）"></div>
+      <!-- 联系方式（区域相关） -->
+      <div id="contactIntl">
+        <div class="lab">联系邮箱 <span class="o">选填</span></div>
+        <div class="fld"><input id="mail" type="email" placeholder="邮箱地址（可能联系你了解更多）"></div>
+      </div>
+      <div id="contactCn">
+        <div class="lab">联系方式 <span class="o">选填</span></div>
+        <div class="ctype" id="ctype">
+          <span class="tchip on" data-ct="phone">手机号</span>
+          <span class="tchip" data-ct="wechat">微信号</span>
+        </div>
+        <div class="fld"><input id="cnContact" placeholder="手机号，方便更快联系你"></div>
+        <div class="wecom" id="wecom">
+          <div class="wecom-ic">企</div>
+          <div class="wecom-tx"><div class="t">加企业微信客服</div><div class="s">问题复杂、想实时解答？加一下更快</div></div>
+          <div class="wecom-qr"></div>
+        </div>
+        <div class="wecom-big" id="wecomBig"><div class="qr" style="width:150px;height:150px"></div><div class="qh">长按识别二维码，添加企业微信客服</div></div>
+      </div>
       <div class="devnote">ⓘ 提交时会自动附带设备与版本信息，帮助我们更快定位。</div>
     </div>
 
@@ -239,6 +274,28 @@ function addShot(){
   d.querySelector('span').onclick=()=>d.remove();b.insertBefore(d,b.querySelector('.addshot'));
 }
 function reset_(){location.reload();}
+
+// 区域版本：大陆 / 国际
+let region='cn';
+function applyRegion(r){
+  region=r;
+  $('#contactCn').style.display = r==='cn'?'':'none';
+  $('#contactIntl').style.display = r==='intl'?'':'none';
+  $('#rCn').classList.toggle('on', r==='cn');
+  $('#rIntl').classList.toggle('on', r==='intl');
+}
+// 联系方式类型（手机号 / 微信）
+document.querySelectorAll('#ctype .tchip').forEach(c=>{
+  c.onclick=()=>{document.querySelectorAll('#ctype .tchip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+    $('#cnContact').placeholder = c.dataset.ct==='wechat' ? '微信号，方便更快联系你' : '手机号，方便更快联系你';};
+});
+// 企业微信引导：点开展开二维码
+$('#wecom').onclick=()=>$('#wecomBig').classList.toggle('on');
+// 企微二维码占位（真机换成后台下发的客服活码）
+const QR='<svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none"><rect width="100" height="100" fill="#fff"/><g fill="#111"><rect x="6" y="6" width="24" height="24"/><rect x="70" y="6" width="24" height="24"/><rect x="6" y="70" width="24" height="24"/></g><g fill="#fff"><rect x="10" y="10" width="16" height="16"/><rect x="74" y="10" width="16" height="16"/><rect x="10" y="74" width="16" height="16"/></g><g fill="#111"><rect x="14" y="14" width="8" height="8"/><rect x="78" y="14" width="8" height="8"/><rect x="14" y="78" width="8" height="8"/><rect x="40" y="8" width="6" height="6"/><rect x="52" y="14" width="6" height="6"/><rect x="60" y="8" width="6" height="6"/><rect x="42" y="40" width="6" height="6"/><rect x="54" y="46" width="6" height="6"/><rect x="66" y="40" width="6" height="6"/><rect x="40" y="60" width="6" height="6"/><rect x="52" y="66" width="6" height="6"/><rect x="72" y="58" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="72" y="72" width="6" height="6"/><rect x="84" y="60" width="6" height="6"/><rect x="8" y="40" width="6" height="6"/><rect x="8" y="52" width="6" height="6"/><rect x="20" y="46" width="6" height="6"/></g></svg>';
+$('.wecom-qr').innerHTML=QR;$('#wecomBig .qr').innerHTML=QR;
+
+applyRegion('cn');
 showView('v1');
 </script>
 </body>
