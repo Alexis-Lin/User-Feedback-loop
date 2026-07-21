@@ -35,32 +35,39 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 
 .body{flex:1;overflow-y:auto;padding:6px 22px 24px;}
 .view.hidden{display:none;}
-.view{animation:in .26s ease;}
+.view{animation:in .24s ease;}
 @keyframes in{from{opacity:0;transform:translateX(12px);}to{opacity:1;transform:none;}}
 
-.intro{font-size:15px;color:var(--ink2);line-height:1.5;margin:4px 2px 22px;}
+.intro{font-size:15px;color:var(--ink2);line-height:1.5;margin:4px 2px 20px;}
 .sect{font-size:15px;font-weight:600;margin:0 0 12px;}
 .sect .o{font-size:13px;font-weight:400;color:var(--ink3);}
-.chips{display:flex;flex-wrap:wrap;gap:10px;}
-.chip{border:1.5px solid var(--line);border-radius:12px;padding:11px 15px;font-size:16px;cursor:pointer;background:#fff;}
-.chip.on{background:var(--sel);border-color:var(--selbd);}
 
-.narow{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:12px;cursor:pointer;background:#fff;}
-.narow .t{font-size:16px;}
-.narow .s{font-size:13px;color:var(--ink3);margin-top:2px;}
-.narow .arw{font-size:20px;color:#c4c4c9;}
+/* 一级：分类菜单行 */
+.menu{display:flex;flex-direction:column;gap:10px;}
+.mrow{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:15px 16px;cursor:pointer;background:#fff;}
+.mrow .t{font-size:16px;}
+.mrow .s{font-size:13px;color:var(--ink3);margin-top:2px;}
+.mrow .arw{font-size:20px;color:#c4c4c9;}
+.mrow.na{background:#fafafb;}
 
-.lab{font-size:15px;font-weight:600;margin:22px 0 9px;}
+/* 二级：多选 */
+.checks{display:flex;flex-direction:column;}
+.chk{display:flex;align-items:center;gap:11px;padding:11px 2px;cursor:pointer;}
+.cb{width:22px;height:22px;border:2px solid #c9c9ce;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:13px;font-weight:700;}
+.chk.on .cb{background:var(--ink);border-color:var(--ink);color:#fff;}
+.chk .rt{font-size:16px;}
+
+.lab{font-size:15px;font-weight:600;margin:20px 0 9px;}
 .lab .o{font-size:13px;font-weight:400;color:var(--ink3);}
 .help{font-size:13px;color:var(--ink3);margin:8px 2px 0;line-height:1.5;}
 .cnt{font-size:12px;color:var(--ink3);text-align:right;margin-top:6px;}
-.fld{border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px 14px;}
+.fld{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px 14px;}
 .fld input,.fld textarea{width:100%;border:0;outline:0;font-family:inherit;font-size:16px;color:var(--ink);background:transparent;resize:none;}
-.fld textarea{min-height:92px;line-height:1.5;}
+.fld textarea{min-height:24px;max-height:132px;overflow-y:auto;line-height:1.5;padding:0;margin:0;display:block;}
 .fld input::placeholder,.fld textarea::placeholder{color:var(--ink3);}
 .fieldmic{display:flex;align-items:flex-end;gap:10px;}
-.micbtn{width:38px;height:38px;border-radius:999px;background:#eef3d6;color:#556417;border:0;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;font-size:18px;}
-.recbar{display:none;align-items:center;gap:10px;border:1px solid #e5342f;background:#fdeceb;border-radius:14px;padding:12px 14px;margin-top:10px;}
+.micbtn{width:36px;height:36px;border-radius:999px;background:#eef3d6;color:#556417;border:0;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;font-size:17px;}
+.recbar{display:none;align-items:center;gap:10px;border:1px solid #e5342f;background:#fdeceb;border-radius:14px;padding:11px 14px;margin-top:10px;}
 .rdot{width:11px;height:11px;border-radius:999px;background:#e5342f;animation:pulse 1s infinite;}
 @keyframes pulse{50%{opacity:.35;}}
 .rtime{font-size:16px;color:#9a2422;font-variant-numeric:tabular-nums;}
@@ -68,25 +75,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .stopbtn{border:0;background:#e5342f;color:#fff;font-family:inherit;font-size:14px;border-radius:999px;padding:7px 16px;cursor:pointer;}
 .clip{display:none;align-items:center;gap:8px;margin-top:10px;background:#f2f4e6;border:1px solid #e0e7bf;color:#54631a;border-radius:999px;padding:8px 12px 8px 14px;font-size:14px;width:max-content;}
 .clipx{cursor:pointer;color:#8a985a;padding:0 2px;}
-.shots{display:flex;gap:10px;flex-wrap:wrap;}
-.shot,.addshot{width:78px;height:78px;border-radius:12px;flex:none;}
-.addshot{border:1.5px dashed #cfcfd4;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:23px;cursor:pointer;background:#fafafb;}
+
+.shots{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.shot,.addshot{width:60px;height:60px;border-radius:10px;flex:none;}
+.addshot{border:1.5px dashed #cfcfd4;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:20px;cursor:pointer;background:#fafafb;}
+.shotcap{font-size:13px;color:var(--ink3);}
 .shot{background:#dcdce0;position:relative;}
-.shot span{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:999px;background:#141414;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.devnote{display:flex;gap:8px;font-size:12px;color:var(--ink3);margin-top:20px;background:#f6f6f8;border-radius:10px;padding:10px 12px;line-height:1.5;}
+.shot span{position:absolute;top:-6px;right:-6px;width:19px;height:19px;border-radius:999px;background:#141414;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+
 .ctype{display:flex;gap:8px;margin-bottom:10px;}
 .tchip{border:1.5px solid var(--line);border-radius:999px;padding:6px 15px;font-size:14px;cursor:pointer;background:#fff;color:var(--ink2);}
 .tchip.on{background:var(--sel);border-color:var(--selbd);color:var(--ink);}
 .wecom{display:flex;align-items:center;gap:12px;margin-top:14px;background:#eef6e6;border:1px solid #d5e8c4;border-radius:14px;padding:12px 14px;cursor:pointer;}
-.wecom-ic{width:40px;height:40px;border-radius:10px;background:#2aae67;color:#fff;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none;}
+.wecom-ic{width:38px;height:38px;border-radius:10px;background:#2aae67;color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none;}
 .wecom-tx{flex:1;}
 .wecom-tx .t{font-size:15px;color:#1f5c38;font-weight:600;}
 .wecom-tx .s{font-size:12px;color:#3c7a52;margin-top:2px;line-height:1.4;}
-.wecom-qr{width:40px;height:40px;flex:none;border:1px solid #d5e8c4;border-radius:6px;overflow:hidden;background:#fff;}
+.wecom-qr{width:38px;height:38px;flex:none;border:1px solid #d5e8c4;border-radius:6px;overflow:hidden;background:#fff;}
 .wecom-big{display:none;flex-direction:column;align-items:center;gap:10px;margin-top:12px;background:#f6f9f2;border:1px solid #e0ecd3;border-radius:14px;padding:18px;}
 .wecom-big.on{display:flex;}
 .wecom-big .qr{border:1px solid #e0ecd3;border-radius:8px;overflow:hidden;}
 .qh{font-size:13px;color:#3c7a52;}
+.devnote{display:flex;gap:8px;font-size:12px;color:var(--ink3);margin-top:20px;background:#f6f6f8;border-radius:10px;padding:10px 12px;line-height:1.5;}
 
 .hero{display:flex;gap:14px;align-items:flex-start;margin:8px 0 4px;}
 .heroic{width:56px;height:52px;flex:none;background:var(--lime);border-radius:14px 14px 14px 3px;display:flex;align-items:center;justify-content:center;font-size:26px;}
@@ -94,6 +104,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .hero p{font-size:14px;color:var(--ink2);margin:0;line-height:1.5;}
 
 .foot{flex:none;padding:12px 22px calc(12px + env(safe-area-inset-bottom,20px));border-top:1px solid var(--sep);background:#fff;}
+.foot.hidden{display:none;}
 .cta{height:52px;width:100%;border:0;border-radius:999px;background:var(--ink);color:#fff;font-family:inherit;font-size:16px;font-weight:500;cursor:pointer;}
 .cta:disabled{background:#dcdce0;color:#9a9aa0;cursor:not-allowed;}
 
@@ -112,13 +123,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 <div class="stage">
 <div class="side">
   <h1>General 问题反馈</h1>
-  <p>一级：问题反馈单页（问题类多选）。二级：新动作申请独立页，可复用。大陆版走手机号/微信 + 企业微信客服；国际版走邮箱。</p>
+  <p>两步跳：一级只选分类（零输入，不劝退）→ 二级才填该分类的多选项 + 补充。跟「课中单动作反馈」一致。大陆版走手机/微信+企微，国际版走邮箱。</p>
   <div style="display:flex;gap:6px;margin-bottom:8px;">
     <button class="btn" id="rCn" style="flex:1;margin-bottom:0;text-align:center;" onclick="applyRegion('cn')">大陆版</button>
     <button class="btn" id="rIntl" style="flex:1;margin-bottom:0;text-align:center;" onclick="applyRegion('intl')">国际版</button>
   </div>
   <button class="btn" onclick="reset_()">重置</button>
-  <button class="btn" onclick="showView('v2')">↗ 直接进「新动作申请」页（复用演示）</button>
 </div>
 
 <div class="phone"><div class="island"></div><div class="screen">
@@ -127,26 +137,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 
   <div class="body" id="body">
 
-    <!-- 一级：问题反馈 -->
+    <!-- 一级：分类菜单（只选，不填） -->
     <div class="view" id="v1">
-      <div class="intro">遇到问题或有建议？告诉我们，我们会尽快改进。</div>
-      <div class="sect">你想反馈什么？ <span class="o">可多选</span></div>
-      <div class="chips" id="cats">
-        <div class="chip" data-k="ai">AI 识别准确性</div>
-        <div class="chip" data-k="content">课程内容</div>
-        <div class="chip" data-k="device">设备与数据</div>
-        <div class="chip" data-k="exp">体验与建议</div>
-      </div>
+      <div class="intro">遇到问题或有建议？先选个类型，下一步再细说。</div>
+      <div class="sect">你想反馈什么？</div>
+      <div class="menu" id="menu"></div>
+    </div>
 
-      <div class="narow" id="naEntry">
-        <div><div class="t">新增动作申请</div><div class="s">找不到想要的动作？教练团队会审核</div></div>
-        <span class="arw">›</span>
-      </div>
+    <!-- 二级：某分类的多选 + 补充 -->
+    <div class="view hidden" id="v2">
+      <div class="sect" style="margin-top:8px;">具体是哪些？ <span class="o">可多选，也可直接提交</span></div>
+      <div class="checks" id="subs"></div>
 
       <div class="lab">补充说明 <span class="o">选填</span></div>
       <div class="fld">
         <div class="fieldmic">
-          <textarea id="pText" maxlength="200" rows="3" placeholder="说说你遇到的问题…" oninput="cnt()"></textarea>
+          <textarea id="pText" maxlength="200" rows="1" placeholder="还想补充点什么…" oninput="grow(this);cnt()"></textarea>
           <button class="micbtn" onclick="rec.start()">🎙</button>
         </div>
         <div class="cnt" id="pCnt">0/200</div>
@@ -155,8 +161,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       <div class="clip" id="pClip">▷ 语音 <span id="pClipT">0:00</span> <span class="clipx" onclick="rec.del()">✕</span></div>
 
       <div class="lab">截图 <span class="o">选填</span></div>
-      <div class="shots" id="shots"><div class="addshot" onclick="addShot()">⊕</div></div>
-      <div class="help">截图有助于我们更快理解和解决问题。</div>
+      <div class="shots" id="shots"><div class="addshot" onclick="addShot()">⊕</div><span class="shotcap">最多 3 张</span></div>
 
       <!-- 联系方式（区域相关） -->
       <div id="contactIntl">
@@ -180,8 +185,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       <div class="devnote">ⓘ 提交时会自动附带设备与版本信息，帮助我们更快定位。</div>
     </div>
 
-    <!-- 二级：新动作申请（独立页，可复用） -->
-    <div class="view hidden" id="v2">
+    <!-- 二级：新动作申请（独立可复用页） -->
+    <div class="view hidden" id="v2n">
       <div class="hero">
         <div class="heroic">🏋</div>
         <div><h2>找不到想要的动作？</h2><p>告诉我们，教练团队会审核每一条申请。</p></div>
@@ -189,7 +194,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       <div class="lab">动作名称</div>
       <div class="fld"><input id="naName" placeholder="例如：保加利亚分腿蹲" oninput="gate()"></div>
       <div class="lab">为什么需要这个动作？ <span class="o">选填</span></div>
-      <div class="fld"><textarea id="naWhy" maxlength="200" placeholder="简单描述一下…"></textarea></div>
+      <div class="fld"><textarea id="naWhy" maxlength="200" rows="1" placeholder="简单描述一下…" oninput="grow(this)"></textarea></div>
       <div class="help">带理由的申请，教练团队会优先审核。</div>
       <div class="lab">参考视频 / 链接 <span class="o">选填</span></div>
       <div class="fld"><input id="naRef" placeholder="粘贴一个参考视频链接"></div>
@@ -213,50 +218,60 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 
   </div>
 
-  <div class="foot" id="foot">
-    <button class="cta" id="cta" disabled onclick="submit_()">提交</button>
-  </div>
+  <div class="foot" id="foot"><button class="cta" id="cta" onclick="submit_()">提交</button></div>
 </div></div>
 </div>
 
 <script>
 const $=s=>document.querySelector(s);
-const sel=new Set();
-let cur='v1';
+const CATS={
+  ai:{name:'AI 识别准确性',sub:'计数 / 身体识别 / 讲解',subs:['计数不准','身体识别不准','AI 讲解不清']},
+  content:{name:'课程内容',sub:'示范图文 / 名称 / 训练部位',subs:['示范图文有误','动作名称有误','训练部位有误','动作讲解有误']},
+  device:{name:'设备与数据',sub:'连接 / 同步 / 记录',subs:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步']},
+  exp:{name:'体验与建议',sub:'卡顿 / 交互 / 建议',subs:['卡顿闪退','交互不顺','功能建议','其他']},
+};
+let cur='v1', cat='', region='cn';
+
+// 一级菜单渲染
+$('#menu').innerHTML =
+  Object.keys(CATS).map(k=>`<div class="mrow" data-k="${k}"><div><div class="t">${CATS[k].name}</div><div class="s">${CATS[k].sub}</div></div><span class="arw">›</span></div>`).join('')
+  + `<div class="mrow na" data-k="newaction"><div><div class="t">新增动作申请</div><div class="s">找不到想要的动作？教练团队会审核</div></div><span class="arw">›</span></div>`;
+document.querySelectorAll('#menu .mrow').forEach(r=>r.onclick=()=>openCat(r.dataset.k));
+
+function openCat(k){
+  if(k==='newaction'){cat='newaction';showView('v2n');return;}
+  cat=k;
+  $('#subs').innerHTML = CATS[k].subs.map(s=>`<div class="chk"><span class="cb">✓</span><span class="rt">${s}</span></div>`).join('');
+  document.querySelectorAll('#subs .chk').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
+  // 重置补充区
+  $('#pText').value='';grow($('#pText'));cnt();rec.del();$('#pRec').style.display='none';
+  showView('v2');
+}
 
 function showView(id){
-  ['v1','v2','thanks'].forEach(v=>$('#'+v).classList.toggle('hidden',v!==id));
-  // 重新触发进入动画
+  ['v1','v2','v2n','thanks'].forEach(v=>$('#'+v).classList.toggle('hidden',v!==id));
   const el=$('#'+id);el.style.animation='none';el.offsetHeight;el.style.animation='';
   cur=id;
-  $('#ttl').textContent = id==='v2' ? '新动作申请' : '问题反馈';
-  $('#bk').style.visibility = id==='v2' ? 'visible' : 'hidden';
-  if(id==='thanks'){$('#foot').style.display='none';}
-  else{$('#foot').style.display='';$('#cta').textContent = id==='v2' ? '提交申请' : '提交';gate();}
+  $('#ttl').textContent = id==='v2' ? CATS[cat].name : (id==='v2n' ? '新动作申请' : '问题反馈');
+  $('#bk').style.visibility = (id==='v2'||id==='v2n') ? 'visible' : 'hidden';
+  $('#foot').classList.toggle('hidden', id==='v1'||id==='thanks');
+  if(id==='v2'){$('#cta').textContent='提交';$('#cta').disabled=false;}
+  if(id==='v2n'){$('#cta').textContent='提交申请';gate();}
   $('#body').scrollTop=0;
 }
-
-// 一级：问题多选
-document.querySelectorAll('#cats .chip').forEach(c=>{
-  c.onclick=()=>{c.classList.toggle('on');
-    c.classList.contains('on')?sel.add(c.dataset.k):sel.delete(c.dataset.k);gate();};
-});
-// 一级 → 二级
-$('#naEntry').onclick=()=>showView('v2');
-// 二级 → 一级
-$('#bk').onclick=()=>{ if(cur==='v2')showView('v1'); };
-
-function gate(){
-  const ok = cur==='v2' ? $('#naName').value.trim()!=='' : sel.size>0;
-  $('#cta').disabled=!ok;
-}
+$('#bk').onclick=()=>{ if(cur==='v2'||cur==='v2n')showView('v1'); };
+function gate(){ if(cur==='v2n')$('#cta').disabled=$('#naName').value.trim()===''; }
 
 function submit_(){
-  $('#tkSub').textContent = cur==='v2' ? '申请已提交，教练团队会审核每一条。' : '我们已收到，会尽快跟进。';
+  $('#tkSub').textContent = cur==='v2n' ? '申请已提交，教练团队会审核每一条。' : '我们已收到，会尽快跟进。';
   showView('thanks');
-  // 真机：构造 report（source=general / category=[...] 或 new_action / text / audio / shots / email / 静默设备信息）→ uploader.submit
+  // 真机：构造 report（source=general / category=cat / subs / text / audio / shots / 联系方式 / 静默设备信息）→ uploader.submit
 }
 function pickFace(el){document.querySelectorAll('.face').forEach(f=>f.classList.remove('on'));el.classList.add('on');}
+
+// 文本自适应高度（默认小，写多了才长）
+function grow(t){t.style.height='auto';t.style.height=Math.min(t.scrollHeight,132)+'px';}
+function cnt(){$('#pCnt').textContent=$('#pText').value.length+'/200';}
 
 // 录音（模拟）
 const rec={t:null,sec:0,
@@ -267,16 +282,13 @@ const rec={t:null,sec:0,
   del(){$('#pClip').style.display='none';}
 };
 function fmt(s){return (s/60|0)+':'+(s%60).toString().padStart(2,'0');}
-function cnt(){$('#pCnt').textContent=$('#pText').value.length+'/200';}
 function addShot(){
   const b=$('#shots');if(b.querySelectorAll('.shot').length>=3)return;
   const d=document.createElement('div');d.className='shot';d.innerHTML='<span>✕</span>';
   d.querySelector('span').onclick=()=>d.remove();b.insertBefore(d,b.querySelector('.addshot'));
 }
-function reset_(){location.reload();}
 
-// 区域版本：大陆 / 国际
-let region='cn';
+// 区域版本
 function applyRegion(r){
   region=r;
   $('#contactCn').style.display = r==='cn'?'':'none';
@@ -284,17 +296,15 @@ function applyRegion(r){
   $('#rCn').classList.toggle('on', r==='cn');
   $('#rIntl').classList.toggle('on', r==='intl');
 }
-// 联系方式类型（手机号 / 微信）
 document.querySelectorAll('#ctype .tchip').forEach(c=>{
   c.onclick=()=>{document.querySelectorAll('#ctype .tchip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
     $('#cnContact').placeholder = c.dataset.ct==='wechat' ? '微信号，方便更快联系你' : '手机号，方便更快联系你';};
 });
-// 企业微信引导：点开展开二维码
 $('#wecom').onclick=()=>$('#wecomBig').classList.toggle('on');
-// 企微二维码占位（真机换成后台下发的客服活码）
 const QR='<svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none"><rect width="100" height="100" fill="#fff"/><g fill="#111"><rect x="6" y="6" width="24" height="24"/><rect x="70" y="6" width="24" height="24"/><rect x="6" y="70" width="24" height="24"/></g><g fill="#fff"><rect x="10" y="10" width="16" height="16"/><rect x="74" y="10" width="16" height="16"/><rect x="10" y="74" width="16" height="16"/></g><g fill="#111"><rect x="14" y="14" width="8" height="8"/><rect x="78" y="14" width="8" height="8"/><rect x="14" y="78" width="8" height="8"/><rect x="40" y="8" width="6" height="6"/><rect x="52" y="14" width="6" height="6"/><rect x="60" y="8" width="6" height="6"/><rect x="42" y="40" width="6" height="6"/><rect x="54" y="46" width="6" height="6"/><rect x="66" y="40" width="6" height="6"/><rect x="40" y="60" width="6" height="6"/><rect x="52" y="66" width="6" height="6"/><rect x="72" y="58" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="72" y="72" width="6" height="6"/><rect x="84" y="60" width="6" height="6"/><rect x="8" y="40" width="6" height="6"/><rect x="8" y="52" width="6" height="6"/><rect x="20" y="46" width="6" height="6"/></g></svg>';
 $('.wecom-qr').innerHTML=QR;$('#wecomBig .qr').innerHTML=QR;
 
+function reset_(){location.reload();}
 applyRegion('cn');
 showView('v1');
 </script>
