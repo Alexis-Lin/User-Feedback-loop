@@ -14,10 +14,13 @@
 html,body{margin:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);}
 .stage{display:flex;gap:26px;align-items:flex-start;justify-content:center;min-height:100vh;padding:28px 20px;flex-wrap:wrap;}
-.side{width:210px;flex:none;padding-top:8px;}
+.side{width:214px;flex:none;padding-top:8px;}
 .side h1{font-size:15px;margin:0 0 6px;}
 .side p{font-size:13px;color:var(--ink2);line-height:1.6;margin:0 0 12px;}
+.dl{font-size:12px;color:var(--ink3);display:block;margin-bottom:4px;}
+.drow{display:flex;gap:6px;margin-bottom:10px;}
 .side .btn{font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;display:block;width:100%;margin-bottom:8px;text-align:left;}
+.drow .btn{flex:1;margin-bottom:0;text-align:center;}
 .side .btn.on{background:var(--sel);border-color:var(--selbd);}
 @media(max-height:930px){.phone{zoom:.86;}}
 @media(max-height:800px){.phone{zoom:.76;}}
@@ -38,17 +41,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .view{animation:in .24s ease;}
 @keyframes in{from{opacity:0;transform:translateX(12px);}to{opacity:1;transform:none;}}
 
-.intro{font-size:15px;color:var(--ink2);line-height:1.5;margin:4px 2px 20px;}
+.intro{font-size:15px;color:var(--ink2);line-height:1.5;margin:4px 2px 18px;}
 .sect{font-size:15px;font-weight:600;margin:0 0 12px;}
 .sect .o{font-size:13px;font-weight:400;color:var(--ink3);}
 
-/* 一级：分类菜单行 */
 .menu{display:flex;flex-direction:column;gap:10px;}
-.mrow{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:15px 16px;cursor:pointer;background:#fff;}
+.mrow{display:flex;align-items:center;gap:0;border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;background:#fff;}
+.mi{width:26px;height:26px;flex:none;color:var(--ink2);margin-right:13px;display:flex;align-items:center;justify-content:center;}
+.mi svg{width:23px;height:23px;}
+.mtx{flex:1;min-width:0;}
 .mrow .t{font-size:16px;}
 .mrow .s{font-size:13px;color:var(--ink3);margin-top:2px;}
-.mrow .arw{font-size:20px;color:#c4c4c9;}
-.mrow.na{background:#fafafb;}
+.mrow .arw{font-size:20px;color:#c4c4c9;flex:none;}
+
 .csblock{margin-top:24px;text-align:center;}
 .cstext{font-size:13px;color:var(--ink3);margin-bottom:5px;}
 .cslinks{font-size:13px;color:var(--ink3);}
@@ -56,7 +61,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 #naEntry{margin-top:12px;}
 #naEntry.hidden{display:none;}
 
-/* 二级：多选 */
 .checks{display:flex;flex-direction:column;}
 .chk{display:flex;align-items:center;gap:11px;padding:11px 2px;cursor:pointer;}
 .cb{width:22px;height:22px;border:2px solid #c9c9ce;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:13px;font-weight:700;}
@@ -129,13 +133,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 <div class="stage">
 <div class="side">
   <h1>General 问题反馈</h1>
-  <p>两步跳：一级只选分类（零输入，不劝退）→ 二级才填该分类的多选项 + 补充。跟「课中单动作反馈」一致。大陆版走手机/微信+企微，国际版走邮箱。</p>
-  <div style="display:flex;gap:6px;margin-bottom:8px;">
-    <button class="btn" id="rCn" style="flex:1;margin-bottom:0;text-align:center;" onclick="applyRegion('cn')">大陆版</button>
-    <button class="btn" id="rIntl" style="flex:1;margin-bottom:0;text-align:center;" onclick="applyRegion('intl')">国际版</button>
-  </div>
-  <button class="btn" onclick="reset_()">重置</button>
-  <button class="btn" onclick="openNewAction()">↗ 直接进「新动作申请」页（复用演示）</button>
+  <p>两步跳 · 图标 + 精简文案。语言(中/英) 与 版本(大陆/国际) 正交，两件事各自切换。</p>
+  <span class="dl">语言 / Language</span>
+  <div class="drow"><button class="btn on" id="lZh" onclick="setLang('zh')">中文</button><button class="btn" id="lEn" onclick="setLang('en')">EN</button></div>
+  <span class="dl">版本 / Region</span>
+  <div class="drow"><button class="btn on" id="rCn" onclick="applyRegion('cn')">大陆</button><button class="btn" id="rIntl" onclick="applyRegion('intl')">国际</button></div>
+  <button class="btn" onclick="reset_()">重置 / Reset</button>
+  <button class="btn" onclick="openNewAction()">↗ 新动作申请页（复用）</button>
 </div>
 
 <div class="phone"><div class="island"></div><div class="screen">
@@ -144,127 +148,164 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 
   <div class="body" id="body">
 
-    <!-- 一级：分类菜单（只选，不填） -->
+    <!-- 一级：分类菜单 -->
     <div class="view" id="v1">
-      <div class="intro">遇到问题或有建议？先选个类型，下一步再细说。</div>
-      <div class="sect">你想反馈什么？</div>
+      <div class="intro" id="intro"></div>
+      <div class="sect" id="prompt"></div>
       <div class="menu" id="menu"></div>
       <div class="csblock">
-        <div class="cstext">售后、订单等问题，或想直接沟通？</div>
-        <div class="cslinks">客服邮箱 <a href="mailto:cs@bodypark.fit">cs@bodypark.fit</a><span id="csWx"> · <a id="csWxLink">加企业微信客服</a></span></div>
-        <div class="wecom-big" id="csWxBig"><div class="qr" style="width:132px;height:132px"></div><div class="qh">长按识别，添加企业微信客服</div></div>
+        <div class="cstext" id="csText"></div>
+        <div class="cslinks"><span id="csMailLab"></span> <a href="mailto:cs@bodypark.fit">cs@bodypark.fit</a><span id="csWx"> · <a id="csWxLink"></a></span></div>
+        <div class="wecom-big" id="csWxBig"><div class="qr" style="width:132px;height:132px"></div><div class="qh" id="csWxCap"></div></div>
       </div>
     </div>
 
-    <!-- 二级：某分类的多选 + 补充 -->
+    <!-- 二级：分类详情 -->
     <div class="view hidden" id="v2">
-      <div class="sect" id="subsSect" style="margin-top:8px;">具体是哪些？ <span class="o">可多选，也可直接提交</span></div>
+      <div class="sect" id="subsSect" style="margin-top:8px;"></div>
       <div class="checks" id="subs"></div>
-      <div class="mrow hidden" id="naEntry"><div><div class="t">新增动作申请</div><div class="s">找不到想要的动作？教练团队会审核</div></div><span class="arw">›</span></div>
+      <div class="mrow hidden" id="naEntry"><span class="mi" id="naEntryIc"></span><div class="mtx"><div class="t" id="naEntryT"></div><div class="s" id="naEntryS"></div></div><span class="arw">›</span></div>
 
-      <div class="lab" id="addLab">补充说明 <span class="o">选填</span></div>
+      <div class="lab" id="addLab"></div>
       <div class="fld">
         <div class="fieldmic">
-          <textarea id="pText" maxlength="200" rows="1" placeholder="还想补充点什么…" oninput="grow(this);cnt()"></textarea>
+          <textarea id="pText" maxlength="200" rows="1" oninput="grow(this);cnt()"></textarea>
           <button class="micbtn" onclick="rec.start()">🎙</button>
         </div>
         <div class="cnt" id="pCnt">0/200</div>
       </div>
-      <div class="recbar" id="pRec"><span class="rdot"></span><span class="rtime" id="pTime">0:00</span><span class="rcap">60 秒以内</span><button class="stopbtn" onclick="rec.stop()">停止</button></div>
-      <div class="clip" id="pClip">▷ 语音 <span id="pClipT">0:00</span> <span class="clipx" onclick="rec.del()">✕</span></div>
+      <div class="recbar" id="pRec"><span class="rdot"></span><span class="rtime" id="pTime">0:00</span><span class="rcap" id="recCap"></span><button class="stopbtn" id="stopBtn" onclick="rec.stop()"></button></div>
+      <div class="clip" id="pClip">▷ <span id="voiceLab"></span> <span id="pClipT">0:00</span> <span class="clipx" onclick="rec.del()">✕</span></div>
 
-      <div class="lab">截图 <span class="o">选填</span></div>
-      <div class="shots" id="shots"><div class="addshot" onclick="addShot()">⊕</div><span class="shotcap">最多 3 张</span></div>
+      <div class="lab" id="shotLab"></div>
+      <div class="shots" id="shots"><div class="addshot" onclick="addShot()">⊕</div><span class="shotcap" id="shotCap"></span></div>
 
-      <!-- 联系方式（区域相关） -->
       <div id="contactIntl">
-        <div class="lab">联系邮箱 <span class="o">选填</span></div>
-        <div class="fld"><input id="mail" type="email" placeholder="邮箱地址（可能联系你了解更多）"></div>
+        <div class="lab" id="contactIntlLab"></div>
+        <div class="fld"><input id="mail" type="email"></div>
       </div>
       <div id="contactCn">
-        <div class="lab">联系方式 <span class="o">选填</span></div>
+        <div class="lab" id="contactCnLab"></div>
         <div class="ctype" id="ctype">
-          <span class="tchip on" data-ct="phone">手机号</span>
-          <span class="tchip" data-ct="wechat">微信号</span>
-          <span class="tchip" data-ct="email">邮箱</span>
+          <span class="tchip on" data-ct="phone" id="ctPhone"></span>
+          <span class="tchip" data-ct="wechat" id="ctWechat"></span>
+          <span class="tchip" data-ct="email" id="ctEmail"></span>
         </div>
-        <div class="fld"><input id="cnContact" placeholder="手机号，方便更快联系你"></div>
+        <div class="fld"><input id="cnContact"></div>
         <div class="wecom" id="wecom">
           <div class="wecom-ic">企</div>
-          <div class="wecom-tx"><div class="t">加企业微信客服</div><div class="s">问题复杂、想实时解答？加一下更快</div></div>
+          <div class="wecom-tx"><div class="t" id="wecomT"></div><div class="s" id="wecomS"></div></div>
           <div class="wecom-qr"></div>
         </div>
-        <div class="wecom-big" id="wecomBig"><div class="qr" style="width:150px;height:150px"></div><div class="qh">长按识别二维码，添加企业微信客服</div></div>
+        <div class="wecom-big" id="wecomBig"><div class="qr" style="width:150px;height:150px"></div><div class="qh" id="wecomCap"></div></div>
       </div>
-      <div class="devnote">ⓘ 提交时会自动附带设备与版本信息，帮助我们更快定位。</div>
+      <div class="devnote" id="devnote"></div>
     </div>
 
-    <!-- 二级：新动作申请（独立可复用页） -->
+    <!-- 二级：新动作申请 -->
     <div class="view hidden" id="v2n">
-      <div class="hero">
-        <div class="heroic">🏋</div>
-        <div><h2>找不到想要的动作？</h2><p>告诉我们，教练团队会审核每一条申请。</p></div>
-      </div>
-      <div class="lab">动作名称</div>
-      <div class="fld"><input id="naName" placeholder="例如：保加利亚分腿蹲" oninput="gate()"></div>
-      <div class="lab">为什么需要这个动作？ <span class="o">选填</span></div>
-      <div class="fld"><textarea id="naWhy" maxlength="200" rows="1" placeholder="简单描述一下…" oninput="grow(this)"></textarea></div>
-      <div class="help">带理由的申请，教练团队会优先审核。</div>
-      <div class="lab">参考视频 / 链接 <span class="o">选填</span></div>
-      <div class="fld"><input id="naRef" placeholder="粘贴一个参考视频链接"></div>
+      <div class="hero"><div class="heroic">🏋</div><div><h2 id="naHeroT"></h2><p id="naHeroP"></p></div></div>
+      <div class="lab" id="naNameLab"></div>
+      <div class="fld"><input id="naName" oninput="gate()"></div>
+      <div class="lab" id="naWhyLab"></div>
+      <div class="fld"><textarea id="naWhy" maxlength="200" rows="1" oninput="grow(this)"></textarea></div>
+      <div class="help" id="naWhyHelp"></div>
+      <div class="lab" id="naRefLab"></div>
+      <div class="fld"><input id="naRef"></div>
     </div>
 
     <!-- 感谢 + 满意度 -->
     <div class="view hidden" id="thanks">
       <div class="thanks">
         <div class="tkic">♥</div>
-        <h2>谢谢你的反馈！</h2>
-        <p id="tkSub">我们已收到，会尽快跟进。</p>
-        <div class="satlab">顺便——你整体还喜欢 ATOM 吗？</div>
-        <div class="faces">
-          <div class="face" onclick="pickFace(this)">😍</div>
-          <div class="face" onclick="pickFace(this)">🙂</div>
-          <div class="face" onclick="pickFace(this)">😕</div>
-        </div>
-        <div class="facecap">选填，一点即走</div>
+        <h2 id="tkTitle"></h2>
+        <p id="tkSub"></p>
+        <div class="satlab" id="satLab"></div>
+        <div class="faces"><div class="face" onclick="pickFace(this)">😍</div><div class="face" onclick="pickFace(this)">🙂</div><div class="face" onclick="pickFace(this)">😕</div></div>
+        <div class="facecap" id="satCap"></div>
       </div>
     </div>
 
   </div>
 
-  <div class="foot" id="foot"><button class="cta" id="cta" onclick="submit_()">提交</button></div>
+  <div class="foot" id="foot"><button class="cta" id="cta" onclick="submit_()"></button></div>
 </div></div>
 </div>
 
 <script>
 const $=s=>document.querySelector(s);
-const CATS={
-  ai:{name:'AI 识别准确性',sub:'计数 / 身体识别 / 讲解',subs:['计数不准','身体识别不准','AI 讲解不清']},
-  content:{name:'课程内容',sub:'示范图文 / 名称 / 训练部位',subs:['示范图文有误','动作名称有误','训练部位有误','动作讲解有误']},
-  connect:{name:'连接数据与使用体验',sub:'连接 / 同步 / 卡顿 / 交互',subs:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步','卡顿闪退','交互不顺']},
-  otherfb:{name:'其他问题反馈',sub:'其他没归类的问题',subs:[],label:'说说你遇到的问题',placeholder:'说说你遇到的问题，或想跟我们说的…'},
-  feature:{name:'新功能建议',sub:'希望我们增加或改进的功能',subs:[],label:'说说你的建议',placeholder:'说说你希望 ATOM 增加或改进什么功能…'},
-};
-let cur='v1', cat='', region='cn', naFrom='';
 
-// 一级菜单渲染（5 项；新增动作申请下沉到「课程内容」二级）
+// ---------- 图标（单色极简 line） ----------
+const ICONS={
+  ai:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="7.3"/><circle cx="12" cy="12" r="2.4"/><path d="M12 2.2v3M12 18.8v3M2.2 12h3M18.8 12h3" stroke-linecap="round"/></svg>',
+  content:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M10.2 9.4l4.6 2.6-4.6 2.6z" stroke-linejoin="round"/></svg>',
+  connect:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M8 8l8 8-4 3.5V4.5l4 3.5-8 8"/></svg>',
+  otherfb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 5.5h16v9.5H9.5L5.5 18v-3H4z"/></svg>',
+  feature:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 17.5h4.8M10.6 20.5h2.8"/><path d="M12 3.2a6 6 0 0 1 3.6 10.8c-.6.5-.9 1-.9 1.9H9.3c0-.9-.3-1.4-.9-1.9A6 6 0 0 1 12 3.2z"/></svg>',
+  dumbbell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 9.5v5M6.6 7.5v9M17.4 7.5v9M20 9.5v5M6.6 12h10.8"/></svg>',
+};
+
+// ---------- 文案字典 ----------
+const L={
+  zh:{title:'问题反馈',intro:'选个类型，下一步细说。',prompt:'你想反馈什么？',specific:'具体是哪些？',multi:'可多选，也可直接提交',addDefault:'补充说明',ph_add:'还想说点什么…',optional:'选填',
+   shots:'截图',shotsCap:'最多 3 张',contactCn:'联系方式',contactIntl:'联系邮箱',ph_mail:'邮箱地址（选填）',
+   ctPhone:'手机号',ctWechat:'微信号',ctEmail:'邮箱',ph_phone:'手机号，方便联系你',ph_wechat:'微信号，方便联系你',ph_email:'邮箱，方便联系你',
+   wecomT:'加企业微信客服',wecomS:'问题复杂？加一下更快',wecomCap:'长按识别，加企业微信客服',
+   csText:'售后、订单问题？直接联系我们',csMail:'客服邮箱',csWx:'加企业微信',csWxCap:'长按识别，加企业微信客服',
+   devnote:'提交会自动附带设备与版本信息，帮我们更快定位。',submit:'提交',submitReq:'提交申请',
+   naEntryT:'新增动作申请',naEntryS:'找不到想要的动作？',
+   naHeroT:'找不到想要的动作？',naHeroP:'告诉我们，教练会逐一审核。',naName:'动作名称',naWhy:'为什么需要？',naWhyHelp:'带理由的申请会被优先审核。',naRef:'参考视频 / 链接',
+   ph_naName:'例如：保加利亚分腿蹲',ph_naWhy:'简单说一下…',ph_naRef:'粘贴参考视频链接',
+   tkTitle:'谢谢你的反馈！',tkSub:'已收到，会尽快跟进。',tkSubReq:'申请已提交，教练会逐一审核。',tkSubFeat:'谢谢建议！产品团队会认真评估。',
+   satLab:'顺便，你喜欢 ATOM 吗？',satCap:'选填，一点即走',recCap:'60 秒内',recStop:'停止',voice:'语音'},
+  en:{title:'Feedback',intro:'Pick a type, add details next.',prompt:"What's this about?",specific:'Which ones?',multi:'Pick any, or just submit',addDefault:'Details',ph_add:'Anything to add…',optional:'optional',
+   shots:'Screenshots',shotsCap:'up to 3',contactCn:'Contact',contactIntl:'Email',ph_mail:'Your email (optional)',
+   ctPhone:'Phone',ctWechat:'WeChat',ctEmail:'Email',ph_phone:'Phone, so we can reach you',ph_wechat:'WeChat, so we can reach you',ph_email:'Email, so we can reach you',
+   wecomT:'Add WeChat support',wecomS:'Complex issue? Faster this way',wecomCap:'Scan to add WeChat support',
+   csText:'After-sales or orders? Reach us directly',csMail:'Support',csWx:'Add WeChat',csWxCap:'Scan to add WeChat support',
+   devnote:'Device & app info is attached automatically to help us debug.',submit:'Submit',submitReq:'Submit request',
+   naEntryT:'Request new exercise',naEntryS:"Can't find an exercise?",
+   naHeroT:'Missing an exercise?',naHeroP:'Tell us — our coaches review each one.',naName:'Exercise name',naWhy:'Why do you need it?',naWhyHelp:'Requests with a reason get reviewed first.',naRef:'Reference video / link',
+   ph_naName:'e.g. Bulgarian split squat',ph_naWhy:'A quick note…',ph_naRef:'Paste a reference link',
+   tkTitle:'Thanks for the feedback!',tkSub:"Got it — we'll follow up.",tkSubReq:'Request submitted — coaches review each one.',tkSubFeat:"Thanks! We'll consider it.",
+   satLab:'By the way, do you like ATOM?',satCap:'optional, one tap',recCap:'max 60s',recStop:'Stop',voice:'Voice'}
+};
+
+// ---------- 双语分类 ----------
+const CATS={
+  ai:{icon:'ai',name:{zh:'AI 识别准确性',en:'AI tracking'},sub:{zh:'计数 / 身体识别 / 讲解',en:'Count / pose / coaching'},
+    subs:{zh:['计数不准','身体识别不准','AI 讲解不清'],en:['Miscounts','Body tracking off','Coaching unclear']}},
+  content:{icon:'content',name:{zh:'课程内容',en:'Course content'},sub:{zh:'示范图文 / 名称 / 部位',en:'Media / name / muscle'},
+    subs:{zh:['示范图文有误','动作名称有误','训练部位有误','动作讲解有误'],en:['Wrong media','Wrong name','Wrong muscle','Wrong description']}},
+  connect:{icon:'connect',name:{zh:'连接数据与使用体验',en:'Device, data & UX'},sub:{zh:'连接 / 同步 / 卡顿 / 交互',en:'Connect / sync / lag / UX'},
+    subs:{zh:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步','卡顿闪退','交互不顺'],en:['Bluetooth pairing','Sensor','Keeps dropping','Records lost','Out of sync','Lag / crash','Clunky UX']}},
+  otherfb:{icon:'otherfb',name:{zh:'其他问题反馈',en:'Other issue'},sub:{zh:'其他没归类的问题',en:'Anything else'},subs:{zh:[],en:[]},
+    label:{zh:'说说你遇到的问题',en:'Tell us what happened'},placeholder:{zh:'说说你遇到的问题…',en:'Tell us what happened…'}},
+  feature:{icon:'feature',name:{zh:'新功能建议',en:'Feature request'},sub:{zh:'希望我们增加或改进的功能',en:'What we could add or improve'},subs:{zh:[],en:[]},
+    label:{zh:'说说你的建议',en:'Your suggestion'},placeholder:{zh:'说说你希望 ATOM 增加或改进什么…',en:'What could ATOM add or improve…'}},
+};
 const ORDER=['ai','content','connect','otherfb','feature'];
-$('#menu').innerHTML = ORDER.map(k=>`<div class="mrow" data-k="${k}"><div><div class="t">${CATS[k].name}</div><div class="s">${CATS[k].sub}</div></div><span class="arw">›</span></div>`).join('');
-document.querySelectorAll('#menu .mrow').forEach(r=>r.onclick=()=>openCat(r.dataset.k));
-// 新增动作申请：课程内容二级里的入口，也可从别处复用直达
-document.getElementById('naEntry').onclick=()=>{naFrom='content';$('#naName').value='';showView('v2n');};
-function openNewAction(){naFrom='';$('#naName').value='';showView('v2n');}
+
+let lang='zh', region='cn', cur='v1', cat='', naFrom='';
+function t(k){return L[lang][k];}
+function cn(o){return o[lang];}
+
+function renderMenu(){
+  $('#menu').innerHTML = ORDER.map(k=>`<div class="mrow" data-k="${k}"><span class="mi">${ICONS[CATS[k].icon]}</span><div class="mtx"><div class="t">${cn(CATS[k].name)}</div><div class="s">${cn(CATS[k].sub)}</div></div><span class="arw">›</span></div>`).join('');
+  document.querySelectorAll('#menu .mrow').forEach(r=>r.onclick=()=>openCat(r.dataset.k));
+}
+function setTitle(){$('#ttl').textContent = cur==='v2'&&cat ? cn(CATS[cat].name) : (cur==='v2n' ? t('naTitle') : t('title'));}
 
 function openCat(k){
   cat=k;
-  var isOther = CATS[k].subs.length===0;
-  $('#subsSect').style.display = isOther ? 'none' : '';
-  $('#subs').innerHTML = CATS[k].subs.map(s=>`<div class="chk"><span class="cb">✓</span><span class="rt">${s}</span></div>`).join('');
+  var C=CATS[k], subsArr=cn(C.subs), isOther=subsArr.length===0;
+  $('#subsSect').innerHTML = t('specific')+' <span class="o">'+t('multi')+'</span>';
+  $('#subsSect').style.display = isOther?'none':'';
+  $('#subs').innerHTML = subsArr.map(s=>`<div class="chk"><span class="cb">✓</span><span class="rt">${s}</span></div>`).join('');
   document.querySelectorAll('#subs .chk').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
   $('#naEntry').classList.toggle('hidden', k!=='content');
-  $('#addLab').innerHTML = (isOther ? (CATS[k].label||'说说你的问题') : '补充说明') + ' <span class="o">选填</span>';
-  $('#pText').placeholder = isOther ? (CATS[k].placeholder||'说说你遇到的问题…') : '还想补充点什么…';
-  // 重置补充区
+  $('#addLab').innerHTML = (isOther?cn(C.label):t('addDefault'))+' <span class="o">'+t('optional')+'</span>';
+  $('#pText').placeholder = isOther?cn(C.placeholder):t('ph_add');
   $('#pText').value='';grow($('#pText'));cnt();rec.del();$('#pRec').style.display='none';
   showView('v2');
 }
@@ -272,29 +313,23 @@ function openCat(k){
 function showView(id){
   ['v1','v2','v2n','thanks'].forEach(v=>$('#'+v).classList.toggle('hidden',v!==id));
   const el=$('#'+id);el.style.animation='none';el.offsetHeight;el.style.animation='';
-  cur=id;
-  $('#ttl').textContent = id==='v2' ? CATS[cat].name : (id==='v2n' ? '新动作申请' : '问题反馈');
+  cur=id;setTitle();
   $('#bk').style.visibility = (id==='v2'||id==='v2n') ? 'visible' : 'hidden';
   $('#foot').classList.toggle('hidden', id==='v1'||id==='thanks');
-  if(id==='v2'){$('#cta').textContent='提交';$('#cta').disabled=false;}
-  if(id==='v2n'){$('#cta').textContent='提交申请';gate();}
+  if(id==='v2'){$('#cta').textContent=t('submit');$('#cta').disabled=false;}
+  if(id==='v2n'){$('#cta').textContent=t('submitReq');gate();}
   $('#body').scrollTop=0;
 }
-$('#bk').onclick=()=>{
-  if(cur==='v2n') showView(naFrom==='content'?'v2':'v1');
-  else if(cur==='v2') showView('v1');
-};
+$('#bk').onclick=()=>{ if(cur==='v2n')showView(naFrom==='content'?'v2':'v1'); else if(cur==='v2')showView('v1'); };
 function gate(){ if(cur==='v2n')$('#cta').disabled=$('#naName').value.trim()===''; }
+document.getElementById('naEntry').onclick=()=>{naFrom='content';$('#naName').value='';showView('v2n');};
+function openNewAction(){naFrom='';$('#naName').value='';showView('v2n');}
 
 function submit_(){
-  $('#tkSub').textContent = cur==='v2n' ? '申请已提交，教练团队会审核每一条。'
-    : (cat==='feature' ? '谢谢你的建议！产品团队会认真评估。' : '我们已收到，会尽快跟进。');
+  $('#tkSub').textContent = cur==='v2n' ? t('tkSubReq') : (cat==='feature' ? t('tkSubFeat') : t('tkSub'));
   showView('thanks');
-  // 真机：构造 report（source=general / category=cat / subs / text / audio / shots / 联系方式 / 静默设备信息）→ uploader.submit
 }
 function pickFace(el){document.querySelectorAll('.face').forEach(f=>f.classList.remove('on'));el.classList.add('on');}
-
-// 文本自适应高度（默认小，写多了才长）
 function grow(t){t.style.height='auto';t.style.height=Math.min(t.scrollHeight,132)+'px';}
 function cnt(){$('#pCnt').textContent=$('#pText').value.length+'/200';}
 
@@ -313,19 +348,48 @@ function addShot(){
   d.querySelector('span').onclick=()=>d.remove();b.insertBefore(d,b.querySelector('.addshot'));
 }
 
-// 区域版本
+// ---------- 语言 ----------
+function setLang(l){lang=l;$('#lZh').classList.toggle('on',l==='zh');$('#lEn').classList.toggle('on',l==='en');applyLang();}
+function applyLang(){
+  document.documentElement.lang=lang;
+  renderMenu();setTitle();
+  $('#intro').textContent=t('intro');$('#prompt').textContent=t('prompt');
+  $('#csText').textContent=t('csText');$('#csMailLab').textContent=t('csMail');$('#csWxLink').textContent=t('csWx');$('#csWxCap').textContent=t('csWxCap');
+  $('#naEntryIc').innerHTML=ICONS.dumbbell;$('#naEntryT').textContent=t('naEntryT');$('#naEntryS').textContent=t('naEntryS');
+  $('#shotLab').innerHTML=t('shots')+' <span class="o">'+t('optional')+'</span>';$('#shotCap').textContent=t('shotsCap');
+  $('#contactIntlLab').innerHTML=t('contactIntl')+' <span class="o">'+t('optional')+'</span>';$('#mail').placeholder=t('ph_mail');
+  $('#contactCnLab').innerHTML=t('contactCn')+' <span class="o">'+t('optional')+'</span>';
+  $('#ctPhone').textContent=t('ctPhone');$('#ctWechat').textContent=t('ctWechat');$('#ctEmail').textContent=t('ctEmail');
+  var on=$('#ctype .tchip.on'); $('#cnContact').placeholder = t('ph_'+(on?on.dataset.ct:'phone'));
+  $('#wecomT').textContent=t('wecomT');$('#wecomS').textContent=t('wecomS');$('#wecomCap').textContent=t('wecomCap');
+  $('#devnote').textContent=t('devnote');$('#recCap').textContent=t('recCap');$('#stopBtn').textContent=t('recStop');$('#voiceLab').textContent=t('voice');
+  $('#naHeroT').textContent=t('naHeroT');$('#naHeroP').textContent=t('naHeroP');$('#naNameLab').textContent=t('naName');
+  $('#naWhyLab').innerHTML=t('naWhy')+' <span class="o">'+t('optional')+'</span>';$('#naWhyHelp').textContent=t('naWhyHelp');
+  $('#naRefLab').innerHTML=t('naRef')+' <span class="o">'+t('optional')+'</span>';
+  $('#naName').placeholder=t('ph_naName');$('#naWhy').placeholder=t('ph_naWhy');$('#naRef').placeholder=t('ph_naRef');
+  $('#tkTitle').textContent=t('tkTitle');$('#satLab').textContent=t('satLab');$('#satCap').textContent=t('satCap');
+  if(cur==='v2'){$('#cta').textContent=t('submit');} if(cur==='v2n'){$('#cta').textContent=t('submitReq');}
+  // 若正处于二级，就地刷新子项/标签，保留已选与已填
+  if(cur==='v2'&&cat){
+    var C=CATS[cat],subsArr=cn(C.subs),isOther=subsArr.length===0;
+    $('#subsSect').innerHTML=t('specific')+' <span class="o">'+t('multi')+'</span>';
+    document.querySelectorAll('#subs .chk .rt').forEach((el,i)=>{if(subsArr[i])el.textContent=subsArr[i];});
+    $('#addLab').innerHTML=(isOther?cn(C.label):t('addDefault'))+' <span class="o">'+t('optional')+'</span>';
+    if(!$('#pText').value)$('#pText').placeholder=isOther?cn(C.placeholder):t('ph_add');
+  }
+}
+
+// ---------- 版本 ----------
 function applyRegion(r){
   region=r;
-  $('#contactCn').style.display = r==='cn'?'':'none';
-  $('#contactIntl').style.display = r==='intl'?'':'none';
-  $('#rCn').classList.toggle('on', r==='cn');
-  $('#rIntl').classList.toggle('on', r==='intl');
-  $('#csWx').style.display = r==='cn'?'':'none';
+  $('#contactCn').style.display=r==='cn'?'':'none';
+  $('#contactIntl').style.display=r==='intl'?'':'none';
+  $('#rCn').classList.toggle('on',r==='cn');$('#rIntl').classList.toggle('on',r==='intl');
+  $('#csWx').style.display=r==='cn'?'':'none';
 }
 document.querySelectorAll('#ctype .tchip').forEach(c=>{
   c.onclick=()=>{document.querySelectorAll('#ctype .tchip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
-    var ph={phone:'手机号，方便更快联系你',wechat:'微信号，方便更快联系你',email:'邮箱地址，方便更快联系你'};
-    $('#cnContact').placeholder = ph[c.dataset.ct];};
+    $('#cnContact').placeholder=t('ph_'+c.dataset.ct);};
 });
 $('#wecom').onclick=()=>$('#wecomBig').classList.toggle('on');
 const QR='<svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none"><rect width="100" height="100" fill="#fff"/><g fill="#111"><rect x="6" y="6" width="24" height="24"/><rect x="70" y="6" width="24" height="24"/><rect x="6" y="70" width="24" height="24"/></g><g fill="#fff"><rect x="10" y="10" width="16" height="16"/><rect x="74" y="10" width="16" height="16"/><rect x="10" y="74" width="16" height="16"/></g><g fill="#111"><rect x="14" y="14" width="8" height="8"/><rect x="78" y="14" width="8" height="8"/><rect x="14" y="78" width="8" height="8"/><rect x="40" y="8" width="6" height="6"/><rect x="52" y="14" width="6" height="6"/><rect x="60" y="8" width="6" height="6"/><rect x="42" y="40" width="6" height="6"/><rect x="54" y="46" width="6" height="6"/><rect x="66" y="40" width="6" height="6"/><rect x="40" y="60" width="6" height="6"/><rect x="52" y="66" width="6" height="6"/><rect x="72" y="58" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="72" y="72" width="6" height="6"/><rect x="84" y="60" width="6" height="6"/><rect x="8" y="40" width="6" height="6"/><rect x="8" y="52" width="6" height="6"/><rect x="20" y="46" width="6" height="6"/></g></svg>';
@@ -334,8 +398,7 @@ document.querySelectorAll('.qr').forEach(e=>e.innerHTML=QR);
 $('#csWxLink').onclick=()=>$('#csWxBig').classList.toggle('on');
 
 function reset_(){location.reload();}
-applyRegion('cn');
-showView('v1');
+applyLang();applyRegion('cn');showView('v1');
 </script>
 </body>
 </html>
