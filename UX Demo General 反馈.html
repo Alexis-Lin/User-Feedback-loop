@@ -12,13 +12,12 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;
-  background:var(--bg);color:var(--ink);}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);}
 .stage{display:flex;gap:26px;align-items:flex-start;justify-content:center;min-height:100vh;padding:28px 20px;flex-wrap:wrap;}
 .side{width:210px;flex:none;padding-top:8px;}
 .side h1{font-size:15px;margin:0 0 6px;}
-.side p{font-size:13px;color:var(--ink2);line-height:1.6;margin:0 0 14px;}
-.side .btn{font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;}
+.side p{font-size:13px;color:var(--ink2);line-height:1.6;margin:0 0 12px;}
+.side .btn{font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;display:block;width:100%;margin-bottom:8px;text-align:left;}
 @media(max-height:930px){.phone{zoom:.86;}}
 @media(max-height:800px){.phone{zoom:.76;}}
 
@@ -34,19 +33,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .nav .rt{width:30px;}
 
 .body{flex:1;overflow-y:auto;padding:6px 22px 24px;}
-.intro{font-size:15px;color:var(--ink2);line-height:1.5;margin:4px 2px 22px;}
+.view.hidden{display:none;}
+.view{animation:in .26s ease;}
+@keyframes in{from{opacity:0;transform:translateX(12px);}to{opacity:1;transform:none;}}
 
+.intro{font-size:15px;color:var(--ink2);line-height:1.5;margin:4px 2px 22px;}
 .sect{font-size:15px;font-weight:600;margin:0 0 12px;}
 .sect .o{font-size:13px;font-weight:400;color:var(--ink3);}
 .chips{display:flex;flex-wrap:wrap;gap:10px;}
 .chip{border:1.5px solid var(--line);border-radius:12px;padding:11px 15px;font-size:16px;cursor:pointer;background:#fff;}
 .chip.on{background:var(--sel);border-color:var(--selbd);}
 
+.narow{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:12px;cursor:pointer;background:#fff;}
+.narow .t{font-size:16px;}
+.narow .s{font-size:13px;color:var(--ink3);margin-top:2px;}
+.narow .arw{font-size:20px;color:#c4c4c9;}
+
 .lab{font-size:15px;font-weight:600;margin:22px 0 9px;}
 .lab .o{font-size:13px;font-weight:400;color:var(--ink3);}
 .help{font-size:13px;color:var(--ink3);margin:8px 2px 0;line-height:1.5;}
 .cnt{font-size:12px;color:var(--ink3);text-align:right;margin-top:6px;}
-
 .fld{border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px 14px;}
 .fld input,.fld textarea{width:100%;border:0;outline:0;font-family:inherit;font-size:16px;color:var(--ink);background:transparent;resize:none;}
 .fld textarea{min-height:92px;line-height:1.5;}
@@ -61,14 +67,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .stopbtn{border:0;background:#e5342f;color:#fff;font-family:inherit;font-size:14px;border-radius:999px;padding:7px 16px;cursor:pointer;}
 .clip{display:none;align-items:center;gap:8px;margin-top:10px;background:#f2f4e6;border:1px solid #e0e7bf;color:#54631a;border-radius:999px;padding:8px 12px 8px 14px;font-size:14px;width:max-content;}
 .clipx{cursor:pointer;color:#8a985a;padding:0 2px;}
-
 .shots{display:flex;gap:10px;flex-wrap:wrap;}
 .shot,.addshot{width:78px;height:78px;border-radius:12px;flex:none;}
 .addshot{border:1.5px dashed #cfcfd4;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:23px;cursor:pointer;background:#fafafb;}
 .shot{background:#dcdce0;position:relative;}
 .shot span{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:999px;background:#141414;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-
 .devnote{display:flex;gap:8px;font-size:12px;color:var(--ink3);margin-top:20px;background:#f6f6f8;border-radius:10px;padding:10px 12px;line-height:1.5;}
+
+.hero{display:flex;gap:14px;align-items:flex-start;margin:8px 0 4px;}
+.heroic{width:56px;height:52px;flex:none;background:var(--lime);border-radius:14px 14px 14px 3px;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.hero h2{font-size:20px;margin:0 0 4px;}
+.hero p{font-size:14px;color:var(--ink2);margin:0;line-height:1.5;}
 
 .foot{flex:none;padding:12px 22px calc(12px + env(safe-area-inset-bottom,20px));border-top:1px solid var(--sep);background:#fff;}
 .cta{height:52px;width:100%;border:0;border-radius:999px;background:var(--ink);color:#fff;font-family:inherit;font-size:16px;font-weight:500;cursor:pointer;}
@@ -83,82 +92,90 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .face{width:64px;height:64px;border-radius:16px;border:1.5px solid var(--line);background:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s;}
 .face.on{background:var(--sel);border-color:var(--selbd);transform:scale(1.06);}
 .facecap{font-size:12px;color:var(--ink3);}
-.hidden{display:none;}
 </style>
 </head>
 <body>
 <div class="stage">
 <div class="side">
   <h1>General 问题反馈</h1>
-  <p>简化版：单页一屏。选类型（可多选）→ 补充说明/录音/截图/邮箱 → 提交后满意度。选「新增动作申请」会切到专属字段。与课中报错共用后端。</p>
+  <p>一级：问题反馈单页（问题类多选）。二级：新动作申请独立页，可复用（动作库等入口也能直接进）。</p>
   <button class="btn" onclick="reset_()">重置</button>
+  <button class="btn" onclick="showView('v2')">↗ 直接进「新动作申请」页（复用演示）</button>
 </div>
 
 <div class="phone"><div class="island"></div><div class="screen">
   <div class="sb"><span>10:59</span><span>LTE <span class="batt"></span></span></div>
-  <div class="nav"><span class="bk" id="bk">‹</span><span class="ttl">问题反馈</span><span class="rt"></span></div>
+  <div class="nav"><span class="bk" id="bk">‹</span><span class="ttl" id="ttl">问题反馈</span><span class="rt"></span></div>
 
   <div class="body" id="body">
-    <!-- 表单 -->
-    <div id="form">
-      <div class="intro">遇到问题或有建议？告诉我们，我们会尽快改进。</div>
 
+    <!-- 一级：问题反馈 -->
+    <div class="view" id="v1">
+      <div class="intro">遇到问题或有建议？告诉我们，我们会尽快改进。</div>
       <div class="sect">你想反馈什么？ <span class="o">可多选</span></div>
       <div class="chips" id="cats">
         <div class="chip" data-k="ai">AI 识别准确性</div>
         <div class="chip" data-k="content">课程内容</div>
         <div class="chip" data-k="device">设备与数据</div>
         <div class="chip" data-k="exp">体验与建议</div>
-        <div class="chip" data-k="newaction">新增动作申请</div>
       </div>
 
-      <!-- 问题类字段 -->
-      <div id="pf">
-        <div class="lab">补充说明 <span class="o">选填</span></div>
-        <div class="fld">
-          <div class="fieldmic">
-            <textarea id="pText" maxlength="200" rows="3" placeholder="说说你遇到的问题…" oninput="cnt()"></textarea>
-            <button class="micbtn" onclick="rec.start()">🎙</button>
-          </div>
-          <div class="cnt" id="pCnt">0/200</div>
+      <div class="narow" id="naEntry">
+        <div><div class="t">新增动作申请</div><div class="s">找不到想要的动作？教练团队会审核</div></div>
+        <span class="arw">›</span>
+      </div>
+
+      <div class="lab">补充说明 <span class="o">选填</span></div>
+      <div class="fld">
+        <div class="fieldmic">
+          <textarea id="pText" maxlength="200" rows="3" placeholder="说说你遇到的问题…" oninput="cnt()"></textarea>
+          <button class="micbtn" onclick="rec.start()">🎙</button>
         </div>
-        <div class="recbar" id="pRec"><span class="rdot"></span><span class="rtime" id="pTime">0:00</span><span class="rcap">60 秒以内</span><button class="stopbtn" onclick="rec.stop()">停止</button></div>
-        <div class="clip" id="pClip">▷ 语音 <span id="pClipT">0:00</span> <span class="clipx" onclick="rec.del()">✕</span></div>
-
-        <div class="lab">截图 <span class="o">选填</span></div>
-        <div class="shots" id="shots"><div class="addshot" onclick="addShot()">⊕</div></div>
-        <div class="help">截图有助于我们更快理解和解决问题。</div>
+        <div class="cnt" id="pCnt">0/200</div>
       </div>
+      <div class="recbar" id="pRec"><span class="rdot"></span><span class="rtime" id="pTime">0:00</span><span class="rcap">60 秒以内</span><button class="stopbtn" onclick="rec.stop()">停止</button></div>
+      <div class="clip" id="pClip">▷ 语音 <span id="pClipT">0:00</span> <span class="clipx" onclick="rec.del()">✕</span></div>
 
-      <!-- 新增动作字段 -->
-      <div id="af" class="hidden">
-        <div class="lab">动作名称</div>
-        <div class="fld"><input id="naName" placeholder="例如：保加利亚分腿蹲" oninput="gate()"></div>
-        <div class="lab">为什么需要这个动作？ <span class="o">选填</span></div>
-        <div class="fld"><textarea id="naWhy" maxlength="200" placeholder="简单描述一下…"></textarea></div>
-        <div class="help">带理由的申请，教练团队会优先审核。</div>
-        <div class="lab">参考视频 / 链接 <span class="o">选填</span></div>
-        <div class="fld"><input id="naRef" placeholder="粘贴一个参考视频链接"></div>
-      </div>
+      <div class="lab">截图 <span class="o">选填</span></div>
+      <div class="shots" id="shots"><div class="addshot" onclick="addShot()">⊕</div></div>
+      <div class="help">截图有助于我们更快理解和解决问题。</div>
 
       <div class="lab">联系邮箱 <span class="o">选填</span></div>
       <div class="fld"><input id="mail" type="email" placeholder="邮箱地址（可能联系你了解更多）"></div>
       <div class="devnote">ⓘ 提交时会自动附带设备与版本信息，帮助我们更快定位。</div>
     </div>
 
-    <!-- 感谢 + 满意度 -->
-    <div id="thanks" class="thanks hidden">
-      <div class="tkic">♥</div>
-      <h2>谢谢你的反馈！</h2>
-      <p id="tkSub">我们已收到，会尽快跟进。</p>
-      <div class="satlab">顺便——你整体还喜欢 ATOM 吗？</div>
-      <div class="faces">
-        <div class="face" onclick="pickFace(this)">😍</div>
-        <div class="face" onclick="pickFace(this)">🙂</div>
-        <div class="face" onclick="pickFace(this)">😕</div>
+    <!-- 二级：新动作申请（独立页，可复用） -->
+    <div class="view hidden" id="v2">
+      <div class="hero">
+        <div class="heroic">🏋</div>
+        <div><h2>找不到想要的动作？</h2><p>告诉我们，教练团队会审核每一条申请。</p></div>
       </div>
-      <div class="facecap">选填，一点即走</div>
+      <div class="lab">动作名称</div>
+      <div class="fld"><input id="naName" placeholder="例如：保加利亚分腿蹲" oninput="gate()"></div>
+      <div class="lab">为什么需要这个动作？ <span class="o">选填</span></div>
+      <div class="fld"><textarea id="naWhy" maxlength="200" placeholder="简单描述一下…"></textarea></div>
+      <div class="help">带理由的申请，教练团队会优先审核。</div>
+      <div class="lab">参考视频 / 链接 <span class="o">选填</span></div>
+      <div class="fld"><input id="naRef" placeholder="粘贴一个参考视频链接"></div>
     </div>
+
+    <!-- 感谢 + 满意度 -->
+    <div class="view hidden" id="thanks">
+      <div class="thanks">
+        <div class="tkic">♥</div>
+        <h2>谢谢你的反馈！</h2>
+        <p id="tkSub">我们已收到，会尽快跟进。</p>
+        <div class="satlab">顺便——你整体还喜欢 ATOM 吗？</div>
+        <div class="faces">
+          <div class="face" onclick="pickFace(this)">😍</div>
+          <div class="face" onclick="pickFace(this)">🙂</div>
+          <div class="face" onclick="pickFace(this)">😕</div>
+        </div>
+        <div class="facecap">选填，一点即走</div>
+      </div>
+    </div>
+
   </div>
 
   <div class="foot" id="foot">
@@ -170,32 +187,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 <script>
 const $=s=>document.querySelector(s);
 const sel=new Set();
-let action=false;
+let cur='v1';
 
+function showView(id){
+  ['v1','v2','thanks'].forEach(v=>$('#'+v).classList.toggle('hidden',v!==id));
+  // 重新触发进入动画
+  const el=$('#'+id);el.style.animation='none';el.offsetHeight;el.style.animation='';
+  cur=id;
+  $('#ttl').textContent = id==='v2' ? '新动作申请' : '问题反馈';
+  $('#bk').style.visibility = id==='v2' ? 'visible' : 'hidden';
+  if(id==='thanks'){$('#foot').style.display='none';}
+  else{$('#foot').style.display='';$('#cta').textContent = id==='v2' ? '提交申请' : '提交';gate();}
+  $('#body').scrollTop=0;
+}
+
+// 一级：问题多选
 document.querySelectorAll('#cats .chip').forEach(c=>{
-  c.onclick=()=>{
-    const k=c.dataset.k;
-    if(k==='newaction'){
-      action=!c.classList.contains('on');
-      document.querySelectorAll('#cats .chip').forEach(x=>x.classList.remove('on'));
-      sel.clear();
-      if(action)c.classList.add('on');
-    }else{
-      action=false;$('[data-k=newaction]').classList.remove('on');
-      c.classList.toggle('on');
-      c.classList.contains('on')?sel.add(k):sel.delete(k);
-    }
-    $('#pf').classList.toggle('hidden',action);
-    $('#af').classList.toggle('hidden',!action);
-    $('#cta').textContent=action?'提交申请':'提交';
-    gate();
-  };
+  c.onclick=()=>{c.classList.toggle('on');
+    c.classList.contains('on')?sel.add(c.dataset.k):sel.delete(c.dataset.k);gate();};
 });
+// 一级 → 二级
+$('#naEntry').onclick=()=>showView('v2');
+// 二级 → 一级
+$('#bk').onclick=()=>{ if(cur==='v2')showView('v1'); };
 
 function gate(){
-  const ok = action ? $('#naName').value.trim()!=='' : sel.size>0;
+  const ok = cur==='v2' ? $('#naName').value.trim()!=='' : sel.size>0;
   $('#cta').disabled=!ok;
 }
+
+function submit_(){
+  $('#tkSub').textContent = cur==='v2' ? '申请已提交，教练团队会审核每一条。' : '我们已收到，会尽快跟进。';
+  showView('thanks');
+  // 真机：构造 report（source=general / category=[...] 或 new_action / text / audio / shots / email / 静默设备信息）→ uploader.submit
+}
+function pickFace(el){document.querySelectorAll('.face').forEach(f=>f.classList.remove('on'));el.classList.add('on');}
 
 // 录音（模拟）
 const rec={t:null,sec:0,
@@ -207,27 +233,13 @@ const rec={t:null,sec:0,
 };
 function fmt(s){return (s/60|0)+':'+(s%60).toString().padStart(2,'0');}
 function cnt(){$('#pCnt').textContent=$('#pText').value.length+'/200';}
-
 function addShot(){
   const b=$('#shots');if(b.querySelectorAll('.shot').length>=3)return;
   const d=document.createElement('div');d.className='shot';d.innerHTML='<span>✕</span>';
-  d.querySelector('span').onclick=()=>d.remove();
-  b.insertBefore(d,b.querySelector('.addshot'));
-}
-
-function submit_(){
-  $('#tkSub').textContent = action ? '申请已提交，教练团队会审核每一条。' : '我们已收到，会尽快跟进。';
-  $('#form').classList.add('hidden');
-  $('#thanks').classList.remove('hidden');
-  $('#foot').style.display='none';
-  $('#bk').style.visibility='hidden';
-  // 真机：构造 report（source=general / category / text / audio / shots / email / 静默设备信息）→ uploader.submit
-}
-function pickFace(el){
-  document.querySelectorAll('.face').forEach(f=>f.classList.remove('on'));
-  el.classList.add('on');
+  d.querySelector('span').onclick=()=>d.remove();b.insertBefore(d,b.querySelector('.addshot'));
 }
 function reset_(){location.reload();}
+showView('v1');
 </script>
 </body>
 </html>
