@@ -149,10 +149,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 
     <!-- 二级：某分类的多选 + 补充 -->
     <div class="view hidden" id="v2">
-      <div class="sect" style="margin-top:8px;">具体是哪些？ <span class="o">可多选，也可直接提交</span></div>
+      <div class="sect" id="subsSect" style="margin-top:8px;">具体是哪些？ <span class="o">可多选，也可直接提交</span></div>
       <div class="checks" id="subs"></div>
 
-      <div class="lab">补充说明 <span class="o">选填</span></div>
+      <div class="lab" id="addLab">补充说明 <span class="o">选填</span></div>
       <div class="fld">
         <div class="fieldmic">
           <textarea id="pText" maxlength="200" rows="1" placeholder="还想补充点什么…" oninput="grow(this);cnt()"></textarea>
@@ -233,6 +233,7 @@ const CATS={
   content:{name:'课程内容',sub:'示范图文 / 名称 / 训练部位',subs:['示范图文有误','动作名称有误','训练部位有误','动作讲解有误']},
   device:{name:'设备与数据',sub:'连接 / 同步 / 记录',subs:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步']},
   exp:{name:'体验与建议',sub:'卡顿 / 交互 / 建议',subs:['卡顿闪退','交互不顺','功能建议','其他']},
+  other:{name:'其他',sub:'不确定选哪个 / 想说的比较多',subs:[]},
 };
 let cur='v1', cat='', region='cn';
 
@@ -245,8 +246,12 @@ document.querySelectorAll('#menu .mrow').forEach(r=>r.onclick=()=>openCat(r.data
 function openCat(k){
   if(k==='newaction'){cat='newaction';showView('v2n');return;}
   cat=k;
+  var isOther = CATS[k].subs.length===0;
+  $('#subsSect').style.display = isOther ? 'none' : '';
   $('#subs').innerHTML = CATS[k].subs.map(s=>`<div class="chk"><span class="cb">✓</span><span class="rt">${s}</span></div>`).join('');
   document.querySelectorAll('#subs .chk').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
+  $('#addLab').innerHTML = isOther ? '说说你的问题 <span class="o">选填</span>' : '补充说明 <span class="o">选填</span>';
+  $('#pText').placeholder = isOther ? '说说你遇到的问题，或想跟我们说的…' : '还想补充点什么…';
   // 重置补充区
   $('#pText').value='';grow($('#pText'));cnt();rec.del();$('#pRec').style.display='none';
   showView('v2');
