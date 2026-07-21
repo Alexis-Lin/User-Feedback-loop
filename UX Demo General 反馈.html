@@ -241,14 +241,14 @@ const $=s=>document.querySelector(s);
 const CATS={
   ai:{name:'AI 识别准确性',sub:'计数 / 身体识别 / 讲解',subs:['计数不准','身体识别不准','AI 讲解不清']},
   content:{name:'课程内容',sub:'示范图文 / 名称 / 训练部位',subs:['示范图文有误','动作名称有误','训练部位有误','动作讲解有误']},
-  device:{name:'设备与数据',sub:'连接 / 同步 / 记录',subs:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步']},
-  exp:{name:'体验与建议',sub:'卡顿 / 交互 / 功能建议',subs:['卡顿闪退','交互不顺','功能建议','其他']},
-  other:{name:'其他',sub:'不确定选哪个 / 想说的比较多',subs:[],label:'说说你的问题',placeholder:'说说你遇到的问题，或想跟我们说的…'},
+  connect:{name:'连接数据与使用体验',sub:'连接 / 同步 / 卡顿 / 交互',subs:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步','卡顿闪退','交互不顺']},
+  otherfb:{name:'其他问题反馈',sub:'其他没归类的问题',subs:[],label:'说说你遇到的问题',placeholder:'说说你遇到的问题，或想跟我们说的…'},
+  feature:{name:'新功能建议',sub:'希望我们增加或改进的功能',subs:[],label:'说说你的建议',placeholder:'说说你希望 ATOM 增加或改进什么功能…'},
 };
 let cur='v1', cat='', region='cn', naFrom='';
 
 // 一级菜单渲染（5 项；新增动作申请下沉到「课程内容」二级）
-const ORDER=['ai','content','device','exp','other'];
+const ORDER=['ai','content','connect','otherfb','feature'];
 $('#menu').innerHTML = ORDER.map(k=>`<div class="mrow" data-k="${k}"><div><div class="t">${CATS[k].name}</div><div class="s">${CATS[k].sub}</div></div><span class="arw">›</span></div>`).join('');
 document.querySelectorAll('#menu .mrow').forEach(r=>r.onclick=()=>openCat(r.dataset.k));
 // 新增动作申请：课程内容二级里的入口，也可从别处复用直达
@@ -287,7 +287,8 @@ $('#bk').onclick=()=>{
 function gate(){ if(cur==='v2n')$('#cta').disabled=$('#naName').value.trim()===''; }
 
 function submit_(){
-  $('#tkSub').textContent = cur==='v2n' ? '申请已提交，教练团队会审核每一条。' : '我们已收到，会尽快跟进。';
+  $('#tkSub').textContent = cur==='v2n' ? '申请已提交，教练团队会审核每一条。'
+    : (cat==='feature' ? '谢谢你的建议！产品团队会认真评估。' : '我们已收到，会尽快跟进。');
   showView('thanks');
   // 真机：构造 report（source=general / category=cat / subs / text / audio / shots / 联系方式 / 静默设备信息）→ uploader.submit
 }
