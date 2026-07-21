@@ -174,6 +174,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
         </div>
         <div class="cnt" id="pCnt">0/200</div>
       </div>
+      <div class="help" id="addHelp"></div>
       <div class="recbar" id="pRec"><span class="rdot"></span><span class="rtime" id="pTime">0:00</span><span class="rcap" id="recCap"></span><button class="stopbtn" id="stopBtn" onclick="rec.stop()"></button></div>
       <div class="clip" id="pClip">▷ <span id="voiceLab"></span> <span id="pClipT">0:00</span> <span class="clipx" onclick="rec.del()">✕</span></div>
 
@@ -248,6 +249,7 @@ const ICONS={
 // ---------- 文案字典 ----------
 const L={
   zh:{title:'问题反馈',intro:'选个类型，下一步细说。',prompt:'你想反馈什么？',specific:'具体是哪些？',multi:'可多选，也可直接提交',addDefault:'补充说明',ph_add:'还想说点什么…',optional:'选填',
+   addHelp:'没有合适的？想补充或有其他情况，打字 / 语音都行。',addHelpFree:'打字，或点麦克风语音都行。',
    shots:'截图',shotsCap:'最多 3 张',contactCn:'联系方式',contactIntl:'联系邮箱',ph_mail:'邮箱地址（选填）',
    ctPhone:'手机号',ctWechat:'微信号',ctEmail:'邮箱',ph_phone:'手机号，方便联系你',ph_wechat:'微信号，方便联系你',ph_email:'邮箱，方便联系你',
    wecomT:'加企业微信客服',wecomS:'问题复杂？加一下更快',wecomCap:'长按识别，加企业微信客服',
@@ -259,6 +261,7 @@ const L={
    tkTitle:'谢谢你的反馈！',tkSub:'已收到，会尽快跟进。',tkSubReq:'申请已提交，教练会逐一审核。',tkSubFeat:'谢谢建议！产品团队会认真评估。',
    satLab:'顺便，你喜欢 ATOM 吗？',satCap:'选填，一点即走',recCap:'60 秒内',recStop:'停止',voice:'语音'},
   en:{title:'Feedback',intro:'Pick a type, add details next.',prompt:"What's this about?",specific:'Which ones?',multi:'Pick any, or just submit',addDefault:'Details',ph_add:'Anything to add…',optional:'optional',
+   addHelp:'None fit, or more to add? Type or use voice.',addHelpFree:'Type, or tap the mic to speak.',
    shots:'Screenshots',shotsCap:'up to 3',contactCn:'Contact',contactIntl:'Email',ph_mail:'Your email (optional)',
    ctPhone:'Phone',ctWechat:'WeChat',ctEmail:'Email',ph_phone:'Phone, so we can reach you',ph_wechat:'WeChat, so we can reach you',ph_email:'Email, so we can reach you',
    wecomT:'Add WeChat support',wecomS:'Complex issue? Faster this way',wecomCap:'Scan to add WeChat support',
@@ -306,6 +309,7 @@ function openCat(k){
   $('#naEntry').classList.toggle('hidden', k!=='content');
   $('#addLab').innerHTML = (isOther?cn(C.label):t('addDefault'))+' <span class="o">'+t('optional')+'</span>';
   $('#pText').placeholder = isOther?cn(C.placeholder):t('ph_add');
+  $('#addHelp').textContent = isOther?t('addHelpFree'):t('addHelp');
   $('#pText').value='';grow($('#pText'));cnt();rec.del();$('#pRec').style.display='none';
   showView('v2');
 }
@@ -376,6 +380,7 @@ function applyLang(){
     document.querySelectorAll('#subs .chk .rt').forEach((el,i)=>{if(subsArr[i])el.textContent=subsArr[i];});
     $('#addLab').innerHTML=(isOther?cn(C.label):t('addDefault'))+' <span class="o">'+t('optional')+'</span>';
     if(!$('#pText').value)$('#pText').placeholder=isOther?cn(C.placeholder):t('ph_add');
+    $('#addHelp').textContent=isOther?t('addHelpFree'):t('addHelp');
   }
 }
 
