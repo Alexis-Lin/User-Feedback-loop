@@ -49,6 +49,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .mrow .s{font-size:13px;color:var(--ink3);margin-top:2px;}
 .mrow .arw{font-size:20px;color:#c4c4c9;}
 .mrow.na{background:#fafafb;}
+.csmail{font-size:13px;color:var(--ink3);margin-top:22px;text-align:center;}
+.csmail a{color:#2a7d46;text-decoration:none;font-weight:500;}
 
 /* 二级：多选 */
 .checks{display:flex;flex-direction:column;}
@@ -142,6 +144,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       <div class="intro">遇到问题或有建议？先选个类型，下一步再细说。</div>
       <div class="sect">你想反馈什么？</div>
       <div class="menu" id="menu"></div>
+      <div class="csmail">想直接找我们？客服邮箱 <a href="mailto:cs@bodypark.fit">cs@bodypark.fit</a></div>
     </div>
 
     <!-- 二级：某分类的多选 + 补充 -->
@@ -173,6 +176,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
         <div class="ctype" id="ctype">
           <span class="tchip on" data-ct="phone">手机号</span>
           <span class="tchip" data-ct="wechat">微信号</span>
+          <span class="tchip" data-ct="email">邮箱</span>
         </div>
         <div class="fld"><input id="cnContact" placeholder="手机号，方便更快联系你"></div>
         <div class="wecom" id="wecom">
@@ -298,7 +302,8 @@ function applyRegion(r){
 }
 document.querySelectorAll('#ctype .tchip').forEach(c=>{
   c.onclick=()=>{document.querySelectorAll('#ctype .tchip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
-    $('#cnContact').placeholder = c.dataset.ct==='wechat' ? '微信号，方便更快联系你' : '手机号，方便更快联系你';};
+    var ph={phone:'手机号，方便更快联系你',wechat:'微信号，方便更快联系你',email:'邮箱地址，方便更快联系你'};
+    $('#cnContact').placeholder = ph[c.dataset.ct];};
 });
 $('#wecom').onclick=()=>$('#wecomBig').classList.toggle('on');
 const QR='<svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none"><rect width="100" height="100" fill="#fff"/><g fill="#111"><rect x="6" y="6" width="24" height="24"/><rect x="70" y="6" width="24" height="24"/><rect x="6" y="70" width="24" height="24"/></g><g fill="#fff"><rect x="10" y="10" width="16" height="16"/><rect x="74" y="10" width="16" height="16"/><rect x="10" y="74" width="16" height="16"/></g><g fill="#111"><rect x="14" y="14" width="8" height="8"/><rect x="78" y="14" width="8" height="8"/><rect x="14" y="78" width="8" height="8"/><rect x="40" y="8" width="6" height="6"/><rect x="52" y="14" width="6" height="6"/><rect x="60" y="8" width="6" height="6"/><rect x="42" y="40" width="6" height="6"/><rect x="54" y="46" width="6" height="6"/><rect x="66" y="40" width="6" height="6"/><rect x="40" y="60" width="6" height="6"/><rect x="52" y="66" width="6" height="6"/><rect x="72" y="58" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="72" y="72" width="6" height="6"/><rect x="84" y="60" width="6" height="6"/><rect x="8" y="40" width="6" height="6"/><rect x="8" y="52" width="6" height="6"/><rect x="20" y="46" width="6" height="6"/></g></svg>';
