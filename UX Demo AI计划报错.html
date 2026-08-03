@@ -55,7 +55,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .pdetail{flex:none;padding:0 22px;background:#fff;border:1px solid var(--line2,#dcdce0);color:var(--ink);}
 .pstart{flex:1;background:#141414;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;}
 
-.react{display:flex;gap:8px;margin:14px 2px 0;}
+.react{display:flex;align-items:center;gap:8px;margin:14px 2px 0;}
+.rbtn.reported{background:#fdeceb;border-color:#f3c9c6;color:var(--danger);}
+.donebadge{display:none;align-items:center;gap:4px;font-size:13px;color:var(--ink2);margin-left:4px;}
+.donebadge .ck{color:#3aa76d;}
 .rbtn{width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink2);}
 .rbtn svg{width:20px;height:20px;}
 .rbtn.on-like{background:var(--sel);border-color:var(--selbd);color:#4a5a14;}
@@ -145,6 +148,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
     <div class="react">
       <div class="rbtn" id="likeBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M7 10v10H4V10zM7 10l4-7c1.6 0 2.5 1.2 2.2 2.7L12.7 9H19a2 2 0 0 1 2 2.3l-1.2 6.5A2 2 0 0 1 17.8 20H7"/></svg></div>
       <div class="rbtn" id="badBtn" title="吐槽/报错"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M17 14V4h3v10zM17 14l-4 7c-1.6 0-2.5-1.2-2.2-2.7l.5-3.3H5a2 2 0 0 1-2-2.3l1.2-6.5A2 2 0 0 1 6.2 4H17"/></svg></div>
+      <span class="donebadge" id="doneBadge"><span class="ck">✓</span> <span id="doneTxt"></span></span>
     </div>
     <div class="byai" id="byai"></div>
   </div>
@@ -180,7 +184,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 
 <script>
 const $=s=>document.querySelector(s);
-let lang='zh';
+let lang='zh', reported=false;
 const L={
  zh:{thinking:'思考完成',
    msg:'根据你的 5 分钟训练、头前倾 / 高低肩体态纠正目标，我为你安排了居家徒手 · 基础1级的颈肩上背课程。',
@@ -190,7 +194,7 @@ const L={
    opt:[['生成没完成',''],['生成速度太慢',''],['动作选得不对','目标/部位/器械'],['编排不合适','顺序/组数/次数/负重'],['建议新功能','希望增加的功能','feature']],
    addLab:'其他或补充说明',addPh:'说说这个结果的具体问题…',hint:'不想打字？点麦克风直接说（60 秒内）',
    cancel:'取消',submit:'提交',submitEmpty:'直接提交',recCap:'60 秒内',recStop:'停止',voice:'语音',
-   toastLike:'谢谢！很高兴你喜欢 👍',toastReport:'收到，谢谢反馈！'},
+   toastLike:'谢谢！很高兴你喜欢 👍',toastReport:'收到，谢谢反馈！',done:'已反馈'},
  en:{thinking:'Thinking done',
    msg:'Based on your 5-min session and posture goals (forward head / uneven shoulders), here\'s a home, bodyweight, level-1 neck & upper-back plan.',
    planTitle:'Neck, arms & back release',kDur:'Duration',vDur:'5 min',kAct:'Moves',kVol:'Volume',mvLab:'Exercises',
@@ -199,7 +203,7 @@ const L={
    opt:[['Generation didn\'t finish',''],['Too slow',''],['Wrong exercises','goal/muscle/gear'],['Wrong programming','order/sets/reps/load'],['Suggest a feature','what to add','feature']],
    addLab:'Other, or add details',addPh:'Tell us more about this plan…',hint:'Rather talk? Tap the mic (up to 60s)',
    cancel:'Cancel',submit:'Submit',submitEmpty:'Submit anyway',recCap:'max 60s',recStop:'Stop',voice:'Voice',
-   toastLike:'Thanks — glad you like it! 👍',toastReport:'Got it — thanks!'}
+   toastLike:'Thanks — glad you like it! 👍',toastReport:'Got it — thanks!',done:'Reported'}
 };
 function t(k){return L[lang][k];}
 
@@ -213,7 +217,7 @@ function applyLang(){
   $('#inPh').textContent=t('inPh');$('#byai').textContent=t('byai');
   $('#rTitle').textContent=t('rTitle');$('#rSub').textContent=t('rSub');
   $('#addLab').textContent=t('addLab');$('#tin').placeholder=t('addPh');$('#hint').textContent=t('hint');
-  $('#cancel').textContent=t('cancel');$('#rcap').textContent=t('recCap');$('#rstop').textContent=t('recStop');$('#voiceLab').textContent=t('voice');
+  $('#cancel').textContent=t('cancel');$('#rcap').textContent=t('recCap');$('#rstop').textContent=t('recStop');$('#voiceLab').textContent=t('voice');$('#doneTxt').textContent=t('done');
   renderChecks();updateSubmit();
 }
 function renderChecks(){
@@ -232,14 +236,14 @@ function updateSubmit(){var n=document.querySelectorAll('#checks .chk.on').lengt
 
 // 卡片交互
 $('#grid').innerHTML=Array.from({length:8},()=>'<div class="thumb"></div>').join('');
-$('#likeBtn').onclick=function(){this.classList.toggle('on-like');$('#badBtn').classList.remove('on-bad');
+$('#likeBtn').onclick=function(){this.classList.toggle('on-like');
   if(this.classList.contains('on-like'))toast(t('toastLike'));};
-$('#badBtn').onclick=function(){this.classList.add('on-bad');$('#likeBtn').classList.remove('on-like');openSheet();};
+$('#badBtn').onclick=function(){$('#likeBtn').classList.remove('on-like');openSheet();}; // 已反馈后再次点击=重开、可再提交
 
 function openSheet(){reset();$('#dim').style.display='block';$('#sheet').style.display='block';}
-function closeSheet(){$('#dim').style.display='none';$('#sheet').style.display='none';$('#badBtn').classList.remove('on-bad');}
+function closeSheet(){$('#dim').style.display='none';$('#sheet').style.display='none';}
 function reset(){document.querySelectorAll('#checks .chk.on').forEach(c=>c.classList.remove('on'));$('#tin').value='';grow($('#tin'));cnt();rec.del();$('#rec').style.display='none';updateSubmit();}
-function submitReport(){closeSheet();toast(t('toastReport'));}
+function submitReport(){reported=true;$('#badBtn').classList.add('reported');$('#doneBadge').style.display='inline-flex';closeSheet();toast(t('toastReport'));}
 var toastT;
 function toast(m){$('#toast').textContent=m;$('#toast').style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>$('#toast').style.display='none',2000);}
 
