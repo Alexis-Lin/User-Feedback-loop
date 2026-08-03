@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>报错按钮 · 状态设计</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;background:#f2f2f7;color:#111214;padding:34px;}
+h1{font-size:20px;margin:0 0 4px;}
+.sub{font-size:14px;color:#7c7c83;margin:0 0 26px;}
+.row{display:flex;align-items:center;gap:20px;padding:16px 0;border-top:1px solid #e8e8ec;}
+.row:first-of-type{border-top:0;}
+.lab{width:120px;flex:none;}
+.lab .t{font-size:15px;font-weight:600;}
+.lab .d{font-size:12px;color:#9a9a9f;margin-top:3px;}
+.rbtn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;font-size:15px;font-weight:500;padding:9px 16px;border:0;font-family:inherit;}
+.rbtn svg{width:18px;height:18px;}
+.rbtn.new{background:#e9e9ec;color:#33333a;}
+.rbtn.pressed{background:#dadade;transform:scale(.96);}
+.rbtn.reported{background:#e8f3ea;color:#2e7d4f;}
+.rbtn.cooling{background:#f4f0e4;color:#8a7326;}
+.rbtn.disabled{background:#f2f2f4;color:#b8b8be;}
+.rbtn.old{background:#fff;border:1px solid #e5e5ea;color:#6b6b70;font-weight:400;}
+.note{font-size:13px;color:#7c7c83;}
+.tag{display:inline-block;font-size:11px;color:#556417;background:#eef3d6;border-radius:6px;padding:2px 7px;margin-left:8px;}
+</style></head>
+<body>
+<h1>「报错」按钮 · 状态设计</h1>
+<p class="sub">更醒目：从「1px 淡灰描边」升级为「实心浅底 chip + 图标 + 500 字重」，仍保持次级、不刺眼（不用红）。</p>
+
+<div class="row"><div class="lab"><div class="t">旧（对比）</div><div class="d">1px 淡灰描边</div></div>
+  <button class="rbtn old"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 5h16v11H9l-4 3v-3H4z"/><path d="M12 8v3" stroke-linecap="round"/><circle cx="12" cy="13.4" r=".7" fill="currentColor" stroke="none"/></svg> 报错</button>
+  <span class="note">容易被忽略</span></div>
+
+<div class="row"><div class="lab"><div class="t">默认</div><div class="d">idle</div></div>
+  <button class="rbtn new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 5h16v11H9l-4 3v-3H4z"/><path d="M12 8v3" stroke-linecap="round"/><circle cx="12" cy="13.4" r=".7" fill="currentColor" stroke="none"/></svg> 报错</button>
+  <span class="note">实心浅底 + 深色图标/文字，明显更跳<span class="tag">推荐</span></span></div>
+
+<div class="row"><div class="lab"><div class="t">按下</div><div class="d">pressed</div></div>
+  <button class="rbtn new pressed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 5h16v11H9l-4 3v-3H4z"/><path d="M12 8v3" stroke-linecap="round"/><circle cx="12" cy="13.4" r=".7" fill="currentColor" stroke="none"/></svg> 报错</button>
+  <span class="note">底色加深 + 轻微缩放 0.96 + 触感</span></div>
+
+<div class="row"><div class="lab"><div class="t">已反馈</div><div class="d">reported</div></div>
+  <button class="rbtn reported"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> 已反馈</button>
+  <span class="note">提交后确认态（绿）· <b>仍可点</b>再报一次</span></div>
+
+<div class="row"><div class="lab"><div class="t">冷却中</div><div class="d">cooling</div></div>
+  <button class="rbtn cooling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 7.5v5l3 1.8" stroke-linecap="round"/></svg> 已反馈</button>
+  <span class="note">刚提交后短时间内（如 3s）再点 → 轻提示"刚刚已提交"，不重开</span></div>
+
+<div class="row"><div class="lab"><div class="t">不可用</div><div class="d">disabled</div></div>
+  <button class="rbtn disabled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 5h16v11H9l-4 3v-3H4z"/><path d="M12 8v3" stroke-linecap="round"/><circle cx="12" cy="13.4" r=".7" fill="currentColor" stroke="none"/></svg> 报错</button>
+  <span class="note">生成未完成 / 离线且队列已满等 → 置灰不可点</span></div>
+
+</body></html>
