@@ -188,7 +188,7 @@ const L={
    detail:'详情',start:'开始训练',inPh:'输入文字，或按住说话',byai:'内容由 AI 生成',
    rTitle:'结果哪里有问题？',rSub:'可多选；不选也能直接提交',
    opt:[['生成没完成',''],['生成速度太慢',''],['动作选得不对','目标/部位/器械'],['编排不合适','顺序/组数/次数/负重'],['建议新功能','希望增加的功能','feature']],
-   addLab:'其他问题或补充说明',addPh:'说说这个结果的具体问题…',hint:'不想打字？点麦克风直接说（60 秒内）',
+   addLab:'其他或补充说明',addPh:'说说这个结果的具体问题…',hint:'不想打字？点麦克风直接说（60 秒内）',
    cancel:'取消',submit:'提交',submitEmpty:'直接提交',recCap:'60 秒内',recStop:'停止',voice:'语音',
    toastLike:'谢谢！很高兴你喜欢 👍',toastReport:'收到，谢谢反馈！'},
  en:{thinking:'Thinking done',
@@ -220,7 +220,13 @@ function renderChecks(){
   var sel=[...document.querySelectorAll('#checks .chk.on')].map(c=>c.dataset.i);
   var p=lang==='en'?[' (',')']:['（','）'];
   $('#checks').innerHTML=t('opt').map((o,i)=>`<div class="chk${o[2]==='feature'?' feat':''}${sel.indexOf(''+i)>=0?' on':''}" data-i="${i}"><span class="cb">✓</span><span class="rt">${o[0]}${o[1]?`<span class="sub">${p[0]}${o[1]}${p[1]}</span>`:''}</span></div>`).join('');
-  document.querySelectorAll('#checks .chk').forEach(c=>c.onclick=()=>{c.classList.toggle('on');updateSubmit();});
+  document.querySelectorAll('#checks .chk').forEach(c=>c.onclick=()=>{
+    var on=!c.classList.contains('on');c.classList.toggle('on');
+    if(on){ // 「建议新功能」与「报 bug」互斥：提建议 or 报问题，二选一
+      if(c.classList.contains('feat')) document.querySelectorAll('#checks .chk:not(.feat)').forEach(x=>x.classList.remove('on'));
+      else document.querySelectorAll('#checks .chk.feat').forEach(x=>x.classList.remove('on'));
+    }
+    updateSubmit();});
 }
 function updateSubmit(){var n=document.querySelectorAll('#checks .chk.on').length;$('#submit').textContent=n>0?t('submit'):t('submitEmpty');}
 
