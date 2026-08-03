@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 计划结果报错原型 · ATOM</title>
+<style>
+:root{--ink:#111214;--ink2:#6b6b70;--ink3:#7c7c83;--line:#e5e5ea;--sep:#ececf0;--bg:#f2f2f7;--card:#fff;--lime:#c6f24e;--sel:#f4f7e6;--selbd:#cfe07f;--danger:#e5342f;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);}
+.stage{display:flex;gap:26px;align-items:flex-start;justify-content:center;min-height:100vh;padding:28px 20px;flex-wrap:wrap;}
+.side{width:214px;flex:none;padding-top:8px;}
+.side h1{font-size:15px;margin:0 0 6px;}
+.side p{font-size:13px;color:var(--ink2);line-height:1.6;margin:0 0 12px;}
+.dl{font-size:12px;color:var(--ink3);display:block;margin-bottom:4px;}
+.drow{display:flex;gap:6px;margin-bottom:10px;}
+.btn{font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;font-family:inherit;}
+.drow .btn{flex:1;text-align:center;}
+.btn.on{background:var(--sel);border-color:var(--selbd);}
+@media(max-height:930px){.phone{zoom:.86;}}
+@media(max-height:800px){.phone{zoom:.76;}}
+
+.phone{position:relative;width:402px;height:840px;background:#000;border-radius:56px;padding:11px;flex:none;box-shadow:0 10px 40px rgba(0,0,0,.16);}
+.screen{position:relative;width:100%;height:100%;background:#fff;border-radius:46px;overflow:hidden;display:flex;flex-direction:column;}
+.island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:126px;height:34px;background:#000;border-radius:999px;z-index:30;}
+.sb{display:flex;justify-content:space-between;padding:16px 30px 4px;font-size:15px;font-weight:600;flex:none;}
+.batt{display:inline-block;width:26px;height:13px;border:1px solid rgba(0,0,0,.5);border-radius:4px;position:relative;vertical-align:-2px;margin-left:4px;}
+.batt::after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:17px;background:#111;border-radius:2px;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:8px 20px 8px;flex:none;color:#111;font-size:22px;}
+
+.body{flex:1;overflow-y:auto;padding:8px 18px 16px;}
+.aihead{display:flex;align-items:center;gap:8px;margin:4px 2px 10px;}
+.aiava{width:26px;height:26px;border-radius:999px;background:var(--lime);display:flex;align-items:center;justify-content:center;color:#1c2b06;font-size:15px;}
+.ainame{font-size:15px;font-weight:600;}
+.thinkpill{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:12px;padding:11px 14px;font-size:14px;color:var(--ink2);margin-bottom:12px;}
+.thinkpill .ck{color:#3aa76d;}
+.thinkpill .arw{margin-left:auto;color:#c4c4c9;}
+.msg{font-size:15px;line-height:1.6;color:var(--ink);margin:0 2px 14px;}
+
+.plan{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--card);}
+.plan h3{font-size:17px;margin:0 0 10px;}
+.picons{display:flex;gap:12px;color:var(--ink2);margin-bottom:14px;}
+.picons svg{width:20px;height:20px;}
+.stats{display:flex;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--sep);}
+.stat{flex:1;}
+.stat .k{font-size:12px;color:var(--ink3);}
+.stat .v{font-size:16px;font-weight:600;margin-top:3px;}
+.stat .v small{font-size:12px;font-weight:400;color:var(--ink3);}
+.mvlab{font-size:13px;color:var(--ink2);margin:14px 0 8px;}
+.grid{display:flex;flex-wrap:wrap;gap:7px;}
+.thumb{width:60px;height:60px;border-radius:8px;background:#e6e6ea;flex:none;}
+.planfoot{display:flex;gap:12px;margin-top:16px;}
+.pbtn{height:46px;border-radius:999px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;border:0;}
+.pdetail{flex:none;padding:0 22px;background:#fff;border:1px solid var(--line2,#dcdce0);color:var(--ink);}
+.pstart{flex:1;background:#141414;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;}
+
+.react{display:flex;gap:8px;margin:14px 2px 0;}
+.rbtn{width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink2);}
+.rbtn svg{width:20px;height:20px;}
+.rbtn.on-like{background:var(--sel);border-color:var(--selbd);color:#4a5a14;}
+.rbtn.on-bad{background:#fdeceb;border-color:#f3c9c6;color:var(--danger);}
+.byai{text-align:center;font-size:12px;color:var(--ink3);margin-top:16px;}
+
+.inbar{flex:none;padding:10px 18px calc(10px + env(safe-area-inset-bottom,16px));border-top:1px solid var(--sep);display:flex;align-items:center;gap:10px;}
+.inbox{flex:1;border:1px solid var(--line);border-radius:999px;padding:11px 16px;font-size:15px;color:var(--ink3);}
+.inmic{width:34px;height:34px;border-radius:999px;background:#eef3d6;color:#556417;display:flex;align-items:center;justify-content:center;font-size:16px;}
+
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.42);display:none;z-index:10;}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;padding:8px 18px 16px;display:none;z-index:11;}
+.grab{width:40px;height:5px;background:#d8d8de;border-radius:3px;margin:6px auto 12px;}
+.shead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:0 2px 4px;}
+.stitle{font-size:19px;font-weight:600;}
+.ssub{font-size:13px;color:var(--ink3);margin-top:3px;}
+.xbtn{width:30px;height:30px;border-radius:999px;background:#efeff2;color:#8a8a90;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;font-size:15px;}
+.checks{display:flex;flex-direction:column;margin-top:8px;}
+.chk{display:flex;align-items:center;gap:11px;padding:12px 2px;cursor:pointer;}
+.cb{width:22px;height:22px;border:2px solid #c9c9ce;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:13px;font-weight:700;}
+.chk.on .cb{background:var(--ink);border-color:var(--ink);color:#fff;}
+.chk .rt{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chk .rt .sub{color:var(--ink3);font-size:13px;}
+.addhead{display:flex;justify-content:space-between;align-items:baseline;margin:16px 2px 8px;}
+.addlab{font-size:14px;color:var(--ink2);}
+.cnt{font-size:12px;color:var(--ink3);}
+.fld{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px 14px;}
+.fieldmic{display:flex;align-items:flex-end;gap:10px;}
+.tin{flex:1;border:0;outline:0;background:transparent;font-family:inherit;font-size:16px;line-height:1.5;color:var(--ink);resize:none;min-height:24px;max-height:120px;overflow-y:auto;}
+.tin::placeholder{color:var(--ink3);}
+.micbtn{width:36px;height:36px;border-radius:999px;background:#eef3d6;color:#556417;border:0;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;font-size:17px;}
+.recbar{display:none;align-items:center;gap:10px;border:1px solid var(--danger);background:#fdeceb;border-radius:14px;padding:11px 14px;margin-top:10px;}
+.rdot{width:11px;height:11px;border-radius:999px;background:var(--danger);animation:pulse 1s infinite;}
+@keyframes pulse{50%{opacity:.35;}}
+.rtime{font-size:16px;color:#9a2422;font-variant-numeric:tabular-nums;}
+.rcap{font-size:13px;color:#9a2422;opacity:.8;flex:1;}
+.stopbtn{border:0;background:var(--danger);color:#fff;font-family:inherit;font-size:14px;border-radius:999px;padding:7px 16px;cursor:pointer;}
+.clip{display:none;align-items:center;gap:8px;margin-top:10px;background:#f2f4e6;border:1px solid #e0e7bf;color:#54631a;border-radius:999px;padding:8px 12px 8px 14px;font-size:14px;width:max-content;}
+.clipx{cursor:pointer;color:#8a985a;}
+.hint{font-size:13px;color:var(--ink3);margin:8px 2px 0;}
+.foot{display:flex;gap:12px;margin-top:18px;}
+.cancel{flex:none;border:0;background:#efeff2;color:var(--ink);font-family:inherit;font-size:15px;border-radius:999px;padding:0 22px;height:50px;cursor:pointer;}
+.submit{flex:1;border:0;background:#141414;color:#fff;font-family:inherit;font-size:15px;font-weight:500;border-radius:999px;height:50px;cursor:pointer;}
+
+.toast{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);width:78%;background:rgba(18,18,18,.94);color:#fff;padding:14px 18px;border-radius:14px;text-align:center;display:none;z-index:12;font-size:15px;}
+</style>
+</head>
+<body>
+<div class="stage">
+<div class="side">
+  <h1>AI 计划结果 · 报错反馈</h1>
+  <p>结果卡左下角 👍点赞 / 👎吐槽（吐槽=报错）。单步表单：4 项单行分类 + 补充说明(打字/语音)。语言仅原型预览用，真机跟随系统。</p>
+  <span class="dl">语言 / Language</span>
+  <div class="drow"><button class="btn on" id="lZh" onclick="setLang('zh')">中文</button><button class="btn" id="lEn" onclick="setLang('en')">EN</button></div>
+</div>
+
+<div class="phone"><div class="island"></div><div class="screen">
+  <div class="sb"><span>11:53</span><span>·ıll <span style="font-size:13px">5G</span> <span class="batt"></span></span></div>
+  <div class="nav"><span>☰</span><span style="font-size:20px;cursor:pointer">✕</span></div>
+
+  <div class="body" id="body">
+    <div class="aihead"><span class="aiava">✦</span><span class="ainame">Atom AI</span></div>
+    <div class="thinkpill"><span class="ck">✓</span> <span id="thinking"></span> <span class="arw">›</span></div>
+    <div class="msg" id="msg"></div>
+
+    <div class="plan">
+      <h3 id="planTitle"></h3>
+      <div class="picons">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 9.5v5M6.6 7.5v9M17.4 7.5v9M20 9.5v5M6.6 12h10.8"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k" id="kDur"></div><div class="v" id="vDur"></div></div>
+        <div class="stat"><div class="k" id="kAct"></div><div class="v">8</div></div>
+        <div class="stat"><div class="k" id="kVol"></div><div class="v">0<small> kg</small></div></div>
+      </div>
+      <div class="mvlab" id="mvLab"></div>
+      <div class="grid" id="grid"></div>
+      <div class="planfoot">
+        <button class="pbtn pdetail" id="bDetail"></button>
+        <button class="pbtn pstart" id="bStart"></button>
+      </div>
+    </div>
+
+    <div class="react">
+      <div class="rbtn" id="likeBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M7 10v10H4V10zM7 10l4-7c1.6 0 2.5 1.2 2.2 2.7L12.7 9H19a2 2 0 0 1 2 2.3l-1.2 6.5A2 2 0 0 1 17.8 20H7"/></svg></div>
+      <div class="rbtn" id="badBtn" title="吐槽/报错"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M17 14V4h3v10zM17 14l-4 7c-1.6 0-2.5-1.2-2.2-2.7l.5-3.3H5a2 2 0 0 1-2-2.3l1.2-6.5A2 2 0 0 1 6.2 4H17"/></svg></div>
+    </div>
+    <div class="byai" id="byai"></div>
+  </div>
+
+  <div class="inbar">
+    <div class="inbox" id="inPh"></div>
+    <div class="inmic">🎙</div>
+  </div>
+
+  <!-- 报错表单（单步） -->
+  <div class="dim" id="dim"></div>
+  <div class="sheet" id="sheet">
+    <div class="grab"></div>
+    <div class="shead">
+      <div><div class="stitle" id="rTitle"></div><div class="ssub" id="rSub"></div></div>
+      <span class="xbtn" onclick="closeSheet()">✕</span>
+    </div>
+    <div class="checks" id="checks"></div>
+    <div class="addhead"><span class="addlab" id="addLab"></span><span class="cnt" id="cnt">0/200</span></div>
+    <div class="fld"><div class="fieldmic"><textarea class="tin" id="tin" maxlength="200" rows="1" oninput="grow(this);cnt()"></textarea><button class="micbtn" onclick="rec.start()">🎙</button></div></div>
+    <div class="recbar" id="rec"><span class="rdot"></span><span class="rtime" id="rtime">0:00</span><span class="rcap" id="rcap"></span><button class="stopbtn" id="rstop" onclick="rec.stop()"></button></div>
+    <div class="clip" id="clip">▷ <span id="voiceLab"></span> <span id="clipT">0:00</span> <span class="clipx" onclick="rec.del()">✕</span></div>
+    <div class="hint" id="hint"></div>
+    <div class="foot">
+      <button class="cancel" id="cancel" onclick="closeSheet()"></button>
+      <button class="submit" id="submit" onclick="submitReport()"></button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+let lang='zh';
+const L={
+ zh:{thinking:'思考完成',
+   msg:'根据你的 5 分钟训练、头前倾 / 高低肩体态纠正目标，我为你安排了居家徒手 · 基础1级的颈肩上背课程。',
+   planTitle:'颈部、上肢与背部放松训练',kDur:'时长',vDur:'5 分钟',kAct:'动作',kVol:'容量',mvLab:'动作',
+   detail:'详情',start:'开始训练',inPh:'输入文字，或按住说话',byai:'内容由 AI 生成',
+   rTitle:'结果哪里有问题？',rSub:'可多选；不选也能直接提交',
+   opt:[['生成没完成',''],['生成速度太慢',''],['不符合需求','目标/部位/器械'],['强度或难度不合适','组数/次数/负重']],
+   addLab:'其他问题或补充说明',addPh:'说说这个结果的具体问题…',hint:'不想打字？点麦克风直接说（60 秒内）',
+   cancel:'取消',submit:'提交问题',submitEmpty:'直接提交',recCap:'60 秒内',recStop:'停止',voice:'语音',
+   toastLike:'谢谢！很高兴你喜欢 👍',toastReport:'收到，谢谢反馈！'},
+ en:{thinking:'Thinking done',
+   msg:'Based on your 5-min session and posture goals (forward head / uneven shoulders), here\'s a home, bodyweight, level-1 neck & upper-back plan.',
+   planTitle:'Neck, arms & back release',kDur:'Duration',vDur:'5 min',kAct:'Moves',kVol:'Volume',mvLab:'Exercises',
+   detail:'Details',start:'Start',inPh:'Type, or hold to talk',byai:'Generated by AI',
+   rTitle:'What\'s wrong with this plan?',rSub:'Pick any, or just submit',
+   opt:[['Generation didn\'t finish',''],['Too slow',''],['Not what I asked for','goal/muscle/gear'],['Wrong intensity','sets/reps/load']],
+   addLab:'Other, or add details',addPh:'Tell us more about this plan…',hint:'Rather talk? Tap the mic (up to 60s)',
+   cancel:'Cancel',submit:'Submit',submitEmpty:'Submit anyway',recCap:'max 60s',recStop:'Stop',voice:'Voice',
+   toastLike:'Thanks — glad you like it! 👍',toastReport:'Got it — thanks!'}
+};
+function t(k){return L[lang][k];}
+
+function setLang(l){lang=l;$('#lZh').classList.toggle('on',l==='zh');$('#lEn').classList.toggle('on',l==='en');applyLang();}
+function applyLang(){
+  document.documentElement.lang=lang;
+  $('#thinking').textContent=t('thinking');$('#msg').textContent=t('msg');
+  $('#planTitle').textContent=t('planTitle');$('#kDur').textContent=t('kDur');$('#vDur').textContent=t('vDur');
+  $('#kAct').textContent=t('kAct');$('#kVol').textContent=t('kVol');$('#mvLab').textContent=t('mvLab');
+  $('#bDetail').textContent=t('detail');$('#bStart').innerHTML='▷ '+t('start');
+  $('#inPh').textContent=t('inPh');$('#byai').textContent=t('byai');
+  $('#rTitle').textContent=t('rTitle');$('#rSub').textContent=t('rSub');
+  $('#addLab').textContent=t('addLab');$('#tin').placeholder=t('addPh');$('#hint').textContent=t('hint');
+  $('#cancel').textContent=t('cancel');$('#rcap').textContent=t('recCap');$('#rstop').textContent=t('recStop');$('#voiceLab').textContent=t('voice');
+  renderChecks();updateSubmit();
+}
+function renderChecks(){
+  var sel=[...document.querySelectorAll('#checks .chk.on')].map(c=>c.dataset.i);
+  var p=lang==='en'?[' (',')']:['（','）'];
+  $('#checks').innerHTML=t('opt').map((o,i)=>`<div class="chk${sel.indexOf(''+i)>=0?' on':''}" data-i="${i}"><span class="cb">✓</span><span class="rt">${o[0]}${o[1]?`<span class="sub">${p[0]}${o[1]}${p[1]}</span>`:''}</span></div>`).join('');
+  document.querySelectorAll('#checks .chk').forEach(c=>c.onclick=()=>{c.classList.toggle('on');updateSubmit();});
+}
+function updateSubmit(){var n=document.querySelectorAll('#checks .chk.on').length;$('#submit').textContent=n>0?t('submit'):t('submitEmpty');}
+
+// 卡片交互
+$('#grid').innerHTML=Array.from({length:8},()=>'<div class="thumb"></div>').join('');
+$('#likeBtn').onclick=function(){this.classList.toggle('on-like');$('#badBtn').classList.remove('on-bad');
+  if(this.classList.contains('on-like'))toast(t('toastLike'));};
+$('#badBtn').onclick=function(){this.classList.add('on-bad');$('#likeBtn').classList.remove('on-like');openSheet();};
+
+function openSheet(){reset();$('#dim').style.display='block';$('#sheet').style.display='block';}
+function closeSheet(){$('#dim').style.display='none';$('#sheet').style.display='none';$('#badBtn').classList.remove('on-bad');}
+function reset(){document.querySelectorAll('#checks .chk.on').forEach(c=>c.classList.remove('on'));$('#tin').value='';grow($('#tin'));cnt();rec.del();$('#rec').style.display='none';updateSubmit();}
+function submitReport(){closeSheet();toast(t('toastReport'));}
+var toastT;
+function toast(m){$('#toast').textContent=m;$('#toast').style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>$('#toast').style.display='none',2000);}
+
+function grow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+function cnt(){$('#cnt').textContent=$('#tin').value.length+'/200';}
+var rec={t:null,sec:0,
+  start(){$('#rec').style.display='flex';this.sec=0;$('#rtime').textContent='0:00';
+    this.t=setInterval(()=>{this.sec++;$('#rtime').textContent=fmt(this.sec);if(this.sec>=60)rec.stop();},1000);},
+  stop(){clearInterval(this.t);$('#rec').style.display='none';if(this.sec>0){$('#clip').style.display='inline-flex';$('#clipT').textContent=fmt(this.sec);}},
+  del(){$('#clip').style.display='none';}};
+function fmt(s){return (s/60|0)+':'+(s%60).toString().padStart(2,'0');}
+
+applyLang();
+</script>
+</body>
+</html>
