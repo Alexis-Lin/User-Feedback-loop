@@ -68,7 +68,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .chk .rt{font-size:16px;}
 
 .lab{font-size:15px;font-weight:600;margin:20px 0 9px;}
-.lab .o{font-size:13px;font-weight:400;color:var(--ink3);}
+.lab .o{font-size:12px;font-weight:400;color:#5b6b16;background:#f1f6df;border:1px solid #e2ecc0;border-radius:6px;padding:2px 8px;margin-left:3px;vertical-align:1px;}
+.acctmail{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:14px;background:#fafafb;padding:12px 14px;}
+.acctmail .amc{width:22px;height:22px;border-radius:999px;background:#e8f3ea;color:#2e7d4f;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none;}
+.acctmail .amt{flex:1;min-width:0;}
+.acctmail .ae{font-size:15px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.acctmail .as{font-size:12px;color:var(--ink3);margin-top:2px;}
+.acctmail .amx{font-size:13px;color:#2a7d46;font-weight:500;cursor:pointer;flex:none;}
 .help{font-size:13px;color:var(--ink3);margin:8px 2px 0;line-height:1.5;}
 .cnt{font-size:12px;color:var(--ink3);text-align:right;margin-top:6px;}
 .fld{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px 14px;}
@@ -183,7 +189,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 
       <div id="contactIntl">
         <div class="lab" id="contactIntlLab"></div>
-        <div class="fld"><input id="mail" type="email"></div>
+        <div class="acctmail" id="acctMail">
+          <span class="amc">✓</span>
+          <div class="amt"><div class="ae">alex@example.com</div><div class="as" id="acctNote"></div></div>
+          <a class="amx" id="changeMail"></a>
+        </div>
+        <div class="fld" id="altWrap" style="display:none;margin-top:10px;"><input id="mail" type="email"></div>
       </div>
       <div id="contactCn">
         <div class="lab" id="contactCnLab"></div>
@@ -250,7 +261,7 @@ const ICONS={
 const L={
   zh:{title:'问题反馈',intro:'选个类型，下一步细说。',prompt:'你想反馈什么？',specific:'具体是哪些？',multi:'可多选，也可直接提交',addDefault:'补充说明',ph_add:'还想说点什么…',optional:'选填',
    addHelp:'没有合适的？想补充或有其他情况，打字 / 语音都行。',addHelpFree:'打字，或点麦克风语音都行。',
-   shots:'截图',shotsCap:'最多 3 张',contactCn:'联系方式',contactIntl:'联系邮箱',ph_mail:'邮箱地址（选填）',
+   shots:'截图',shotsCap:'最多 3 张',contactCn:'联系方式',contactIntl:'回复邮箱',acctNote:'你的账号邮箱，回复会发到这里',changeMail:'换一个',ph_alt:'换个邮箱接收回复（选填）',
    ctPhone:'手机号',ctWechat:'微信号',ctEmail:'邮箱',ph_phone:'手机号，方便联系你',ph_wechat:'微信号，方便联系你',ph_email:'邮箱，方便联系你',
    wecomT:'加企业微信客服',wecomS:'问题复杂？加一下更快',wecomCap:'长按识别，加企业微信客服',
    csText:'售后、订单问题？直接联系我们',csMail:'客服邮箱',csWx:'加企业微信',csWxCap:'长按识别，加企业微信客服',
@@ -262,7 +273,7 @@ const L={
    satLab:'顺便，你喜欢 ATOM 吗？',satCap:'选填，一点即走',recCap:'60 秒内',recStop:'停止',voice:'语音'},
   en:{title:'Feedback',intro:'Pick a type, add details next.',prompt:"What's this about?",specific:'Which ones?',multi:'Pick any, or just submit',addDefault:'Details',ph_add:'Anything to add…',optional:'optional',
    addHelp:'None fit, or more to add? Type or use voice.',addHelpFree:'Type, or tap the mic to speak.',
-   shots:'Screenshots',shotsCap:'up to 3',contactCn:'Contact',contactIntl:'Email',ph_mail:'Your email (optional)',
+   shots:'Screenshots',shotsCap:'up to 3',contactCn:'Contact',contactIntl:'Reply email',acctNote:'Your account email — replies go here',changeMail:'Use another',ph_alt:'A different email for replies (optional)',
    ctPhone:'Phone',ctWechat:'WeChat',ctEmail:'Email',ph_phone:'Phone, so we can reach you',ph_wechat:'WeChat, so we can reach you',ph_email:'Email, so we can reach you',
    wecomT:'Add WeChat support',wecomS:'Complex issue? Faster this way',wecomCap:'Scan to add WeChat support',
    csText:'After-sales or orders? Reach us directly',csMail:'Support',csWx:'Add WeChat',csWxCap:'Scan to add WeChat support',
@@ -361,7 +372,7 @@ function applyLang(){
   $('#csText').textContent=t('csText');$('#csMailLab').textContent=t('csMail');$('#csWxLink').textContent=t('csWx');$('#csWxCap').textContent=t('csWxCap');
   $('#naEntryIc').innerHTML=ICONS.dumbbell;$('#naEntryT').textContent=t('naEntryT');$('#naEntryS').textContent=t('naEntryS');
   $('#shotLab').innerHTML=t('shots')+' <span class="o">'+t('optional')+'</span>';$('#shotCap').textContent=t('shotsCap');
-  $('#contactIntlLab').innerHTML=t('contactIntl')+' <span class="o">'+t('optional')+'</span>';$('#mail').placeholder=t('ph_mail');
+  $('#contactIntlLab').textContent=t('contactIntl');$('#acctNote').textContent=t('acctNote');$('#changeMail').textContent=t('changeMail');$('#mail').placeholder=t('ph_alt');
   $('#contactCnLab').innerHTML=t('contactCn')+' <span class="o">'+t('optional')+'</span>';
   $('#ctPhone').textContent=t('ctPhone');$('#ctWechat').textContent=t('ctWechat');$('#ctEmail').textContent=t('ctEmail');
   var on=$('#ctype .tchip.on'); $('#cnContact').placeholder = t('ph_'+(on?on.dataset.ct:'phone'));
@@ -401,6 +412,7 @@ const QR='<svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRa
 document.querySelectorAll('.wecom-qr').forEach(e=>e.innerHTML=QR);
 document.querySelectorAll('.qr').forEach(e=>e.innerHTML=QR);
 $('#csWxLink').onclick=()=>$('#csWxBig').classList.toggle('on');
+$('#changeMail').onclick=()=>{$('#altWrap').style.display='block';$('#changeMail').style.display='none';$('#mail').focus();};
 
 function reset_(){location.reload();}
 applyLang();applyRegion('cn');showView('v1');
