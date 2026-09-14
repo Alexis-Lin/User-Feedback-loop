@@ -75,6 +75,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .acctmail .ae{font-size:15px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .acctmail .as{font-size:12px;color:var(--ink3);margin-top:2px;}
 .acctmail .amx{font-size:13px;color:#2a7d46;font-weight:500;cursor:pointer;flex:none;}
+.consent{display:flex;align-items:flex-start;gap:10px;margin-top:14px;cursor:pointer;}
+.consent .cbx{width:20px;height:20px;border-radius:6px;border:2px solid #c9c9ce;flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:12px;font-weight:700;margin-top:1px;}
+.consent .cbx.on{background:var(--ink);border-color:var(--ink);color:#fff;}
+.consent .ctxt{font-size:13px;color:var(--ink2);line-height:1.5;}
 .help{font-size:13px;color:var(--ink3);margin:8px 2px 0;line-height:1.5;}
 .cnt{font-size:12px;color:var(--ink3);text-align:right;margin-top:6px;}
 .fld{border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px 14px;}
@@ -198,12 +202,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       </div>
       <div id="contactCn">
         <div class="lab" id="contactCnLab"></div>
-        <div class="ctype" id="ctype">
-          <span class="tchip on" data-ct="phone" id="ctPhone"></span>
-          <span class="tchip" data-ct="wechat" id="ctWechat"></span>
-          <span class="tchip" data-ct="email" id="ctEmail"></span>
+        <div class="acctmail" id="acctPhone">
+          <span class="amc">✓</span>
+          <div class="amt"><div class="ae">138****8862</div><div class="as" id="acctPhoneNote"></div></div>
+          <a class="amx" id="changePhone"></a>
         </div>
-        <div class="fld"><input id="cnContact"></div>
+        <div class="fld" id="altPhoneWrap" style="display:none;margin-top:10px;"><input id="cnPhone" type="tel"></div>
+        <div class="lab" id="cnMailLab"></div>
+        <div class="fld"><input id="cnMail" type="email"></div>
         <div class="wecom" id="wecom">
           <div class="wecom-ic">企</div>
           <div class="wecom-tx"><div class="t" id="wecomT"></div><div class="s" id="wecomS"></div></div>
@@ -211,6 +217,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
         </div>
         <div class="wecom-big" id="wecomBig"><div class="qr" style="width:150px;height:150px"></div><div class="qh" id="wecomCap"></div></div>
       </div>
+      <div class="consent" id="consent"><span class="cbx on" id="consentBox">✓</span><span class="ctxt" id="consentTxt"></span></div>
       <div class="devnote" id="devnote"></div>
     </div>
 
@@ -262,7 +269,8 @@ const L={
   zh:{title:'问题反馈',intro:'选个类型，下一步细说。',prompt:'你想反馈什么？',specific:'具体是哪些？',multi:'可多选，也可直接提交',addDefault:'补充说明',ph_add:'还想说点什么…',optional:'选填',
    addHelp:'没有合适的？想补充或有其他情况，打字 / 语音都行。',addHelpFree:'打字，或点麦克风语音都行。',
    shots:'截图',shotsCap:'最多 3 张',contactCn:'联系方式',contactIntl:'回复邮箱',acctNote:'你的账号邮箱，回复会发到这里',changeMail:'换一个',ph_alt:'换个邮箱接收回复（选填）',
-   ctPhone:'手机号',ctWechat:'微信号',ctEmail:'邮箱',ph_phone:'手机号，方便联系你',ph_wechat:'微信号，方便联系你',ph_email:'邮箱，方便联系你',
+   acctPhoneNote:'你的账号手机号，方便联系你',changePhone:'换一个',ph_altPhone:'换个手机号（选填）',cnMail:'补充邮箱',ph_cnMail:'留个邮箱，方便回复你（选填）',
+   consent:'如有需要，允许我们联系你了解更多情况（默认开启，可取消）',
    wecomT:'加企业微信客服',wecomS:'问题复杂？加一下更快',wecomCap:'长按识别，加企业微信客服',
    csText:'售后、订单问题？直接联系我们',csMail:'客服邮箱',csWx:'加企业微信',csWxCap:'长按识别，加企业微信客服',
    devnote:'提交会自动附带设备与版本信息，帮我们更快定位。',submit:'提交',submitReq:'提交申请',
@@ -274,7 +282,8 @@ const L={
   en:{title:'Feedback',intro:'Pick a type, add details next.',prompt:"What's this about?",specific:'Which ones?',multi:'Pick any, or just submit',addDefault:'Details',ph_add:'Anything to add…',optional:'optional',
    addHelp:'None fit, or more to add? Type or use voice.',addHelpFree:'Type, or tap the mic to speak.',
    shots:'Screenshots',shotsCap:'up to 3',contactCn:'Contact',contactIntl:'Reply email',acctNote:'Your account email — replies go here',changeMail:'Use another',ph_alt:'A different email for replies (optional)',
-   ctPhone:'Phone',ctWechat:'WeChat',ctEmail:'Email',ph_phone:'Phone, so we can reach you',ph_wechat:'WeChat, so we can reach you',ph_email:'Email, so we can reach you',
+   acctPhoneNote:'Your account phone — easy to reach you',changePhone:'Use another',ph_altPhone:'A different phone number (optional)',cnMail:'Add email',ph_cnMail:'Leave an email so we can reply (optional)',
+   consent:'Allow us to contact you if we need more details (on by default, tap to turn off)',
    wecomT:'Add WeChat support',wecomS:'Complex issue? Faster this way',wecomCap:'Scan to add WeChat support',
    csText:'After-sales or orders? Reach us directly',csMail:'Support',csWx:'Add WeChat',csWxCap:'Scan to add WeChat support',
    devnote:'Device & app info is attached automatically to help us debug.',submit:'Submit',submitReq:'Submit request',
@@ -288,9 +297,9 @@ const L={
 // ---------- 双语分类 ----------
 const CATS={
   ai:{icon:'ai',name:{zh:'AI 识别准确性',en:'AI tracking'},sub:{zh:'计数 / 身体识别 / 讲解',en:'Count / pose / coaching'},
-    subs:{zh:['计数不准','身体识别不准','AI 讲解不清'],en:['Miscounts','Body tracking off','Coaching unclear']}},
-  content:{icon:'content',name:{zh:'课程内容',en:'Course content'},sub:{zh:'示范图文 / 名称 / 部位',en:'Media / name / muscle'},
-    subs:{zh:['示范图文有误','动作名称有误','训练部位有误','动作讲解有误'],en:['Wrong media','Wrong name','Wrong muscle','Wrong description']}},
+    subs:{zh:['计数多了（没做也计）','计数少了（做了没计）','身体识别不准','AI 讲解不清楚'],en:['Counted a rep I didn’t do','Missed a rep I did','Body tracking is off','Coaching was unclear']}},
+  content:{icon:'content',name:{zh:'课程内容',en:'Course content'},sub:{zh:'示范图文 / 名称 / 训练部位',en:'Image / name / target muscle'},
+    subs:{zh:['示范图 / 视频不对','动作名称不对','训练部位标注不对','动作讲解不对'],en:['Demo image or video looks off','Exercise name doesn’t match','Target muscle looks off','Description isn’t accurate']}},
   connect:{icon:'connect',name:{zh:'连接数据与使用体验',en:'Device, data & UX'},sub:{zh:'连接 / 同步 / 卡顿 / 交互',en:'Connect / sync / lag / UX'},
     subs:{zh:['蓝牙配对','传感器','频繁掉线','记录丢失','多端不同步','卡顿闪退','交互不顺'],en:['Bluetooth pairing','Sensor','Keeps dropping','Records lost','Out of sync','Lag / crash','Clunky UX']}},
   otherfb:{icon:'otherfb',name:{zh:'其他问题反馈',en:'Other issue'},sub:{zh:'其他没归类的问题',en:'Anything else'},subs:{zh:[],en:[]},
@@ -374,8 +383,9 @@ function applyLang(){
   $('#shotLab').innerHTML=t('shots')+' <span class="o">'+t('optional')+'</span>';$('#shotCap').textContent=t('shotsCap');
   $('#contactIntlLab').textContent=t('contactIntl');$('#acctNote').textContent=t('acctNote');$('#changeMail').textContent=t('changeMail');$('#mail').placeholder=t('ph_alt');
   $('#contactCnLab').innerHTML=t('contactCn')+' <span class="o">'+t('optional')+'</span>';
-  $('#ctPhone').textContent=t('ctPhone');$('#ctWechat').textContent=t('ctWechat');$('#ctEmail').textContent=t('ctEmail');
-  var on=$('#ctype .tchip.on'); $('#cnContact').placeholder = t('ph_'+(on?on.dataset.ct:'phone'));
+  $('#acctPhoneNote').textContent=t('acctPhoneNote');$('#changePhone').textContent=t('changePhone');$('#cnPhone').placeholder=t('ph_altPhone');
+  $('#cnMailLab').innerHTML=t('cnMail')+' <span class="o">'+t('optional')+'</span>';$('#cnMail').placeholder=t('ph_cnMail');
+  $('#consentTxt').textContent=t('consent');
   $('#wecomT').textContent=t('wecomT');$('#wecomS').textContent=t('wecomS');$('#wecomCap').textContent=t('wecomCap');
   $('#devnote').textContent=t('devnote');$('#recCap').textContent=t('recCap');$('#stopBtn').textContent=t('recStop');$('#voiceLab').textContent=t('voice');
   $('#naHeroT').textContent=t('naHeroT');$('#naHeroP').textContent=t('naHeroP');$('#naNameLab').textContent=t('naName');
@@ -403,10 +413,8 @@ function applyRegion(r){
   $('#rCn').classList.toggle('on',r==='cn');$('#rIntl').classList.toggle('on',r==='intl');
   $('#csWx').style.display=r==='cn'?'':'none';
 }
-document.querySelectorAll('#ctype .tchip').forEach(c=>{
-  c.onclick=()=>{document.querySelectorAll('#ctype .tchip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
-    $('#cnContact').placeholder=t('ph_'+c.dataset.ct);};
-});
+$('#consent').onclick=()=>$('#consentBox').classList.toggle('on');
+$('#changePhone').onclick=()=>{$('#altPhoneWrap').style.display='block';$('#changePhone').style.display='none';$('#cnPhone').focus();};
 $('#wecom').onclick=()=>$('#wecomBig').classList.toggle('on');
 const QR='<svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none"><rect width="100" height="100" fill="#fff"/><g fill="#111"><rect x="6" y="6" width="24" height="24"/><rect x="70" y="6" width="24" height="24"/><rect x="6" y="70" width="24" height="24"/></g><g fill="#fff"><rect x="10" y="10" width="16" height="16"/><rect x="74" y="10" width="16" height="16"/><rect x="10" y="74" width="16" height="16"/></g><g fill="#111"><rect x="14" y="14" width="8" height="8"/><rect x="78" y="14" width="8" height="8"/><rect x="14" y="78" width="8" height="8"/><rect x="40" y="8" width="6" height="6"/><rect x="52" y="14" width="6" height="6"/><rect x="60" y="8" width="6" height="6"/><rect x="42" y="40" width="6" height="6"/><rect x="54" y="46" width="6" height="6"/><rect x="66" y="40" width="6" height="6"/><rect x="40" y="60" width="6" height="6"/><rect x="52" y="66" width="6" height="6"/><rect x="72" y="58" width="6" height="6"/><rect x="60" y="72" width="6" height="6"/><rect x="72" y="72" width="6" height="6"/><rect x="84" y="60" width="6" height="6"/><rect x="8" y="40" width="6" height="6"/><rect x="8" y="52" width="6" height="6"/><rect x="20" y="46" width="6" height="6"/></g></svg>';
 document.querySelectorAll('.wecom-qr').forEach(e=>e.innerHTML=QR);
