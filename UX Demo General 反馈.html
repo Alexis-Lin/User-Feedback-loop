@@ -205,7 +205,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
         <div class="lab" id="addLab"></div>
         <div class="fld">
           <div class="fieldmic">
-            <textarea id="pText" maxlength="200" rows="1" oninput="grow(this);cnt()"></textarea>
+            <textarea id="pText" maxlength="200" rows="1" oninput="grow(this);cnt();updateSubmit()"></textarea>
             <button class="micbtn" onclick="rec.start()">🎙</button>
           </div>
           <div class="cnt" id="pCnt">0/200</div>
@@ -335,12 +335,10 @@ const CATS={
     subs:{zh:['示范图 / 视频不对','动作名称不对','训练部位标注不对','动作讲解不对'],en:['Demo image or video looks off','Exercise name doesn’t match','Target muscle looks off','Description isn’t accurate']}},
   connect:{icon:'connect',name:{zh:'连接数据与使用体验',en:'Device, data & UX'},sub:{zh:'连接 / 数据 / 卡顿',en:'Connect / data / performance'},
     subs:{zh:['设备连不上 / 老掉线','数据丢失或不同步','卡顿、闪退或不流畅'],en:['Won’t connect / keeps dropping','Data lost or out of sync','Lag, crash or clunky']}},
-  otherfb:{icon:'otherfb',name:{zh:'其他问题反馈',en:'Other issue'},sub:{zh:'其他没归类的问题',en:'Anything else'},subs:{zh:[],en:[]},
-    label:{zh:'说说你遇到的问题',en:'Tell us what happened'},placeholder:{zh:'说说你遇到的问题…',en:'Tell us what happened…'}},
-  feature:{icon:'feature',name:{zh:'新功能建议',en:'Feature request'},sub:{zh:'希望我们增加或改进的功能',en:'What we could add or improve'},subs:{zh:[],en:[]},
-    label:{zh:'说说你的建议',en:'Your suggestion'},placeholder:{zh:'说说你希望 ATOM 增加或改进什么…',en:'What could ATOM add or improve…'}},
+  other:{icon:'otherfb',name:{zh:'其他反馈与建议',en:'Other feedback & ideas'},sub:{zh:'问题、想法或新功能建议',en:'Issues, ideas or feature requests'},subs:{zh:[],en:[]},
+    label:{zh:'说说你的想法',en:'Your feedback'},placeholder:{zh:'遇到的问题、想法，或想要的功能…',en:'An issue, an idea, or a feature you want…'}},
 };
-const ORDER=['ai','content','connect','otherfb','feature'];
+const ORDER=['ai','content','connect','other'];
 
 let lang='zh', region='cn', pan='form', cat='', naFrom='';
 function t(k){return L[lang][k];}
@@ -358,7 +356,7 @@ function showPanel(p){
   $('#sbody').scrollTop=0;
   if(p==='form'){
     $('#btnCancel').textContent=t('cancel');$('#btnCancel').style.display='';
-    $('#btnSubmit').textContent=t('submit');$('#btnSubmit').disabled=false;
+    $('#btnSubmit').textContent=t('submit');updateSubmit();
   }else if(p==='na'){
     $('#btnCancel').textContent = naFrom==='content'?t('back'):t('cancel');$('#btnCancel').style.display='';
     $('#btnSubmit').textContent=t('submitReq');gate();
@@ -376,7 +374,7 @@ function openCat(k){
   $('#shTitle').textContent=cn(C.name);
   $('#shSub').textContent='';
   $('#subs').innerHTML = subsArr.map(s=>`<div class="chk"><span class="cb">✓</span><span class="rt">${s}</span></div>`).join('');
-  document.querySelectorAll('#subs .chk').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
+  document.querySelectorAll('#subs .chk').forEach(c=>c.onclick=()=>{c.classList.toggle('on');updateSubmit();});
   $('#naEntry').classList.toggle('hidden', k!=='content');
   $('#addLab').innerHTML = (isOther?cn(C.label):t('addDefault'))+' <span class="o">'+t('optional')+'</span>';
   $('#pText').placeholder = isOther?cn(C.placeholder):t('ph_add');
@@ -389,6 +387,15 @@ function openNewAction(){naFrom='';$('#naName').value='';$('#naWhy').value='';gr
 document.getElementById('naEntry').onclick=()=>{naFrom='content';$('#naName').value='';$('#naWhy').value='';grow($('#naWhy'));$('#naRef').value='';$('#shTitle').textContent=t('naTitle');$('#shSub').textContent='';showPanel('na');};
 
 function gate(){ if(pan==='na')$('#btnSubmit').disabled=$('#naName').value.trim()===''; }
+// 表单校验：有选项类需勾选或补充文字/语音；纯文字类需文字/语音，避免空提交
+function updateSubmit(){
+  if(pan!=='form'||!cat)return;
+  var isOther=cn(CATS[cat].subs).length===0;
+  var hasSub=document.querySelectorAll('#subs .chk.on').length>0;
+  var hasText=$('#pText').value.trim()!=='';
+  var hasVoice=$('#pClip').style.display==='inline-flex';
+  $('#btnSubmit').disabled = isOther ? !(hasText||hasVoice) : !(hasSub||hasText||hasVoice);
+}
 
 function sheetCancel(){
   if(pan==='na'&&naFrom==='content'){ $('#shTitle').textContent=cn(CATS[cat].name);$('#shSub').textContent=t('sheetSub');showPanel('form'); }
@@ -398,7 +405,7 @@ function onPrimary(){
   if(pan==='thanks'){closeSheet();return;}
   // 提交
   $('#tkTitle').textContent=t('tkTitle');
-  $('#tkSub').textContent = pan==='na' ? t('tkSubReq') : (cat==='feature' ? t('tkSubFeat') : t('tkSub'));
+  $('#tkSub').textContent = pan==='na' ? t('tkSubReq') : t('tkSub');
   $('#shTitle').textContent=t('tkTitle');$('#shSub').textContent='';
   document.querySelectorAll('.face').forEach(f=>f.classList.remove('on'));
   showPanel('thanks');
@@ -427,8 +434,8 @@ var rec={t:null,sec:0,
   start(){$('#pRec').style.display='flex';this.sec=0;$('#pTime').textContent='0:00';
     this.t=setInterval(()=>{this.sec++;$('#pTime').textContent=fmt(this.sec);if(this.sec>=60)rec.stop();},1000);},
   stop(){clearInterval(this.t);$('#pRec').style.display='none';
-    if(this.sec>0){$('#pClip').style.display='inline-flex';$('#pClipT').textContent=fmt(this.sec);}},
-  del(){$('#pClip').style.display='none';}
+    if(this.sec>0){$('#pClip').style.display='inline-flex';$('#pClipT').textContent=fmt(this.sec);}updateSubmit();},
+  del(){$('#pClip').style.display='none';updateSubmit();}
 };
 function fmt(s){return (s/60|0)+':'+(s%60).toString().padStart(2,'0');}
 
