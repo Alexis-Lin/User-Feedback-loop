@@ -24,6 +24,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .side .btn{font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;display:block;width:100%;margin-bottom:8px;text-align:left;}
 .drow .btn{flex:1;margin-bottom:0;text-align:center;}
 .side .btn.on{background:var(--sel);border-color:var(--selbd);}
+.note{font-size:12px;color:var(--ink2);line-height:1.6;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:12px;}
+.note b{color:var(--ink);}
+.note ol{margin:5px 0 8px;padding-left:18px;}
+.note li{margin:3px 0;}
 @media(max-height:930px){.phone{zoom:.86;}}
 @media(max-height:800px){.phone{zoom:.76;}}
 
@@ -166,14 +170,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 <body>
 <div class="stage">
 <div class="side">
-  <h1>General 问题反馈</h1>
-  <p>一级列表（APP View）· 点分类上弹抽屉表单，填完即走，不做整页二级跳转。语言(7 种) 与 版本(大陆/国际) 正交；真机跟随系统语言。</p>
-  <span class="dl">语言 / Language（7）</span>
-  <div class="langrow"><button class="btn lang on" data-lang="zh" onclick="setLang('zh')">中文</button><button class="btn lang" data-lang="en" onclick="setLang('en')">EN</button><button class="btn lang" data-lang="ja" onclick="setLang('ja')">日本語</button><button class="btn lang" data-lang="es" onclick="setLang('es')">ES</button><button class="btn lang" data-lang="pt" onclick="setLang('pt')">PT</button><button class="btn lang" data-lang="de" onclick="setLang('de')">DE</button><button class="btn lang" data-lang="fr" onclick="setLang('fr')">FR</button></div>
-  <span class="dl">版本 / Region</span>
+  <h1>General 问题反馈 · Demo</h1>
+  <p>一级列表（APP View）· 点分类上弹抽屉，填完即走。<b>下面的开关仅供原型对照</b>：真机版本跟随账号地区、语言跟随系统。</p>
+  <span class="dl">① 版本 / Region（先选）</span>
   <div class="drow"><button class="btn on" id="rCn" onclick="applyRegion('cn')">大陆</button><button class="btn" id="rIntl" onclick="applyRegion('intl')">国际</button></div>
+  <span class="dl">② 语言 / Language（7）</span>
+  <div class="langrow"><button class="btn lang on" data-lang="zh" onclick="setLang('zh')">中文</button><button class="btn lang" data-lang="en" onclick="setLang('en')">EN</button><button class="btn lang" data-lang="ja" onclick="setLang('ja')">日本語</button><button class="btn lang" data-lang="es" onclick="setLang('es')">ES</button><button class="btn lang" data-lang="pt" onclick="setLang('pt')">PT</button><button class="btn lang" data-lang="de" onclick="setLang('de')">DE</button><button class="btn lang" data-lang="fr" onclick="setLang('fr')">FR</button></div>
   <button class="btn" onclick="reset_()">重置 / Reset</button>
-  <button class="btn" onclick="openNewAction()">↗ 新动作申请（抽屉）</button>
+  <div class="note">
+    <b>怎么看：</b>
+    <ol>
+      <li>点任一分类 → 底部抽屉。<b>选一项或写一句才能提交</b>（防空提交）。</li>
+      <li>截图默认折叠一行，点 <b>+</b> 才展开占位框；删空自动收回。</li>
+      <li>联系方式成组：国际=邮箱预填 / 大陆=手机号预填 + 补充邮箱 + 企业微信；底部默认勾选联系许可。</li>
+      <li>提交后抽屉内出现"谢谢 + 满意度"，完成即走。</li>
+    </ol>
+    <b>边界演示：</b>切「国际」看邮箱版；「换一个」测备用邮箱；输入满 200 字看计数；连点提交不重复。
+  </div>
 </div>
 
 <div class="phone"><div class="island"></div><div class="screen">
@@ -204,7 +217,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       <!-- 分类表单 -->
       <div class="pan" id="panForm">
         <div class="checks" id="subs"></div>
-        <div class="mrow na hidden" id="naEntry"><span class="mi" id="naEntryIc"></span><div class="mtx"><div class="t" id="naEntryT"></div><div class="s" id="naEntryS"></div></div><span class="arw">›</span></div>
 
         <div class="lab" id="addLab"></div>
         <div class="fld">
@@ -255,18 +267,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
           </div>
           <div class="consent" id="consent"><span class="cbx on" id="consentBox">✓</span><span class="ctxt" id="consentTxt"></span></div>
         </div>
-      </div>
-
-      <!-- 新动作申请 -->
-      <div class="pan hidden" id="panNa">
-        <div class="hero"><div class="heroic">🏋</div><div><h2 id="naHeroT"></h2><p id="naHeroP"></p></div></div>
-        <div class="lab" id="naNameLab"></div>
-        <div class="fld"><input id="naName" oninput="gate()"></div>
-        <div class="lab" id="naWhyLab"></div>
-        <div class="fld"><textarea id="naWhy" maxlength="200" rows="1" oninput="grow(this)"></textarea></div>
-        <div class="help" id="naWhyHelp"></div>
-        <div class="lab" id="naRefLab"></div>
-        <div class="fld"><input id="naRef"></div>
       </div>
 
       <!-- 感谢 + 满意度 -->
@@ -361,14 +361,11 @@ function renderMenu(){
 // ---------- 抽屉开合 ----------
 function showPanel(p){
   pan=p;
-  ['form','na','thanks'].forEach(x=>$('#pan'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('hidden',x!==p));
+  ['form','thanks'].forEach(x=>$('#pan'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('hidden',x!==p));
   $('#sbody').scrollTop=0;
   if(p==='form'){
     $('#btnCancel').textContent=t('cancel');$('#btnCancel').style.display='';
     $('#btnSubmit').textContent=t('submit');updateSubmit();
-  }else if(p==='na'){
-    $('#btnCancel').textContent = naFrom==='content'?t('back'):t('cancel');$('#btnCancel').style.display='';
-    $('#btnSubmit').textContent=t('submitReq');gate();
   }else{ // thanks
     $('#btnCancel').style.display='none';
     $('#btnSubmit').textContent=t('done');$('#btnSubmit').disabled=false;
@@ -384,18 +381,12 @@ function openCat(k){
   $('#shSub').textContent='';
   $('#subs').innerHTML = subsArr.map(s=>`<div class="chk"><span class="cb">✓</span><span class="rt">${s}</span></div>`).join('');
   document.querySelectorAll('#subs .chk').forEach(c=>c.onclick=()=>{c.classList.toggle('on');updateSubmit();});
-  $('#naEntry').classList.toggle('hidden', k!=='content');
   $('#addLab').innerHTML = (isOther?cn(C.label):t('addDefault'))+' <span class="o">'+t('optional')+'</span>';
   $('#pText').placeholder = isOther?cn(C.placeholder):t('ph_add');
   $('#pText').value='';grow($('#pText'));cnt();rec.del();$('#pRec').style.display='none';
   collapseShots(true);
   showPanel('form');openSheet();
 }
-function openNewAction(){naFrom='';$('#naName').value='';$('#naWhy').value='';grow($('#naWhy'));$('#naRef').value='';$('#shTitle').textContent=t('naTitle');$('#shSub').textContent='';showPanel('na');openSheet();}
-
-document.getElementById('naEntry').onclick=()=>{naFrom='content';$('#naName').value='';$('#naWhy').value='';grow($('#naWhy'));$('#naRef').value='';$('#shTitle').textContent=t('naTitle');$('#shSub').textContent='';showPanel('na');};
-
-function gate(){ if(pan==='na')$('#btnSubmit').disabled=$('#naName').value.trim()===''; }
 // 表单校验：有选项类需勾选或补充文字/语音；纯文字类需文字/语音，避免空提交
 function updateSubmit(){
   if(pan!=='form'||!cat)return;
@@ -406,15 +397,13 @@ function updateSubmit(){
   $('#btnSubmit').disabled = isOther ? !(hasText||hasVoice) : !(hasSub||hasText||hasVoice);
 }
 
-function sheetCancel(){
-  if(pan==='na'&&naFrom==='content'){ $('#shTitle').textContent=cn(CATS[cat].name);$('#shSub').textContent=t('sheetSub');showPanel('form'); }
-  else closeSheet();
-}
+function sheetCancel(){ closeSheet(); }
 function onPrimary(){
   if(pan==='thanks'){closeSheet();return;}
-  // 提交
+  // 提交（防重复：置灰按钮）
+  $('#btnSubmit').disabled=true;
   $('#tkTitle').textContent=t('tkTitle');
-  $('#tkSub').textContent = pan==='na' ? t('tkSubReq') : (cat==='feature' ? t('tkSubFeat') : t('tkSub'));
+  $('#tkSub').textContent = (cat==='feature' ? t('tkSubFeat') : t('tkSub'));
   $('#shTitle').textContent=t('tkTitle');$('#shSub').textContent='';
   document.querySelectorAll('.face').forEach(f=>f.classList.remove('on'));
   showPanel('thanks');
@@ -456,7 +445,6 @@ function applyLang(){
   $('#ttl').textContent=t('title');
   $('#prompt').textContent=t('prompt');
   $('#csText').textContent=t('csText');$('#csMailLab').textContent=t('csMail');$('#csWxLink').textContent=t('csWx');$('#csWxCap').textContent=t('csWxCap');
-  $('#naEntryIc').innerHTML=ICONS.dumbbell;$('#naEntryT').textContent=t('naEntryT');$('#naEntryS').textContent=t('naEntryS');
   $('#shotSect').innerHTML=t('shotSect')+' <span class="o">'+t('optional')+'</span>';$('#shotCap').textContent=t('shotsCap');
   $('#contactTitle').innerHTML=t('contactTitle')+' <span class="o">'+t('optional')+'</span>';
   $('#acctNote').textContent=t('acctNote');$('#changeMail').textContent=t('changeMail');$('#mail').placeholder=t('ph_alt');
@@ -465,10 +453,6 @@ function applyLang(){
   $('#consentTxt').textContent=t('consent');
   $('#wecomT').textContent=t('wecomT');$('#wecomS').textContent=t('wecomS');$('#wecomCap').textContent=t('wecomCap');
   $('#recCap').textContent=t('recCap');$('#stopBtn').textContent=t('recStop');$('#voiceLab').textContent=t('voice');
-  $('#naHeroT').textContent=t('naHeroT');$('#naHeroP').textContent=t('naHeroP');$('#naNameLab').textContent=t('naName');
-  $('#naWhyLab').innerHTML=t('naWhy')+' <span class="o">'+t('optional')+'</span>';$('#naWhyHelp').textContent=t('naWhyHelp');
-  $('#naRefLab').innerHTML=t('naRef')+' <span class="o">'+t('optional')+'</span>';
-  $('#naName').placeholder=t('ph_naName');$('#naWhy').placeholder=t('ph_naWhy');$('#naRef').placeholder=t('ph_naRef');
   $('#tkTitle').textContent=t('tkTitle');$('#satLab').textContent=t('satLab');$('#satCap').textContent=t('satCap');
   // 抽屉打开时刷新按钮 / 标题 / 已选子项文案
   if($('#sheet').classList.contains('open')){
@@ -478,7 +462,6 @@ function applyLang(){
         document.querySelectorAll('#subs .chk .rt').forEach((el,i)=>{if(subsArr[i])el.textContent=subsArr[i];});
         $('#addLab').innerHTML=(isOther?cn(C.label):t('addDefault'))+' <span class="o">'+t('optional')+'</span>';
         if(!$('#pText').value)$('#pText').placeholder=isOther?cn(C.placeholder):t('ph_add');}}
-    else if(pan==='na'){$('#btnCancel').textContent=naFrom==='content'?t('back'):t('cancel');$('#btnSubmit').textContent=t('submitReq');$('#shTitle').textContent=t('naTitle');}
     else{$('#btnSubmit').textContent=t('done');$('#shTitle').textContent=t('tkTitle');}
   }
 }

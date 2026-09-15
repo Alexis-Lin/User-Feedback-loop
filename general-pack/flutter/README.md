@@ -16,9 +16,13 @@ Navigator.push(context, MaterialPageRoute(builder: (_) => FeedbackEntryPage(
   region: Region.intl,                                   // 跟随账号地区：Region.cn / Region.intl
   account: const FeedbackAccount(email: 'alex@example.com', phone: '138****8862'),
   onSubmit: (draft) => api.submitFeedback(draft.toJson()),          // 先本地队列后异步上传
-  onSubmitNewExercise: (na) => api.submitNewExercise(na.toJson()),  // 新增动作申请
 )));
 ```
+
+## v1.1 变化
+- 移除独立「新增动作申请」流程（用户走课程内容 / 其他自由文字）。
+- **空账号回退**：`FeedbackAccount.email`（国际）或 `.phone`（大陆）为空时，联系方式自动改为可输入的输入框，不再显示预填卡。
+- **提交防重复**：点击提交后置 `_submitting`，按钮置灰，避免连点。
 
 ## 语言
 - 跟随系统 `Localizations.localeOf(context)`；未覆盖语言回退英语。
