@@ -66,8 +66,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 /* ---------- 上弹抽屉表单 ---------- */
 .dim{position:absolute;inset:0;background:rgba(0,0,0,.42);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:10;}
 .dim.open{opacity:1;pointer-events:auto;}
-.sheet{position:absolute;left:0;right:0;bottom:0;max-height:90%;background:#fff;border-radius:22px 22px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .30s cubic-bezier(.32,.72,0,1);z-index:11;box-shadow:0 -8px 40px rgba(0,0,0,.14);}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:90%;background:#fff;border-radius:22px 22px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .30s cubic-bezier(.32,.72,0,1),bottom .26s cubic-bezier(.32,.72,0,1),max-height .26s cubic-bezier(.32,.72,0,1);z-index:11;box-shadow:0 -8px 40px rgba(0,0,0,.14);}
 .sheet.open{transform:translateY(0);}
+/* 键盘避让：键盘弹出时抽屉上移到键盘上方，焦点输入框保持可见 */
+.screen.kbopen .sheet{bottom:var(--kbh,244px);max-height:calc(100% - var(--kbh,244px) - 44px);}
+.kbtag{display:none;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#5b6b16;background:#f1f6df;border:1px solid #e2ecc0;border-radius:999px;padding:3px 9px;white-space:nowrap;}
+.screen.kbopen .kbtag{display:inline-flex;}
+.kb{position:absolute;left:0;right:0;bottom:0;background:#d1d4da;padding:0 5px calc(6px + env(safe-area-inset-bottom,8px));display:flex;flex-direction:column;transform:translateY(101%);transition:transform .28s cubic-bezier(.32,.72,0,1);z-index:25;}
+.screen.kbopen .kb{transform:translateY(0);}
+.kbbar{height:38px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;color:#3a3a40;border-bottom:1px solid #c3c6cd;}
+.kbbar .dot{width:6px;height:6px;border-radius:999px;background:#8a8f98;}
+.kbkeys{padding:9px 0 4px;display:flex;flex-direction:column;gap:9px;}
+.kbrow{display:flex;gap:6px;justify-content:center;padding:0 3px;}
+.key{background:#fff;border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.3);height:40px;min-width:0;flex:1;display:flex;align-items:center;justify-content:center;font-size:16px;color:#111;cursor:default;user-select:none;}
+.key.fn{background:#abb0ba;color:#1a1a1e;font-size:13px;flex:1.4;}
+.key.space{flex:5;}
+.key.ret{background:#abb0ba;color:#1a1a1e;font-size:13px;flex:2.2;}
 .grab{width:40px;height:5px;background:#d8d8de;border-radius:3px;margin:8px auto 2px;flex:none;}
 .shead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:6px 20px 6px;flex:none;}
 .stitle{font-size:19px;font-weight:600;}
@@ -185,7 +199,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       <li>联系方式成组：国际=邮箱预填 / 大陆=手机号预填 + 补充邮箱 + 企业微信；底部默认勾选联系许可。</li>
       <li>提交后抽屉内出现"谢谢 + 满意度"，完成即走。</li>
     </ol>
-    <b>边界演示：</b>切「国际」看邮箱版；「换一个」测备用邮箱；输入满 200 字看计数；连点提交不重复。
+    <b>⌨︎ 键盘避让（重点）：</b>点抽屉里任一输入框 / 补充说明，会弹出仿真键盘 —— <b>抽屉自动上移到键盘上方，焦点输入框保持可见</b>，标题右侧显示"键盘避让中"；点键盘「换行」或点别处收起。
+    <div style="margin-top:6px;"><b>边界演示：</b>切「国际」看邮箱版；「换一个」测备用邮箱；输入满 200 字看计数；连点提交不重复。</div>
   </div>
 </div>
 
@@ -209,7 +224,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
   <div class="sheet" id="sheet">
     <div class="grab"></div>
     <div class="shead">
-      <div><div class="stitle" id="shTitle"></div><div class="ssub" id="shSub"></div></div>
+      <div style="flex:1;min-width:0;"><div class="stitle" id="shTitle"></div><div class="ssub" id="shSub"></div></div>
+      <span class="kbtag" id="kbtag">⌨︎ 键盘避让中</span>
       <span class="xbtn" onclick="closeSheet()">✕</span>
     </div>
     <div class="sbody" id="sbody">
@@ -286,6 +302,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
       <button class="cancel" id="btnCancel" onclick="sheetCancel()"></button>
       <button class="submit" id="btnSubmit" onclick="onPrimary()"></button>
     </div>
+  </div>
+
+  <!-- 仿真软键盘：演示"键盘避让"状态（真机由系统键盘 + visualViewport 触发同样效果） -->
+  <div class="kb" id="kb">
+    <div class="kbbar"><span class="dot"></span> 键盘避让中 · 抽屉上移，焦点输入框保持在键盘上方</div>
+    <div class="kbkeys" id="kbkeys"></div>
   </div>
 
 </div></div>
@@ -372,7 +394,7 @@ function showPanel(p){
   }
 }
 function openSheet(){$('#dim').classList.add('open');$('#sheet').classList.add('open');}
-function closeSheet(){$('#dim').classList.remove('open');$('#sheet').classList.remove('open');}
+function closeSheet(){$('#dim').classList.remove('open');$('#sheet').classList.remove('open');document.querySelector('.screen').classList.remove('kbopen');}
 
 function openCat(k){
   cat=k;naFrom='';
@@ -482,6 +504,46 @@ $('#csWxLink').onclick=()=>$('#csWxBig').classList.toggle('on');
 $('#changeMail').onclick=()=>{$('#altWrap').style.display='block';$('#changeMail').style.display='none';$('#mail').focus();};
 $('#changePhone').onclick=()=>{$('#altPhoneWrap').style.display='block';$('#changePhone').style.display='none';$('#cnPhone').focus();};
 $('#consent').onclick=()=>$('#consentBox').classList.toggle('on');
+
+// ---------- 键盘避让演示 ----------
+(function(){
+  var screenEl=document.querySelector('.screen');
+  var rows=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['fn:⇧','Z','X','C','V','B','N','M','fn:⌫'],['fn:123','fn:🌐','space',' ret:换行']];
+  $('#kbkeys').innerHTML=rows.map(function(r){
+    return '<div class="kbrow">'+r.map(function(k){
+      if(k==='space') return '<div class="key space"> </div>';
+      if(k.indexOf('ret:')>=0) return '<div class="key ret" data-ret="1">'+k.split('ret:')[1]+'</div>';
+      if(k.indexOf('fn:')===0) return '<div class="key fn">'+k.slice(3)+'</div>';
+      return '<div class="key">'+k+'</div>';
+    }).join('')+'</div>';
+  }).join('');
+  function isField(el){return el&&el.closest&&el.closest('#sheet')&&(el.tagName==='INPUT'||el.tagName==='TEXTAREA');}
+  function openKb(el){
+    screenEl.style.setProperty('--kbh',$('#kb').offsetHeight+'px');
+    screenEl.classList.add('kbopen');
+    setTimeout(function(){el&&el.scrollIntoView&&el.scrollIntoView({block:'center',behavior:'smooth'});},300);
+  }
+  function closeKb(){screenEl.classList.remove('kbopen');var a=document.activeElement;if(a&&a.blur&&isField(a))a.blur();}
+  // 聚焦（真机）或点击（预览）抽屉内输入框 → 键盘弹起、抽屉上移、焦点滚入键盘上方
+  document.querySelectorAll('#sheet input, #sheet textarea').forEach(function(el){
+    el.addEventListener('focus',function(){openKb(el);});
+    el.addEventListener('click',function(e){e.stopPropagation();openKb(el);});
+  });
+  // 仿真键盘不抢输入框焦点；点"换行"收起
+  $('#kb').addEventListener('mousedown',function(e){
+    if(e.target.getAttribute('data-ret'))closeKb();
+    e.preventDefault();
+  });
+  // 点输入框和键盘以外的地方 → 收起（真机由 blur 触发同样效果）
+  document.addEventListener('click',function(e){
+    if(!screenEl.classList.contains('kbopen'))return;
+    if(e.target.closest('#kb')||isField(e.target))return;
+    closeKb();
+  });
+  document.addEventListener('focusout',function(e){
+    if(isField(e.target))setTimeout(function(){if(!isField(document.activeElement))closeKb();},90);
+  });
+})();
 
 function reset_(){location.reload();}
 applyLang();applyRegion('cn');
