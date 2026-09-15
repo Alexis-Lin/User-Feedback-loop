@@ -110,32 +110,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
 .shot{background:#dcdce0;position:relative;}
 .shot span{position:absolute;top:-6px;right:-6px;width:19px;height:19px;border-radius:999px;background:#141414;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 
-/* 联系方式：成组 section */
-.grp{margin-top:22px;padding-top:16px;border-top:1px solid var(--sep);}
-.grptitle{font-size:16px;font-weight:600;margin:0 0 12px;}
-.grptitle .o{font-size:12px;font-weight:400;color:#5b6b16;background:#f1f6df;border:1px solid #e2ecc0;border-radius:6px;padding:2px 8px;margin-left:4px;vertical-align:1px;}
-.acctmail{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:14px;background:#fafafb;padding:12px 14px;}
-.acctmail .amc{width:22px;height:22px;border-radius:999px;background:#e8f3ea;color:#2e7d4f;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none;}
+/* 联系方式：整体框起来的一组，字号偏小 */
+.grp{margin-top:20px;border:1px solid var(--line);border-radius:16px;padding:13px 14px;background:#fbfbfc;font-size:14px;}
+.grptitle{font-size:13.5px;font-weight:600;margin:0 0 10px;color:var(--ink2);}
+.grptitle .o{font-size:11px;font-weight:400;color:#5b6b16;background:#f1f6df;border:1px solid #e2ecc0;border-radius:6px;padding:2px 7px;margin-left:4px;vertical-align:1px;}
+.acctmail{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px 12px;}
+.acctmail .amc{width:20px;height:20px;border-radius:999px;background:#e8f3ea;color:#2e7d4f;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none;}
 .acctmail .amt{flex:1;min-width:0;}
-.acctmail .ae{font-size:15px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.acctmail .as{font-size:12px;color:var(--ink3);margin-top:2px;}
-.acctmail .amx{font-size:13px;color:#2a7d46;font-weight:500;cursor:pointer;flex:none;}
-.sublab{font-size:14px;color:var(--ink2);font-weight:500;margin:14px 0 8px;}
-.sublab .o{font-size:12px;font-weight:400;color:#5b6b16;background:#f1f6df;border:1px solid #e2ecc0;border-radius:6px;padding:2px 8px;margin-left:3px;vertical-align:1px;}
-.wecom{display:flex;align-items:center;gap:12px;margin-top:14px;background:#eef6e6;border:1px solid #d5e8c4;border-radius:14px;padding:12px 14px;cursor:pointer;}
-.wecom-ic{width:38px;height:38px;border-radius:10px;background:#2aae67;color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none;}
+.acctmail .ae{font-size:14px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.acctmail .as{font-size:11.5px;color:var(--ink3);margin-top:2px;}
+.acctmail .amx{font-size:12.5px;color:#2a7d46;font-weight:500;cursor:pointer;flex:none;}
+.grp .fld{padding:9px 12px;}
+.grp .fld input{font-size:15px;}
+.sublab{font-size:13px;color:var(--ink2);font-weight:500;margin:12px 0 7px;}
+.sublab .o{font-size:11px;font-weight:400;color:#5b6b16;background:#f1f6df;border:1px solid #e2ecc0;border-radius:6px;padding:2px 7px;margin-left:3px;vertical-align:1px;}
+.wecom{display:flex;align-items:center;gap:11px;margin-top:12px;background:#eef6e6;border:1px solid #d5e8c4;border-radius:12px;padding:10px 12px;cursor:pointer;}
+.wecom-ic{width:34px;height:34px;border-radius:9px;background:#2aae67;color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none;}
 .wecom-tx{flex:1;}
-.wecom-tx .t{font-size:15px;color:#1f5c38;font-weight:600;}
-.wecom-tx .s{font-size:12px;color:#3c7a52;margin-top:2px;line-height:1.4;}
-.wecom-qr{width:38px;height:38px;flex:none;border:1px solid #d5e8c4;border-radius:6px;overflow:hidden;background:#fff;}
+.wecom-tx .t{font-size:14px;color:#1f5c38;font-weight:600;}
+.wecom-tx .s{font-size:11.5px;color:#3c7a52;margin-top:2px;line-height:1.4;}
+.wecom-qr{width:34px;height:34px;flex:none;border:1px solid #d5e8c4;border-radius:6px;overflow:hidden;background:#fff;}
 .wecom-big{display:none;flex-direction:column;align-items:center;gap:10px;margin-top:12px;background:#f6f9f2;border:1px solid #e0ecd3;border-radius:14px;padding:18px;}
 .wecom-big.on{display:flex;}
 .wecom-big .qr{border:1px solid #e0ecd3;border-radius:8px;overflow:hidden;}
 .qh{font-size:13px;color:#3c7a52;}
-.consent{display:flex;align-items:flex-start;gap:10px;margin-top:16px;cursor:pointer;}
-.consent .cbx{width:20px;height:20px;border-radius:6px;border:2px solid #c9c9ce;flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:12px;font-weight:700;margin-top:1px;}
+.consent{display:flex;align-items:center;gap:9px;margin-top:12px;padding-top:11px;border-top:1px solid var(--sep);cursor:pointer;}
+.consent .cbx{width:19px;height:19px;border-radius:6px;border:2px solid #c9c9ce;flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:11px;font-weight:700;}
 .consent .cbx.on{background:var(--ink);border-color:var(--ink);color:#fff;}
-.consent .ctxt{font-size:13px;color:var(--ink2);line-height:1.5;}
+.consent .ctxt{font-size:12.5px;color:var(--ink2);line-height:1.45;}
 .devnote{display:flex;gap:8px;font-size:12px;color:var(--ink3);margin-top:18px;background:#f6f6f8;border-radius:10px;padding:10px 12px;line-height:1.5;}
 
 .hero{display:flex;gap:14px;align-items:flex-start;margin:4px 0 4px;}
@@ -249,6 +251,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","H
             </div>
             <div class="wecom-big" id="wecomBig"><div class="qr" style="width:150px;height:150px"></div><div class="qh" id="wecomCap"></div></div>
           </div>
+          <div class="consent" id="consent"><span class="cbx on" id="consentBox">✓</span><span class="ctxt" id="consentTxt"></span></div>
         </div>
       </div>
 
@@ -305,6 +308,7 @@ const L={
    shotSect:'截图',shotsCap:'最多 3 张',
    contactTitle:'联系方式',contactIntl:'回复邮箱',acctNote:'回复会发到这里',changeMail:'换一个',ph_alt:'换个邮箱接收回复（选填）',
    acctPhoneNote:'方便时联系你',changePhone:'换一个',ph_altPhone:'换个手机号（选填）',cnMail:'补充邮箱',ph_cnMail:'留个邮箱，方便回复你（选填）',
+   consent:'愿意接受回访与回复',
    wecomT:'加企业微信客服',wecomS:'问题复杂？加一下更快',wecomCap:'长按识别，加企业微信客服',
    csText:'售后、订单问题？直接联系我们',csMail:'客服邮箱',csWx:'加企业微信',csWxCap:'长按识别，加企业微信客服',
    cancel:'取消',back:'返回',submit:'提交',submitReq:'提交申请',done:'完成',
@@ -317,6 +321,7 @@ const L={
    shotSect:'Screenshot',shotsCap:'up to 3',
    contactTitle:'How to reach you',contactIntl:'Reply email',acctNote:'Replies go here',changeMail:'Use another',ph_alt:'A different email for replies (optional)',
    acctPhoneNote:'Handy if we need you',changePhone:'Use another',ph_altPhone:'A different phone number (optional)',cnMail:'Add email',ph_cnMail:'Leave an email so we can reply (optional)',
+   consent:'OK to contact me about this',
    wecomT:'Add WeChat support',wecomS:'Complex issue? Faster this way',wecomCap:'Scan to add WeChat support',
    csText:'After-sales or orders? Reach us directly',csMail:'Support',csWx:'Add WeChat',csWxCap:'Scan to add WeChat support',
    cancel:'Cancel',back:'Back',submit:'Submit',submitReq:'Submit request',done:'Done',
@@ -335,10 +340,12 @@ const CATS={
     subs:{zh:['示范图 / 视频不对','动作名称不对','训练部位标注不对','动作讲解不对'],en:['Demo image or video looks off','Exercise name doesn’t match','Target muscle looks off','Description isn’t accurate']}},
   connect:{icon:'connect',name:{zh:'连接数据与使用体验',en:'Device, data & UX'},sub:{zh:'连接 / 数据 / 卡顿',en:'Connect / data / performance'},
     subs:{zh:['设备连不上 / 老掉线','数据丢失或不同步','卡顿、闪退或不流畅'],en:['Won’t connect / keeps dropping','Data lost or out of sync','Lag, crash or clunky']}},
-  other:{icon:'otherfb',name:{zh:'其他反馈与建议',en:'Other feedback & ideas'},sub:{zh:'问题、想法或新功能建议',en:'Issues, ideas or feature requests'},subs:{zh:[],en:[]},
-    label:{zh:'说说你的想法',en:'Your feedback'},placeholder:{zh:'遇到的问题、想法，或想要的功能…',en:'An issue, an idea, or a feature you want…'}},
+  otherfb:{icon:'otherfb',name:{zh:'其他问题',en:'Other issue'},sub:{zh:'其他没归类的问题',en:'Anything else'},subs:{zh:[],en:[]},
+    label:{zh:'说说你遇到的问题',en:'Tell us what happened'},placeholder:{zh:'说说你遇到的问题…',en:'Tell us what happened…'}},
+  feature:{icon:'feature',name:{zh:'新功能建议',en:'Feature request'},sub:{zh:'希望增加或改进的功能',en:'What we could add or improve'},subs:{zh:[],en:[]},
+    label:{zh:'说说你的建议',en:'Your suggestion'},placeholder:{zh:'说说你希望 ATOM 增加或改进什么…',en:'What could ATOM add or improve…'}},
 };
-const ORDER=['ai','content','connect','other'];
+const ORDER=['ai','content','connect','otherfb','feature'];
 
 let lang='zh', region='cn', pan='form', cat='', naFrom='';
 function t(k){return L[lang][k];}
@@ -405,7 +412,7 @@ function onPrimary(){
   if(pan==='thanks'){closeSheet();return;}
   // 提交
   $('#tkTitle').textContent=t('tkTitle');
-  $('#tkSub').textContent = pan==='na' ? t('tkSubReq') : t('tkSub');
+  $('#tkSub').textContent = pan==='na' ? t('tkSubReq') : (cat==='feature' ? t('tkSubFeat') : t('tkSub'));
   $('#shTitle').textContent=t('tkTitle');$('#shSub').textContent='';
   document.querySelectorAll('.face').forEach(f=>f.classList.remove('on'));
   showPanel('thanks');
@@ -453,6 +460,7 @@ function applyLang(){
   $('#acctNote').textContent=t('acctNote');$('#changeMail').textContent=t('changeMail');$('#mail').placeholder=t('ph_alt');
   $('#acctPhoneNote').textContent=t('acctPhoneNote');$('#changePhone').textContent=t('changePhone');$('#cnPhone').placeholder=t('ph_altPhone');
   $('#cnMailLab').innerHTML=t('cnMail')+' <span class="o">'+t('optional')+'</span>';$('#cnMail').placeholder=t('ph_cnMail');
+  $('#consentTxt').textContent=t('consent');
   $('#wecomT').textContent=t('wecomT');$('#wecomS').textContent=t('wecomS');$('#wecomCap').textContent=t('wecomCap');
   $('#recCap').textContent=t('recCap');$('#stopBtn').textContent=t('recStop');$('#voiceLab').textContent=t('voice');
   $('#naHeroT').textContent=t('naHeroT');$('#naHeroP').textContent=t('naHeroP');$('#naNameLab').textContent=t('naName');
@@ -488,6 +496,7 @@ document.querySelectorAll('.qr').forEach(e=>e.innerHTML=QR);
 $('#csWxLink').onclick=()=>$('#csWxBig').classList.toggle('on');
 $('#changeMail').onclick=()=>{$('#altWrap').style.display='block';$('#changeMail').style.display='none';$('#mail').focus();};
 $('#changePhone').onclick=()=>{$('#altPhoneWrap').style.display='block';$('#changePhone').style.display='none';$('#cnPhone').focus();};
+$('#consent').onclick=()=>$('#consentBox').classList.toggle('on');
 
 function reset_(){location.reload();}
 applyLang();applyRegion('cn');
